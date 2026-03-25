@@ -2,13 +2,13 @@ import { ChannelType, type Client } from "@buape/carbon";
 import { Routes } from "discord-api-types/v10";
 import {
   resolveChannelModelOverride,
-  type OpenClawConfig,
+  type XClawConfig,
   type ReplyToMode,
-} from "openclaw/plugin-sdk/config-runtime";
-import { createReplyReferencePlanner } from "openclaw/plugin-sdk/reply-runtime";
-import { buildAgentSessionKey } from "openclaw/plugin-sdk/routing";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { truncateUtf16Safe } from "openclaw/plugin-sdk/text-runtime";
+} from "xclaw/plugin-sdk/config-runtime";
+import { createReplyReferencePlanner } from "xclaw/plugin-sdk/reply-runtime";
+import { buildAgentSessionKey } from "xclaw/plugin-sdk/routing";
+import { logVerbose } from "xclaw/plugin-sdk/runtime-env";
+import { truncateUtf16Safe } from "xclaw/plugin-sdk/text-runtime";
 import type { DiscordChannelConfigResolved } from "./allow-list.js";
 import type { DiscordMessageEvent } from "./listeners.js";
 import {
@@ -331,7 +331,7 @@ type MaybeCreateDiscordAutoThreadParams = {
   channelDescription?: string;
   baseText: string;
   combinedBody: string;
-  cfg?: OpenClawConfig;
+  cfg?: XClawConfig;
   agentId?: string;
 };
 
@@ -340,7 +340,7 @@ export async function resolveDiscordAutoThreadReplyPlan(
     replyToMode: ReplyToMode;
     agentId: string;
     channel: string;
-    cfg?: OpenClawConfig;
+    cfg?: XClawConfig;
   },
 ): Promise<DiscordAutoThreadReplyPlan> {
   const messageChannelId = resolveTrimmedDiscordMessageChannelId(params);
@@ -479,7 +479,7 @@ export async function maybeCreateDiscordAutoThread(
 }
 
 function resolveDiscordThreadTitleModelRef(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   channel?: string;
   agentId: string;
   threadId: string;
@@ -517,7 +517,7 @@ async function maybeRenameDiscordAutoThread(params: {
   modelRef?: string;
   channelName?: string;
   channelDescription?: string;
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   agentId: string;
 }): Promise<void> {
   try {

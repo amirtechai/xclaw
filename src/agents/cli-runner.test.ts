@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import { resolveCliNoOutputTimeoutMs } from "./cli-runner/helpers.js";
 import type { EmbeddedContextFile } from "./pi-embedded-helpers.js";
 import type { WorkspaceBootstrapFile } from "./workspace.js";
@@ -199,7 +199,7 @@ describe("runCliAgent with process supervisor", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies XClawConfig,
       prompt: "hi",
       provider: "codex-cli",
       model: "gpt-5.2-codex",
@@ -253,7 +253,7 @@ describe("runCliAgent with process supervisor", () => {
             },
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies XClawConfig,
       prompt: "hi",
       provider: "codex-cli",
       model: "gpt-5.2-codex",
@@ -305,7 +305,7 @@ describe("runCliAgent with process supervisor", () => {
             bootstrapTotalMaxChars: 50,
           },
         },
-      } satisfies OpenClawConfig,
+      } satisfies XClawConfig,
       prompt: "hi",
       provider: "codex-cli",
       model: "gpt-5.2-codex",
@@ -468,7 +468,7 @@ describe("runCliAgent with process supervisor", () => {
   });
 
   it("falls back to per-agent workspace when workspaceDir is missing", async () => {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-cli-runner-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "xclaw-cli-runner-"));
     const fallbackWorkspace = path.join(tempDir, "workspace-main");
     await fs.mkdir(fallbackWorkspace, { recursive: true });
     const cfg = {
@@ -477,7 +477,7 @@ describe("runCliAgent with process supervisor", () => {
           workspace: fallbackWorkspace,
         },
       },
-    } satisfies OpenClawConfig;
+    } satisfies XClawConfig;
 
     supervisorSpawnMock.mockResolvedValueOnce(
       createManagedRun({

@@ -1,11 +1,11 @@
-import { formatCliCommand } from "openclaw/plugin-sdk/cli-runtime";
-import { parseDurationMs } from "openclaw/plugin-sdk/cli-runtime";
+import { formatCliCommand } from "xclaw/plugin-sdk/cli-runtime";
+import { parseDurationMs } from "xclaw/plugin-sdk/cli-runtime";
 import {
   definePluginEntry,
   type ProviderAuthContext,
   type ProviderResolveDynamicModelContext,
   type ProviderRuntimeModel,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "xclaw/plugin-sdk/plugin-entry";
 import {
   CLAUDE_CLI_PROFILE_ID,
   applyAuthProfileConfig,
@@ -24,9 +24,9 @@ import {
   upsertAuthProfile,
   validateAnthropicSetupToken,
   validateApiKeyInput,
-} from "openclaw/plugin-sdk/provider-auth";
-import { normalizeModelCompat } from "openclaw/plugin-sdk/provider-models";
-import { fetchClaudeUsage } from "openclaw/plugin-sdk/provider-usage";
+} from "xclaw/plugin-sdk/provider-auth";
+import { normalizeModelCompat } from "xclaw/plugin-sdk/provider-models";
+import { fetchClaudeUsage } from "xclaw/plugin-sdk/provider-usage";
 import { anthropicMediaUnderstandingProvider } from "./media-understanding-provider.js";
 
 const PROVIDER_ID = "anthropic";
@@ -169,7 +169,7 @@ function buildAnthropicAuthDoctorHint(params: {
     }`,
     `- auth store oauth profiles: ${storeOauthProfiles || "(none)"}`,
     `- suggested profile: ${suggested}`,
-    `Fix: run "${formatCliCommand("openclaw doctor --yes")}"`,
+    `Fix: run "${formatCliCommand("xclaw doctor --yes")}"`,
   ].join("\n");
 }
 

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import { coerceSecretRef, resolveSecretInputRef } from "../config/types.secrets.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import {
@@ -51,7 +51,7 @@ import { resolveAwsSdkEnvVarName, resolveEnvApiKey } from "./model-auth.js";
 export { resolveOllamaApiBase } from "./models-config.providers.discovery.js";
 export { normalizeGoogleModelId, normalizeXaiModelId };
 
-type ModelsConfig = NonNullable<OpenClawConfig["models"]>;
+type ModelsConfig = NonNullable<XClawConfig["models"]>;
 export type ProviderConfig = NonNullable<ModelsConfig["providers"]>[string];
 type SecretDefaults = {
   env?: string;
@@ -75,11 +75,11 @@ const ENV_VAR_NAME_RE = /^[A-Z_][A-Z0-9_]*$/;
 
 function resolveLiveProviderCatalogTimeoutMs(env: NodeJS.ProcessEnv): number | null {
   const live =
-    env.OPENCLAW_LIVE_TEST === "1" || env.OPENCLAW_LIVE_GATEWAY === "1" || env.LIVE === "1";
+    env.XCLAW_LIVE_TEST === "1" || env.XCLAW_LIVE_GATEWAY === "1" || env.LIVE === "1";
   if (!live) {
     return null;
   }
-  const raw = env.OPENCLAW_LIVE_PROVIDER_DISCOVERY_TIMEOUT_MS?.trim();
+  const raw = env.XCLAW_LIVE_PROVIDER_DISCOVERY_TIMEOUT_MS?.trim();
   if (!raw) {
     return 15_000;
   }
@@ -89,11 +89,11 @@ function resolveLiveProviderCatalogTimeoutMs(env: NodeJS.ProcessEnv): number | n
 
 function resolveLiveProviderDiscoveryFilter(env: NodeJS.ProcessEnv): string[] | undefined {
   const live =
-    env.OPENCLAW_LIVE_TEST === "1" || env.OPENCLAW_LIVE_GATEWAY === "1" || env.LIVE === "1";
+    env.XCLAW_LIVE_TEST === "1" || env.XCLAW_LIVE_GATEWAY === "1" || env.LIVE === "1";
   if (!live) {
     return undefined;
   }
-  const raw = env.OPENCLAW_LIVE_PROVIDERS?.trim();
+  const raw = env.XCLAW_LIVE_PROVIDERS?.trim();
   if (!raw || raw === "all") {
     return undefined;
   }
@@ -650,7 +650,7 @@ export function normalizeProviders(params: {
 
 type ImplicitProviderParams = {
   agentDir: string;
-  config?: OpenClawConfig;
+  config?: XClawConfig;
   env?: NodeJS.ProcessEnv;
   workspaceDir?: string;
   explicitProviders?: Record<string, ProviderConfig> | null;
@@ -917,7 +917,7 @@ export function resolveImplicitAnthropicVertexProvider(params: {
 }
 export async function resolveImplicitBedrockProvider(params: {
   agentDir: string;
-  config?: OpenClawConfig;
+  config?: XClawConfig;
   env?: NodeJS.ProcessEnv;
 }): Promise<ProviderConfig | null> {
   const env = params.env ?? process.env;

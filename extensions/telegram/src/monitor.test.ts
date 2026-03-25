@@ -241,8 +241,8 @@ async function monitorWithAutoAbort(opts: Omit<MonitorTelegramOpts, "abortSignal
   });
 }
 
-vi.mock("openclaw/plugin-sdk/config-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/config-runtime")>();
+vi.mock("xclaw/plugin-sdk/config-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/config-runtime")>();
   return {
     ...actual,
     loadConfig,
@@ -286,8 +286,8 @@ vi.mock("@grammyjs/runner", () => ({
   run: runSpy,
 }));
 
-vi.mock("openclaw/plugin-sdk/infra-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/infra-runtime")>();
+vi.mock("xclaw/plugin-sdk/infra-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/infra-runtime")>();
   return {
     ...actual,
     computeBackoff,
@@ -295,8 +295,8 @@ vi.mock("openclaw/plugin-sdk/infra-runtime", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/runtime-env", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/runtime-env")>();
+vi.mock("xclaw/plugin-sdk/runtime-env", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/runtime-env")>();
   return {
     ...actual,
     registerUnhandledRejectionHandler: registerUnhandledRejectionHandlerMock,
@@ -316,8 +316,8 @@ vi.mock("./update-offset-store.js", () => ({
   writeTelegramUpdateOffset: vi.fn(async () => undefined),
 }));
 
-vi.mock("openclaw/plugin-sdk/reply-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/reply-runtime")>();
+vi.mock("xclaw/plugin-sdk/reply-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/reply-runtime")>();
   return {
     ...actual,
     getReplyFromConfig: async (ctx: { Body?: string }) => ({

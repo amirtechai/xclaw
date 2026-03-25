@@ -25,7 +25,7 @@ import {
   listWhatsAppDirectoryGroupsFromConfig,
   listWhatsAppDirectoryPeersFromConfig,
 } from "../../../extensions/whatsapp/src/directory-config.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { XClawConfig } from "../../config/config.js";
 import type { LineProbeResult } from "../../plugin-sdk/line.js";
 import { clearPluginDiscoveryCache } from "../../plugins/discovery.js";
 import { clearPluginManifestRegistryCache } from "../../plugins/manifest-registry.js";
@@ -122,7 +122,7 @@ describe("channel plugin registry", () => {
 describe("channel plugin catalog", () => {
   it("includes Microsoft Teams", () => {
     const entry = getChannelPluginCatalogEntry("msteams");
-    expect(entry?.install.npmSpec).toBe("@openclaw/msteams");
+    expect(entry?.install.npmSpec).toBe("@xclaw/msteams");
     expect(entry?.meta.aliases).toContain("teams");
   });
 
@@ -132,15 +132,15 @@ describe("channel plugin catalog", () => {
   });
 
   it("includes external catalog entries", () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-catalog-"));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-catalog-"));
     const catalogPath = path.join(dir, "catalog.json");
     fs.writeFileSync(
       catalogPath,
       JSON.stringify({
         entries: [
           {
-            name: "@openclaw/demo-channel",
-            openclaw: {
+            name: "@xclaw/demo-channel",
+            xclaw: {
               channel: {
                 id: "demo-channel",
                 label: "Demo Channel",
@@ -150,7 +150,7 @@ describe("channel plugin catalog", () => {
                 order: 999,
               },
               install: {
-                npmSpec: "@openclaw/demo-channel",
+                npmSpec: "@xclaw/demo-channel",
               },
             },
           },
@@ -165,14 +165,14 @@ describe("channel plugin catalog", () => {
   });
 
   it("preserves plugin ids when they differ from channel ids", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-channel-catalog-state-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-channel-catalog-state-"));
     const pluginDir = path.join(stateDir, "extensions", "demo-channel-plugin");
     fs.mkdirSync(pluginDir, { recursive: true });
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
       JSON.stringify({
         name: "@vendor/demo-channel-plugin",
-        openclaw: {
+        xclaw: {
           extensions: ["./index.js"],
           channel: {
             id: "demo-channel",
@@ -188,7 +188,7 @@ describe("channel plugin catalog", () => {
       }),
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "xclaw.plugin.json"),
       JSON.stringify({
         id: "@vendor/demo-runtime",
         configSchema: {},
@@ -199,8 +199,8 @@ describe("channel plugin catalog", () => {
     const entry = listChannelPluginCatalogEntries({
       env: {
         ...process.env,
-        OPENCLAW_STATE_DIR: stateDir,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+        XCLAW_STATE_DIR: stateDir,
+        XCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
       },
     }).find((item) => item.id === "demo-channel");
 
@@ -208,15 +208,15 @@ describe("channel plugin catalog", () => {
   });
 
   it("uses the provided env for external catalog path resolution", () => {
-    const home = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-catalog-home-"));
+    const home = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-catalog-home-"));
     const catalogPath = path.join(home, "catalog.json");
     fs.writeFileSync(
       catalogPath,
       JSON.stringify({
         entries: [
           {
-            name: "@openclaw/env-demo-channel",
-            openclaw: {
+            name: "@xclaw/env-demo-channel",
+            xclaw: {
               channel: {
                 id: "env-demo-channel",
                 label: "Env Demo Channel",
@@ -226,7 +226,7 @@ describe("channel plugin catalog", () => {
                 order: 1000,
               },
               install: {
-                npmSpec: "@openclaw/env-demo-channel",
+                npmSpec: "@xclaw/env-demo-channel",
               },
             },
           },
@@ -237,8 +237,8 @@ describe("channel plugin catalog", () => {
     const ids = listChannelPluginCatalogEntries({
       env: {
         ...process.env,
-        OPENCLAW_PLUGIN_CATALOG_PATHS: "~/catalog.json",
-        OPENCLAW_HOME: home,
+        XCLAW_PLUGIN_CATALOG_PATHS: "~/catalog.json",
+        XCLAW_HOME: home,
         HOME: home,
       },
     }).map((entry) => entry.id);
@@ -247,7 +247,7 @@ describe("channel plugin catalog", () => {
   });
 
   it("uses the provided env for default catalog paths", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-catalog-state-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-catalog-state-"));
     const catalogPath = path.join(stateDir, "plugins", "catalog.json");
     fs.mkdirSync(path.dirname(catalogPath), { recursive: true });
     fs.writeFileSync(
@@ -255,8 +255,8 @@ describe("channel plugin catalog", () => {
       JSON.stringify({
         entries: [
           {
-            name: "@openclaw/default-env-demo",
-            openclaw: {
+            name: "@xclaw/default-env-demo",
+            xclaw: {
               channel: {
                 id: "default-env-demo",
                 label: "Default Env Demo",
@@ -265,7 +265,7 @@ describe("channel plugin catalog", () => {
                 blurb: "Default env demo entry",
               },
               install: {
-                npmSpec: "@openclaw/default-env-demo",
+                npmSpec: "@xclaw/default-env-demo",
               },
             },
           },
@@ -276,7 +276,7 @@ describe("channel plugin catalog", () => {
     const ids = listChannelPluginCatalogEntries({
       env: {
         ...process.env,
-        OPENCLAW_STATE_DIR: stateDir,
+        XCLAW_STATE_DIR: stateDir,
       },
     }).map((entry) => entry.id);
 
@@ -284,19 +284,19 @@ describe("channel plugin catalog", () => {
   });
 
   it("includes bundled metadata-only channel entries even when the runtime entrypoint is omitted", () => {
-    const packageRoot = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-bundled-catalog-"));
+    const packageRoot = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-bundled-catalog-"));
     const bundledDir = path.join(packageRoot, "dist", "extensions", "whatsapp");
     fs.mkdirSync(bundledDir, { recursive: true });
     fs.writeFileSync(
       path.join(packageRoot, "package.json"),
-      JSON.stringify({ name: "openclaw" }),
+      JSON.stringify({ name: "xclaw" }),
       "utf8",
     );
     fs.writeFileSync(
       path.join(bundledDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/whatsapp",
-        openclaw: {
+        name: "@xclaw/whatsapp",
+        xclaw: {
           extensions: ["./index.js"],
           channel: {
             id: "whatsapp",
@@ -307,7 +307,7 @@ describe("channel plugin catalog", () => {
             blurb: "works with your own number; recommend a separate phone + eSIM.",
           },
           install: {
-            npmSpec: "@openclaw/whatsapp",
+            npmSpec: "@xclaw/whatsapp",
             defaultChoice: "npm",
           },
         },
@@ -315,7 +315,7 @@ describe("channel plugin catalog", () => {
       "utf8",
     );
     fs.writeFileSync(
-      path.join(bundledDir, "openclaw.plugin.json"),
+      path.join(bundledDir, "xclaw.plugin.json"),
       JSON.stringify({ id: "whatsapp", channels: ["whatsapp"], configSchema: {} }),
       "utf8",
     );
@@ -323,24 +323,24 @@ describe("channel plugin catalog", () => {
     const entry = listChannelPluginCatalogEntries({
       env: {
         ...process.env,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(packageRoot, "dist", "extensions"),
+        XCLAW_BUNDLED_PLUGINS_DIR: path.join(packageRoot, "dist", "extensions"),
       },
     }).find((item) => item.id === "whatsapp");
 
-    expect(entry?.install.npmSpec).toBe("@openclaw/whatsapp");
+    expect(entry?.install.npmSpec).toBe("@xclaw/whatsapp");
     expect(entry?.pluginId).toBe("whatsapp");
   });
 
   it("includes shipped official channel catalog entries when bundled metadata is omitted", () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-official-catalog-"));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-official-catalog-"));
     const catalogPath = path.join(dir, "channel-catalog.json");
     fs.writeFileSync(
       catalogPath,
       JSON.stringify({
         entries: [
           {
-            name: "@openclaw/whatsapp",
-            openclaw: {
+            name: "@xclaw/whatsapp",
+            xclaw: {
               channel: {
                 id: "whatsapp",
                 label: "WhatsApp",
@@ -350,7 +350,7 @@ describe("channel plugin catalog", () => {
                 blurb: "works with your own number; recommend a separate phone + eSIM.",
               },
               install: {
-                npmSpec: "@openclaw/whatsapp",
+                npmSpec: "@xclaw/whatsapp",
                 defaultChoice: "npm",
               },
             },
@@ -362,17 +362,17 @@ describe("channel plugin catalog", () => {
     const entry = listChannelPluginCatalogEntries({
       env: {
         ...process.env,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+        XCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
       },
       officialCatalogPaths: [catalogPath],
     }).find((item) => item.id === "whatsapp");
 
-    expect(entry?.install.npmSpec).toBe("@openclaw/whatsapp");
+    expect(entry?.install.npmSpec).toBe("@xclaw/whatsapp");
     expect(entry?.pluginId).toBeUndefined();
   });
 
   it("lets external catalogs override shipped fallback channel metadata", () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-fallback-catalog-"));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-fallback-catalog-"));
     const bundledDir = path.join(dir, "dist", "extensions", "whatsapp");
     const officialCatalogPath = path.join(dir, "channel-catalog.json");
     const externalCatalogPath = path.join(dir, "catalog.json");
@@ -380,8 +380,8 @@ describe("channel plugin catalog", () => {
     fs.writeFileSync(
       path.join(bundledDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/whatsapp",
-        openclaw: {
+        name: "@xclaw/whatsapp",
+        xclaw: {
           channel: {
             id: "whatsapp",
             label: "WhatsApp Bundled",
@@ -390,7 +390,7 @@ describe("channel plugin catalog", () => {
             blurb: "bundled fallback",
           },
           install: {
-            npmSpec: "@openclaw/whatsapp",
+            npmSpec: "@xclaw/whatsapp",
           },
         },
       }),
@@ -401,8 +401,8 @@ describe("channel plugin catalog", () => {
       JSON.stringify({
         entries: [
           {
-            name: "@openclaw/whatsapp",
-            openclaw: {
+            name: "@xclaw/whatsapp",
+            xclaw: {
               channel: {
                 id: "whatsapp",
                 label: "WhatsApp Official",
@@ -411,7 +411,7 @@ describe("channel plugin catalog", () => {
                 blurb: "official fallback",
               },
               install: {
-                npmSpec: "@openclaw/whatsapp",
+                npmSpec: "@xclaw/whatsapp",
               },
             },
           },
@@ -425,7 +425,7 @@ describe("channel plugin catalog", () => {
         entries: [
           {
             name: "@vendor/whatsapp-fork",
-            openclaw: {
+            xclaw: {
               channel: {
                 id: "whatsapp",
                 label: "WhatsApp Fork",
@@ -448,7 +448,7 @@ describe("channel plugin catalog", () => {
       officialCatalogPaths: [officialCatalogPath],
       env: {
         ...process.env,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(dir, "dist", "extensions"),
+        XCLAW_BUNDLED_PLUGINS_DIR: path.join(dir, "dist", "extensions"),
       },
     }).find((item) => item.id === "whatsapp");
 
@@ -458,7 +458,7 @@ describe("channel plugin catalog", () => {
   });
 
   it("keeps discovered plugins ahead of external catalog overrides", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-catalog-state-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-catalog-state-"));
     const pluginDir = path.join(stateDir, "extensions", "demo-channel-plugin");
     const catalogPath = path.join(stateDir, "catalog.json");
     fs.mkdirSync(pluginDir, { recursive: true });
@@ -466,7 +466,7 @@ describe("channel plugin catalog", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify({
         name: "@vendor/demo-channel-plugin",
-        openclaw: {
+        xclaw: {
           extensions: ["./index.js"],
           channel: {
             id: "demo-channel",
@@ -483,7 +483,7 @@ describe("channel plugin catalog", () => {
       "utf8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "xclaw.plugin.json"),
       JSON.stringify({
         id: "@vendor/demo-channel-runtime",
         configSchema: {},
@@ -497,7 +497,7 @@ describe("channel plugin catalog", () => {
         entries: [
           {
             name: "@vendor/demo-channel-catalog",
-            openclaw: {
+            xclaw: {
               channel: {
                 id: "demo-channel",
                 label: "Demo Channel Catalog",
@@ -519,9 +519,9 @@ describe("channel plugin catalog", () => {
       catalogPaths: [catalogPath],
       env: {
         ...process.env,
-        OPENCLAW_STATE_DIR: stateDir,
+        XCLAW_STATE_DIR: stateDir,
         CLAWDBOT_STATE_DIR: undefined,
-        OPENCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
+        XCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
       },
     }).find((item) => item.id === "demo-channel");
 
@@ -587,13 +587,13 @@ function makeSlackConfigWritesCfg(accountIdKey: string) {
 }
 
 type DirectoryListFn = (params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId?: string | null;
   query?: string | null;
   limit?: number | null;
 }) => Promise<ChannelDirectoryEntry[]>;
 
-async function listDirectoryEntriesWithDefaults(listFn: DirectoryListFn, cfg: OpenClawConfig) {
+async function listDirectoryEntriesWithDefaults(listFn: DirectoryListFn, cfg: XClawConfig) {
   return await listFn({
     cfg,
     accountId: "default",
@@ -604,7 +604,7 @@ async function listDirectoryEntriesWithDefaults(listFn: DirectoryListFn, cfg: Op
 
 async function expectDirectoryIds(
   listFn: DirectoryListFn,
-  cfg: OpenClawConfig,
+  cfg: XClawConfig,
   expected: string[],
   options?: { sorted?: boolean },
 ) {

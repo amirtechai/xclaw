@@ -4,7 +4,7 @@ export {
   PAIRING_APPROVED_MESSAGE,
   projectCredentialSnapshotFields,
   resolveConfiguredFromCredentialStatuses,
-} from "openclaw/plugin-sdk/channel-status";
+} from "xclaw/plugin-sdk/channel-status";
 export {
   buildChannelConfigSchema,
   getChatChannelMeta,
@@ -18,35 +18,35 @@ export {
   type DiscordAccountConfig,
   type DiscordActionConfig,
   type DiscordConfig,
-  type OpenClawConfig,
-} from "openclaw/plugin-sdk/discord-core";
-export { DiscordConfigSchema } from "openclaw/plugin-sdk/discord-core";
-export { readBooleanParam } from "openclaw/plugin-sdk/boolean-param";
+  type XClawConfig,
+} from "xclaw/plugin-sdk/discord-core";
+export { DiscordConfigSchema } from "xclaw/plugin-sdk/discord-core";
+export { readBooleanParam } from "xclaw/plugin-sdk/boolean-param";
 export {
   assertMediaNotDataUrl,
   parseAvailableTags,
   readReactionParams,
   withNormalizedTimestamp,
-} from "openclaw/plugin-sdk/discord-core";
+} from "xclaw/plugin-sdk/discord-core";
 export {
   createHybridChannelConfigAdapter,
   createScopedChannelConfigAdapter,
   createScopedAccountConfigAccessors,
   createScopedChannelConfigBase,
   createTopLevelChannelConfigAdapter,
-} from "openclaw/plugin-sdk/channel-config-helpers";
+} from "xclaw/plugin-sdk/channel-config-helpers";
 export {
   createAccountActionGate,
   createAccountListHelpers,
-} from "openclaw/plugin-sdk/account-helpers";
-export { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/account-id";
-export { resolveAccountEntry } from "openclaw/plugin-sdk/routing";
+} from "xclaw/plugin-sdk/account-helpers";
+export { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "xclaw/plugin-sdk/account-id";
+export { resolveAccountEntry } from "xclaw/plugin-sdk/routing";
 export type {
   ChannelMessageActionAdapter,
   ChannelMessageActionName,
-} from "openclaw/plugin-sdk/channel-contract";
+} from "xclaw/plugin-sdk/channel-contract";
 export {
   hasConfiguredSecretInput,
   normalizeResolvedSecretInputString,
   normalizeSecretInputString,
-} from "openclaw/plugin-sdk/secret-input";
+} from "xclaw/plugin-sdk/secret-input";

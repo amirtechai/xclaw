@@ -1,21 +1,21 @@
 {
-  "name": "@openclaw/memory-core",
+  "name": "@xclaw/memory-core",
   "version": "2026.3.22",
   "private": true,
-  "description": "OpenClaw core memory search plugin",
+  "description": "XClaw core memory search plugin",
   "type": "module",
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "xclaw": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.22"
+    "xclaw": ">=2026.3.22"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "xclaw": {
       "optional": true
     }
   },
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

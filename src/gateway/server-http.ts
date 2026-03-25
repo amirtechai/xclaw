@@ -490,7 +490,7 @@ export function createHooksRequestHandler(
       res.statusCode = 400;
       res.setHeader("Content-Type", "text/plain; charset=utf-8");
       res.end(
-        "Hook token must be provided via Authorization: Bearer <token> or X-OpenClaw-Token header (query parameters are not allowed).",
+        "Hook token must be provided via Authorization: Bearer <token> or X-XClaw-Token header (query parameters are not allowed).",
       );
       return true;
     }
@@ -780,6 +780,10 @@ export function createGatewayHttpServer(opts: {
         void handleRequest(req, res);
       });
 
+  // TODO: Add rate limiting - xclaw-security
+  // Per-endpoint API rate limiting is not yet implemented beyond auth brute-force protection.
+  // Consider adding a configurable request-rate limiter (e.g. token bucket or sliding window)
+  // applied per client IP before request processing, to protect against DoS and scraping.
   async function handleRequest(req: IncomingMessage, res: ServerResponse) {
     setDefaultSecurityHeaders(res, {
       strictTransportSecurity: strictTransportSecurityHeader,

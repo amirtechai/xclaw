@@ -13,7 +13,7 @@ const listWhatsAppAccountIdsMock = vi.hoisted(() => vi.fn(() => [] as string[]))
 const resolveDefaultWhatsAppAccountIdMock = vi.hoisted(() => vi.fn(() => DEFAULT_ACCOUNT_ID));
 const resolveWhatsAppAuthDirMock = vi.hoisted(() =>
   vi.fn(() => ({
-    authDir: "/tmp/openclaw-whatsapp-test",
+    authDir: "/tmp/xclaw-whatsapp-test",
   })),
 );
 
@@ -21,9 +21,9 @@ vi.mock("./login.js", () => ({
   loginWeb: loginWebMock,
 }));
 
-vi.mock("openclaw/plugin-sdk/setup", async () => {
-  const actual = await vi.importActual<typeof import("openclaw/plugin-sdk/setup")>(
-    "openclaw/plugin-sdk/setup",
+vi.mock("xclaw/plugin-sdk/setup", async () => {
+  const actual = await vi.importActual<typeof import("xclaw/plugin-sdk/setup")>(
+    "xclaw/plugin-sdk/setup",
   );
   return {
     ...actual,
@@ -102,7 +102,7 @@ describe("whatsapp setup wizard", () => {
     pathExistsMock.mockResolvedValue(false);
     listWhatsAppAccountIdsMock.mockReturnValue([]);
     resolveDefaultWhatsAppAccountIdMock.mockReturnValue(DEFAULT_ACCOUNT_ID);
-    resolveWhatsAppAuthDirMock.mockReturnValue({ authDir: "/tmp/openclaw-whatsapp-test" });
+    resolveWhatsAppAuthDirMock.mockReturnValue({ authDir: "/tmp/xclaw-whatsapp-test" });
   });
 
   it("applies owner allowlist when forceAllowFrom is enabled", async () => {
@@ -219,7 +219,7 @@ describe("whatsapp setup wizard", () => {
 
     expect(loginWebMock).not.toHaveBeenCalled();
     expect(harness.note).not.toHaveBeenCalledWith(
-      expect.stringContaining("openclaw channels login"),
+      expect.stringContaining("xclaw channels login"),
       "WhatsApp",
     );
   });
@@ -235,7 +235,7 @@ describe("whatsapp setup wizard", () => {
     });
 
     expect(harness.note).toHaveBeenCalledWith(
-      expect.stringContaining("openclaw channels login"),
+      expect.stringContaining("xclaw channels login"),
       "WhatsApp",
     );
   });

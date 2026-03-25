@@ -1,10 +1,10 @@
 import {
   ensureConfiguredBindingRouteReady,
   resolveConfiguredBindingRoute,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { getSessionBindingService } from "openclaw/plugin-sdk/conversation-runtime";
-import { deriveLastRoutePolicy } from "openclaw/plugin-sdk/routing";
-import { resolveAgentIdFromSessionKey } from "openclaw/plugin-sdk/routing";
+} from "xclaw/plugin-sdk/conversation-runtime";
+import { getSessionBindingService } from "xclaw/plugin-sdk/conversation-runtime";
+import { deriveLastRoutePolicy } from "xclaw/plugin-sdk/routing";
+import { resolveAgentIdFromSessionKey } from "xclaw/plugin-sdk/routing";
 import type { ClawdbotConfig, RuntimeEnv } from "../runtime-api.js";
 import {
   buildAgentMediaPayload,

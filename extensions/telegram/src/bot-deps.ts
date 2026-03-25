@@ -1,14 +1,14 @@
 import {
   buildModelsProviderData,
   listSkillCommandsForAgents,
-} from "openclaw/plugin-sdk/command-auth";
-import { loadConfig, resolveStorePath } from "openclaw/plugin-sdk/config-runtime";
-import { loadSessionStore } from "openclaw/plugin-sdk/config-runtime";
-import { readChannelAllowFromStore } from "openclaw/plugin-sdk/conversation-runtime";
-import { upsertChannelPairingRequest } from "openclaw/plugin-sdk/conversation-runtime";
-import { enqueueSystemEvent } from "openclaw/plugin-sdk/infra-runtime";
-import { dispatchReplyWithBufferedBlockDispatcher } from "openclaw/plugin-sdk/reply-runtime";
-import { loadWebMedia } from "openclaw/plugin-sdk/web-media";
+} from "xclaw/plugin-sdk/command-auth";
+import { loadConfig, resolveStorePath } from "xclaw/plugin-sdk/config-runtime";
+import { loadSessionStore } from "xclaw/plugin-sdk/config-runtime";
+import { readChannelAllowFromStore } from "xclaw/plugin-sdk/conversation-runtime";
+import { upsertChannelPairingRequest } from "xclaw/plugin-sdk/conversation-runtime";
+import { enqueueSystemEvent } from "xclaw/plugin-sdk/infra-runtime";
+import { dispatchReplyWithBufferedBlockDispatcher } from "xclaw/plugin-sdk/reply-runtime";
+import { loadWebMedia } from "xclaw/plugin-sdk/web-media";
 import { deliverReplies, emitInternalMessageSentHook } from "./bot/delivery.js";
 import { createTelegramDraftStream } from "./draft-stream.js";
 import { editMessageTelegram } from "./send.js";

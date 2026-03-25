@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createTestPluginApi } from "../../../test/helpers/extensions/plugin-api.js";
-import type { OpenClawPluginApi, OpenClawPluginToolContext } from "../api.js";
+import type { XClawPluginApi, XClawPluginToolContext } from "../api.js";
 import type { DiffScreenshotter } from "./browser.js";
 import { DEFAULT_DIFFS_TOOL_DEFAULTS } from "./config.js";
 import { DiffArtifactStore } from "./store.js";
@@ -15,7 +15,7 @@ describe("diffs tool", () => {
   let cleanupRootDir: () => Promise<void>;
 
   beforeEach(async () => {
-    ({ store, cleanup: cleanupRootDir } = await createDiffStoreHarness("openclaw-diffs-tool-"));
+    ({ store, cleanup: cleanupRootDir } = await createDiffStoreHarness("xclaw-diffs-tool-"));
   });
 
   afterEach(async () => {
@@ -420,7 +420,7 @@ describe("diffs tool", () => {
   });
 });
 
-function createApi(): OpenClawPluginApi {
+function createApi(): XClawPluginApi {
   return createTestPluginApi({
     id: "diffs",
     name: "Diffs",
@@ -432,15 +432,15 @@ function createApi(): OpenClawPluginApi {
         bind: "loopback",
       },
     },
-    runtime: {} as OpenClawPluginApi["runtime"],
-  }) as OpenClawPluginApi;
+    runtime: {} as XClawPluginApi["runtime"],
+  }) as XClawPluginApi;
 }
 
 function createToolWithScreenshotter(
   store: DiffArtifactStore,
   screenshotter: DiffScreenshotter,
   defaults = DEFAULT_DIFFS_TOOL_DEFAULTS,
-  context: OpenClawPluginToolContext | undefined = {
+  context: XClawPluginToolContext | undefined = {
     agentId: "main",
     sessionId: "session-123",
     messageChannel: "discord",

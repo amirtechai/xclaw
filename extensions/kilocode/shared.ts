@@ -7,6 +7,6 @@ export {
   KILOCODE_DEFAULT_MODEL_NAME,
   KILOCODE_DEFAULT_MODEL_REF,
   KILOCODE_MODEL_CATALOG,
-} from "openclaw/plugin-sdk/provider-models";
+} from "xclaw/plugin-sdk/provider-models";
 
-export type { KilocodeModelCatalogEntry } from "openclaw/plugin-sdk/provider-models";
+export type { KilocodeModelCatalogEntry } from "xclaw/plugin-sdk/provider-models";

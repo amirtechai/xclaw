@@ -6,11 +6,11 @@ export {
   listDevicePairing,
   revokeDeviceBootstrapToken,
   type DeviceBootstrapProfile,
-} from "openclaw/plugin-sdk/device-bootstrap";
-export { definePluginEntry, type OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-entry";
-export { resolveGatewayBindUrl, resolveTailnetHostWithRunner } from "openclaw/plugin-sdk/core";
+} from "xclaw/plugin-sdk/device-bootstrap";
+export { definePluginEntry, type XClawPluginApi } from "xclaw/plugin-sdk/plugin-entry";
+export { resolveGatewayBindUrl, resolveTailnetHostWithRunner } from "xclaw/plugin-sdk/core";
 export {
-  resolvePreferredOpenClawTmpDir,
+  resolvePreferredXClawTmpDir,
   runPluginCommandWithTimeout,
-} from "openclaw/plugin-sdk/sandbox";
+} from "xclaw/plugin-sdk/sandbox";
 export { renderQrPngBase64 } from "./qr-image.js";

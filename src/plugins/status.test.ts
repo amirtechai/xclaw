@@ -10,7 +10,7 @@ import {
 } from "./status.test-helpers.js";
 
 const loadConfigMock = vi.fn();
-const loadOpenClawPluginsMock = vi.fn();
+const loadXClawPluginsMock = vi.fn();
 let buildPluginStatusReport: typeof import("./status.js").buildPluginStatusReport;
 let buildPluginInspectReport: typeof import("./status.js").buildPluginInspectReport;
 let buildAllPluginInspectReports: typeof import("./status.js").buildAllPluginInspectReports;
@@ -24,7 +24,7 @@ vi.mock("../config/config.js", () => ({
 }));
 
 vi.mock("./loader.js", () => ({
-  loadOpenClawPlugins: (...args: unknown[]) => loadOpenClawPluginsMock(...args),
+  loadXClawPlugins: (...args: unknown[]) => loadXClawPluginsMock(...args),
 }));
 
 vi.mock("../agents/agent-scope.js", () => ({
@@ -37,7 +37,7 @@ vi.mock("../agents/workspace.js", () => ({
 }));
 
 function setPluginLoadResult(overrides: Partial<ReturnType<typeof createPluginLoadResult>>) {
-  loadOpenClawPluginsMock.mockReturnValue(
+  loadXClawPluginsMock.mockReturnValue(
     createPluginLoadResult({
       plugins: [],
       ...overrides,
@@ -49,7 +49,7 @@ describe("buildPluginStatusReport", () => {
   beforeEach(async () => {
     vi.resetModules();
     loadConfigMock.mockReset();
-    loadOpenClawPluginsMock.mockReset();
+    loadXClawPluginsMock.mockReset();
     loadConfigMock.mockReturnValue({});
     setPluginLoadResult({ plugins: [] });
     ({
@@ -64,7 +64,7 @@ describe("buildPluginStatusReport", () => {
   });
 
   it("forwards an explicit env to plugin loading", () => {
-    const env = { HOME: "/tmp/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { HOME: "/tmp/xclaw-home" } as NodeJS.ProcessEnv;
 
     buildPluginStatusReport({
       config: {},
@@ -72,7 +72,7 @@ describe("buildPluginStatusReport", () => {
       env,
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledWith(
+    expect(loadXClawPluginsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         config: {},
         workspaceDir: "/workspace",
@@ -98,7 +98,7 @@ describe("buildPluginStatusReport", () => {
     const report = buildPluginStatusReport({
       config: {},
       env: {
-        OPENCLAW_VERSION: "2026.3.23-1",
+        XCLAW_VERSION: "2026.3.23-1",
       } as NodeJS.ProcessEnv,
     });
 

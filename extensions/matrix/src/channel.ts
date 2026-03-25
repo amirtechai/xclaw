@@ -1,31 +1,31 @@
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
+import { describeAccountSnapshot } from "xclaw/plugin-sdk/account-helpers";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
   createScopedDmSecurityResolver,
-} from "openclaw/plugin-sdk/channel-config-helpers";
+} from "xclaw/plugin-sdk/channel-config-helpers";
 import {
   createPairingPrefixStripper,
   createTextPairingAdapter,
-} from "openclaw/plugin-sdk/channel-pairing";
+} from "xclaw/plugin-sdk/channel-pairing";
 import {
   createAllowlistProviderOpenWarningCollector,
   projectAccountConfigWarningCollector,
-} from "openclaw/plugin-sdk/channel-policy";
-import { createScopedAccountReplyToModeResolver } from "openclaw/plugin-sdk/conversation-runtime";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/core";
+} from "xclaw/plugin-sdk/channel-policy";
+import { createScopedAccountReplyToModeResolver } from "xclaw/plugin-sdk/conversation-runtime";
+import { createChatChannelPlugin } from "xclaw/plugin-sdk/core";
 import {
   createChannelDirectoryAdapter,
   createRuntimeDirectoryLiveAdapter,
   listResolvedDirectoryEntriesFromSources,
-} from "openclaw/plugin-sdk/directory-runtime";
-import { buildTrafficStatusSummary } from "openclaw/plugin-sdk/extension-shared";
-import { createLazyRuntimeNamedExport } from "openclaw/plugin-sdk/lazy-runtime";
-import { createRuntimeOutboundDelegates } from "openclaw/plugin-sdk/outbound-runtime";
+} from "xclaw/plugin-sdk/directory-runtime";
+import { buildTrafficStatusSummary } from "xclaw/plugin-sdk/extension-shared";
+import { createLazyRuntimeNamedExport } from "xclaw/plugin-sdk/lazy-runtime";
+import { createRuntimeOutboundDelegates } from "xclaw/plugin-sdk/outbound-runtime";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "xclaw/plugin-sdk/status-helpers";
 import { matrixMessageActions } from "./actions.js";
 import { MatrixConfigSchema } from "./config-schema.js";
 import {

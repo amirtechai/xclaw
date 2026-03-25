@@ -42,7 +42,7 @@ function mkdirSafe(dir: string) {
   chmodSafeDir(dir);
 }
 
-const fixtureRoot = mkdtempSafe(path.join(os.tmpdir(), "openclaw-sdk-alias-"));
+const fixtureRoot = mkdtempSafe(path.join(os.tmpdir(), "xclaw-sdk-alias-"));
 let tempDirIndex = 0;
 
 function makeTempDir() {
@@ -79,12 +79,12 @@ function createPluginSdkAliasFixture(params?: {
     params?.trustedRootIndicatorMode ??
     (params?.trustedRootIndicators === false ? "none" : "bin+marker");
   const packageJson: Record<string, unknown> = {
-    name: params?.packageName ?? "openclaw",
+    name: params?.packageName ?? "xclaw",
     type: "module",
   };
   if (trustedRootIndicatorMode === "bin+marker") {
     packageJson.bin = {
-      openclaw: "openclaw.mjs",
+      xclaw: "xclaw.mjs",
     };
   }
   if (params?.packageExports || trustedRootIndicatorMode === "cli-entry-only") {
@@ -100,7 +100,7 @@ function createPluginSdkAliasFixture(params?: {
   }
   fs.writeFileSync(path.join(root, "package.json"), JSON.stringify(packageJson, null, 2), "utf-8");
   if (trustedRootIndicatorMode === "bin+marker") {
-    fs.writeFileSync(path.join(root, "openclaw.mjs"), "export {};\n", "utf-8");
+    fs.writeFileSync(path.join(root, "xclaw.mjs"), "export {};\n", "utf-8");
   }
   fs.writeFileSync(srcFile, params?.srcBody ?? "export {};\n", "utf-8");
   fs.writeFileSync(distFile, params?.distBody ?? "export {};\n", "utf-8");
@@ -115,10 +115,10 @@ function createExtensionApiAliasFixture(params?: { srcBody?: string; distBody?: 
   mkdirSafe(path.dirname(distFile));
   fs.writeFileSync(
     path.join(root, "package.json"),
-    JSON.stringify({ name: "openclaw", type: "module" }, null, 2),
+    JSON.stringify({ name: "xclaw", type: "module" }, null, 2),
     "utf-8",
   );
-  fs.writeFileSync(path.join(root, "openclaw.mjs"), "export {};\n", "utf-8");
+  fs.writeFileSync(path.join(root, "xclaw.mjs"), "export {};\n", "utf-8");
   fs.writeFileSync(srcFile, params?.srcBody ?? "export {};\n", "utf-8");
   fs.writeFileSync(distFile, params?.distBody ?? "export {};\n", "utf-8");
   return { root, srcFile, distFile };
@@ -132,7 +132,7 @@ function createPluginRuntimeAliasFixture(params?: { srcBody?: string; distBody?:
   mkdirSafe(path.dirname(distFile));
   fs.writeFileSync(
     path.join(root, "package.json"),
-    JSON.stringify({ name: "openclaw", type: "module" }, null, 2),
+    JSON.stringify({ name: "xclaw", type: "module" }, null, 2),
     "utf-8",
   );
   fs.writeFileSync(
@@ -251,8 +251,8 @@ describe("plugin sdk alias helpers", () => {
             "./plugin-sdk/index": { default: "./dist/plugin-sdk/index.js" },
           },
         }),
-      modulePath: () => "/tmp/tsx-cache/openclaw-loader.js",
-      argv1: (root: string) => path.join(root, "openclaw.mjs"),
+      modulePath: () => "/tmp/tsx-cache/xclaw-loader.js",
+      argv1: (root: string) => path.join(root, "xclaw.mjs"),
       srcFile: "index.ts",
       distFile: "index.js",
       env: { NODE_ENV: undefined },
@@ -284,8 +284,8 @@ describe("plugin sdk alias helpers", () => {
     },
     {
       name: "resolves extension-api alias from package root when loader runs from transpiler cache path",
-      modulePath: () => "/tmp/tsx-cache/openclaw-loader.js",
-      argv1: (root: string) => path.join(root, "openclaw.mjs"),
+      modulePath: () => "/tmp/tsx-cache/xclaw-loader.js",
+      argv1: (root: string) => path.join(root, "xclaw.mjs"),
       env: { NODE_ENV: undefined },
       expected: "src" as const,
     },
@@ -367,7 +367,7 @@ describe("plugin sdk alias helpers", () => {
     });
     const subpaths = withCwd(fixture.root, () =>
       listPluginSdkExportedSubpaths({
-        modulePath: "/tmp/tsx-cache/openclaw-loader.js",
+        modulePath: "/tmp/tsx-cache/xclaw-loader.js",
       }),
     );
     expect(subpaths).toEqual(["channel-runtime", "core"]);
@@ -386,7 +386,7 @@ describe("plugin sdk alias helpers", () => {
       resolvePluginSdkAlias({
         srcFile: "channel-runtime.ts",
         distFile: "channel-runtime.js",
-        modulePath: "/tmp/tsx-cache/openclaw-loader.js",
+        modulePath: "/tmp/tsx-cache/xclaw-loader.js",
         env: { NODE_ENV: undefined },
       }),
     );
@@ -394,7 +394,7 @@ describe("plugin sdk alias helpers", () => {
     expect(fs.realpathSync(resolved ?? "")).toBe(fs.realpathSync(fixture.srcFile));
   });
 
-  it("does not derive plugin-sdk subpaths from cwd fallback when package root is not an OpenClaw root", () => {
+  it("does not derive plugin-sdk subpaths from cwd fallback when package root is not an XClaw root", () => {
     const fixture = createPluginSdkAliasFixture({
       packageName: "moltbot",
       trustedRootIndicators: false,
@@ -405,7 +405,7 @@ describe("plugin sdk alias helpers", () => {
     });
     const subpaths = withCwd(fixture.root, () =>
       listPluginSdkExportedSubpaths({
-        modulePath: "/tmp/tsx-cache/openclaw-loader.js",
+        modulePath: "/tmp/tsx-cache/xclaw-loader.js",
       }),
     );
     expect(subpaths).toEqual([]);
@@ -422,7 +422,7 @@ describe("plugin sdk alias helpers", () => {
     });
     const subpaths = withCwd(fixture.root, () =>
       listPluginSdkExportedSubpaths({
-        modulePath: "/tmp/tsx-cache/openclaw-loader.js",
+        modulePath: "/tmp/tsx-cache/xclaw-loader.js",
       }),
     );
     expect(subpaths).toEqual(["channel-runtime", "core"]);
@@ -447,10 +447,10 @@ describe("plugin sdk alias helpers", () => {
     const sourceAliases = withEnv({ NODE_ENV: undefined }, () =>
       buildPluginLoaderAliasMap(sourcePluginEntry),
     );
-    expect(fs.realpathSync(sourceAliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(sourceAliases["xclaw/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(sourceRootAlias),
     );
-    expect(fs.realpathSync(sourceAliases["openclaw/plugin-sdk/channel-runtime"] ?? "")).toBe(
+    expect(fs.realpathSync(sourceAliases["xclaw/plugin-sdk/channel-runtime"] ?? "")).toBe(
       fs.realpathSync(path.join(fixture.root, "src", "plugin-sdk", "channel-runtime.ts")),
     );
 
@@ -461,15 +461,15 @@ describe("plugin sdk alias helpers", () => {
     const distAliases = withEnv({ NODE_ENV: undefined }, () =>
       buildPluginLoaderAliasMap(distPluginEntry),
     );
-    expect(fs.realpathSync(distAliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(distAliases["xclaw/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(distRootAlias),
     );
-    expect(fs.realpathSync(distAliases["openclaw/plugin-sdk/channel-runtime"] ?? "")).toBe(
+    expect(fs.realpathSync(distAliases["xclaw/plugin-sdk/channel-runtime"] ?? "")).toBe(
       fs.realpathSync(path.join(fixture.root, "dist", "plugin-sdk", "channel-runtime.js")),
     );
   });
 
-  it("resolves plugin-sdk aliases for user-installed plugins via the running openclaw argv hint", () => {
+  it("resolves plugin-sdk aliases for user-installed plugins via the running xclaw argv hint", () => {
     const fixture = createPluginSdkAliasFixture({
       srcFile: "channel-runtime.ts",
       distFile: "channel-runtime.js",
@@ -479,26 +479,26 @@ describe("plugin sdk alias helpers", () => {
     });
     const sourceRootAlias = path.join(fixture.root, "src", "plugin-sdk", "root-alias.cjs");
     fs.writeFileSync(sourceRootAlias, "module.exports = {};\n", "utf-8");
-    const externalPluginRoot = path.join(makeTempDir(), ".openclaw", "extensions", "demo");
+    const externalPluginRoot = path.join(makeTempDir(), ".xclaw", "extensions", "demo");
     const externalPluginEntry = path.join(externalPluginRoot, "index.ts");
     mkdirSafe(externalPluginRoot);
     fs.writeFileSync(externalPluginEntry, 'export const plugin = "demo";\n', "utf-8");
 
     const aliases = withCwd(externalPluginRoot, () =>
       withEnv({ NODE_ENV: undefined }, () =>
-        buildPluginLoaderAliasMap(externalPluginEntry, path.join(fixture.root, "openclaw.mjs")),
+        buildPluginLoaderAliasMap(externalPluginEntry, path.join(fixture.root, "xclaw.mjs")),
       ),
     );
 
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["xclaw/plugin-sdk"] ?? "")).toBe(
       fs.realpathSync(sourceRootAlias),
     );
-    expect(fs.realpathSync(aliases["openclaw/plugin-sdk/channel-runtime"] ?? "")).toBe(
+    expect(fs.realpathSync(aliases["xclaw/plugin-sdk/channel-runtime"] ?? "")).toBe(
       fs.realpathSync(path.join(fixture.root, "src", "plugin-sdk", "channel-runtime.ts")),
     );
   });
 
-  it("does not resolve plugin-sdk alias files from cwd fallback when package root is not an OpenClaw root", () => {
+  it("does not resolve plugin-sdk alias files from cwd fallback when package root is not an XClaw root", () => {
     const fixture = createPluginSdkAliasFixture({
       srcFile: "channel-runtime.ts",
       distFile: "channel-runtime.js",
@@ -512,7 +512,7 @@ describe("plugin sdk alias helpers", () => {
       resolvePluginSdkAlias({
         srcFile: "channel-runtime.ts",
         distFile: "channel-runtime.js",
-        modulePath: "/tmp/tsx-cache/openclaw-loader.js",
+        modulePath: "/tmp/tsx-cache/xclaw-loader.js",
         env: { NODE_ENV: undefined },
       }),
     );
@@ -544,7 +544,7 @@ describe("plugin sdk alias helpers", () => {
     fs.writeFileSync(jitiBaseFile, "export {};\n", "utf-8");
     fs.writeFileSync(
       path.join(copiedSourceDir, "channel.runtime.ts"),
-      `import { resolveOutboundSendDep } from "openclaw/plugin-sdk/infra-runtime";
+      `import { resolveOutboundSendDep } from "xclaw/plugin-sdk/infra-runtime";
 
 export const syntheticRuntimeMarker = {
   resolveOutboundSendDep,
@@ -573,7 +573,7 @@ export const syntheticRuntimeMarker = {
 
     const withAlias = createJiti(jitiBaseUrl, {
       ...buildPluginLoaderJitiOptions({
-        "openclaw/plugin-sdk/infra-runtime": copiedChannelRuntimeShim,
+        "xclaw/plugin-sdk/infra-runtime": copiedChannelRuntimeShim,
       }),
       tryNative: false,
     });
@@ -592,8 +592,8 @@ export const syntheticRuntimeMarker = {
     },
     {
       name: "resolves plugin runtime module from package root when loader runs from transpiler cache path",
-      modulePath: () => "/tmp/tsx-cache/openclaw-loader.js",
-      argv1: (root: string) => path.join(root, "openclaw.mjs"),
+      modulePath: () => "/tmp/tsx-cache/xclaw-loader.js",
+      argv1: (root: string) => path.join(root, "xclaw.mjs"),
       env: { NODE_ENV: undefined },
       expected: "src" as const,
     },

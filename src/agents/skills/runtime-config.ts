@@ -1,5 +1,5 @@
-import { getRuntimeConfigSnapshot, type OpenClawConfig } from "../../config/config.js";
+import { getRuntimeConfigSnapshot, type XClawConfig } from "../../config/config.js";
 
-export function resolveSkillRuntimeConfig(config?: OpenClawConfig): OpenClawConfig | undefined {
+export function resolveSkillRuntimeConfig(config?: XClawConfig): XClawConfig | undefined {
   return getRuntimeConfigSnapshot() ?? config;
 }

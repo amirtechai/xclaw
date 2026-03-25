@@ -1,40 +1,40 @@
 import type { Message, ReactionTypeEmoji } from "@grammyjs/types";
-import { resolveAgentDir, resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-runtime";
-import { resolveDefaultModelForAgent } from "openclaw/plugin-sdk/agent-runtime";
-import { resolveChannelConfigWrites } from "openclaw/plugin-sdk/channel-config-helpers";
-import { shouldDebounceTextInbound } from "openclaw/plugin-sdk/channel-inbound";
+import { resolveAgentDir, resolveDefaultAgentId } from "xclaw/plugin-sdk/agent-runtime";
+import { resolveDefaultModelForAgent } from "xclaw/plugin-sdk/agent-runtime";
+import { resolveChannelConfigWrites } from "xclaw/plugin-sdk/channel-config-helpers";
+import { shouldDebounceTextInbound } from "xclaw/plugin-sdk/channel-inbound";
 import {
   createInboundDebouncer,
   resolveInboundDebounceMs,
-} from "openclaw/plugin-sdk/channel-inbound";
+} from "xclaw/plugin-sdk/channel-inbound";
 import {
   buildCommandsMessagePaginated,
   buildCommandsPaginationKeyboard,
   formatModelsAvailableHeader,
   resolveStoredModelOverride,
-} from "openclaw/plugin-sdk/command-auth";
-import { writeConfigFile } from "openclaw/plugin-sdk/config-runtime";
+} from "xclaw/plugin-sdk/command-auth";
+import { writeConfigFile } from "xclaw/plugin-sdk/config-runtime";
 import {
   loadSessionStore,
   resolveSessionStoreEntry,
   updateSessionStore,
-} from "openclaw/plugin-sdk/config-runtime";
-import type { DmPolicy } from "openclaw/plugin-sdk/config-runtime";
+} from "xclaw/plugin-sdk/config-runtime";
+import type { DmPolicy } from "xclaw/plugin-sdk/config-runtime";
 import type {
   TelegramDirectConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "openclaw/plugin-sdk/config-runtime";
-import { applyModelOverrideToSessionEntry } from "openclaw/plugin-sdk/config-runtime";
+} from "xclaw/plugin-sdk/config-runtime";
+import { applyModelOverrideToSessionEntry } from "xclaw/plugin-sdk/config-runtime";
 import {
   buildPluginBindingResolvedText,
   parsePluginBindingApprovalCustomId,
   resolvePluginConversationBindingApproval,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { dispatchPluginInteractiveHandler } from "openclaw/plugin-sdk/plugin-runtime";
-import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
-import { resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
-import { danger, logVerbose, warn } from "openclaw/plugin-sdk/runtime-env";
+} from "xclaw/plugin-sdk/conversation-runtime";
+import { dispatchPluginInteractiveHandler } from "xclaw/plugin-sdk/plugin-runtime";
+import { resolveAgentRoute } from "xclaw/plugin-sdk/routing";
+import { resolveThreadSessionKeys } from "xclaw/plugin-sdk/routing";
+import { danger, logVerbose, warn } from "xclaw/plugin-sdk/runtime-env";
 import { withTelegramApiErrorLogging } from "./api-logging.js";
 import {
   isSenderAllowed,

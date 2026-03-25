@@ -1,8 +1,8 @@
 import { buildElevenLabsSpeechProvider } from "../../extensions/elevenlabs/speech-provider.js";
 import { buildMicrosoftSpeechProvider } from "../../extensions/microsoft/speech-provider.js";
 import { buildOpenAISpeechProvider } from "../../extensions/openai/speech-provider.js";
-import type { OpenClawConfig } from "../config/config.js";
-import { loadOpenClawPlugins } from "../plugins/loader.js";
+import type { XClawConfig } from "../config/config.js";
+import { loadXClawPlugins } from "../plugins/loader.js";
 import { getActivePluginRegistry } from "../plugins/runtime.js";
 import type { SpeechProviderPlugin } from "../plugins/types.js";
 import type { SpeechProviderId } from "./provider-types.js";
@@ -28,16 +28,16 @@ export function normalizeSpeechProviderId(
   return normalized === "edge" ? "microsoft" : normalized;
 }
 
-function resolveSpeechProviderPluginEntries(cfg?: OpenClawConfig): SpeechProviderPlugin[] {
+function resolveSpeechProviderPluginEntries(cfg?: XClawConfig): SpeechProviderPlugin[] {
   const active = getActivePluginRegistry();
   const registry =
     (active?.speechProviders?.length ?? 0) > 0 || !cfg
       ? active
-      : loadOpenClawPlugins({ config: cfg });
+      : loadXClawPlugins({ config: cfg });
   return registry?.speechProviders?.map((entry) => entry.provider) ?? [];
 }
 
-function buildProviderMaps(cfg?: OpenClawConfig): {
+function buildProviderMaps(cfg?: XClawConfig): {
   canonical: Map<string, SpeechProviderPlugin>;
   aliases: Map<string, SpeechProviderPlugin>;
 } {
@@ -68,13 +68,13 @@ function buildProviderMaps(cfg?: OpenClawConfig): {
   return { canonical, aliases };
 }
 
-export function listSpeechProviders(cfg?: OpenClawConfig): SpeechProviderPlugin[] {
+export function listSpeechProviders(cfg?: XClawConfig): SpeechProviderPlugin[] {
   return [...buildProviderMaps(cfg).canonical.values()];
 }
 
 export function getSpeechProvider(
   providerId: string | undefined,
-  cfg?: OpenClawConfig,
+  cfg?: XClawConfig,
 ): SpeechProviderPlugin | undefined {
   const normalized = normalizeSpeechProviderId(providerId);
   if (!normalized) {

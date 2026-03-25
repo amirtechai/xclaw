@@ -10,12 +10,12 @@ import {
   type BindingTargetKind,
   type SessionBindingAdapter,
   type SessionBindingRecord,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { writeJsonAtomic } from "openclaw/plugin-sdk/infra-runtime";
-import { normalizeAccountId } from "openclaw/plugin-sdk/routing";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { resolveStateDir } from "openclaw/plugin-sdk/state-paths";
-import { resolveGlobalSingleton } from "openclaw/plugin-sdk/text-runtime";
+} from "xclaw/plugin-sdk/conversation-runtime";
+import { writeJsonAtomic } from "xclaw/plugin-sdk/infra-runtime";
+import { normalizeAccountId } from "xclaw/plugin-sdk/routing";
+import { logVerbose } from "xclaw/plugin-sdk/runtime-env";
+import { resolveStateDir } from "xclaw/plugin-sdk/state-paths";
+import { resolveGlobalSingleton } from "xclaw/plugin-sdk/text-runtime";
 
 const DEFAULT_THREAD_BINDING_IDLE_TIMEOUT_MS = 24 * 60 * 60 * 1000;
 const DEFAULT_THREAD_BINDING_MAX_AGE_MS = 0;
@@ -76,7 +76,7 @@ type TelegramThreadBindingsState = {
  * Keep Telegram thread binding state shared across bundled chunks so routing,
  * binding lookups, and binding mutations all observe the same live registry.
  */
-const TELEGRAM_THREAD_BINDINGS_STATE_KEY = Symbol.for("openclaw.telegramThreadBindingsState");
+const TELEGRAM_THREAD_BINDINGS_STATE_KEY = Symbol.for("xclaw.telegramThreadBindingsState");
 const threadBindingsState = resolveGlobalSingleton<TelegramThreadBindingsState>(
   TELEGRAM_THREAD_BINDINGS_STATE_KEY,
   () => ({

@@ -24,7 +24,7 @@ function parseArgs(argv) {
 }
 
 const opts = parseArgs(process.argv.slice(2));
-const report = loadVitestReportFromArgs(opts, "openclaw-vitest-timings");
+const report = loadVitestReportFromArgs(opts, "xclaw-vitest-timings");
 const files = Object.fromEntries(
   collectVitestFileDurations(report, normalizeTrackedRepoPath)
     .toSorted((a, b) => b.durationMs - a.durationMs)

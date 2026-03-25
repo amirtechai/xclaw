@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import type { MsgContext } from "./templating.js";
 
 const mocks = vi.hoisted(() => ({
@@ -106,7 +106,7 @@ function createTelegramMessage(messageSid: string): MsgContext {
   };
 }
 
-function createReplyConfig(streamMode?: "block"): OpenClawConfig {
+function createReplyConfig(streamMode?: "block"): XClawConfig {
   return {
     agents: {
       defaults: {
@@ -172,7 +172,7 @@ function createContinueDirectivesResult() {
 describe("block streaming", () => {
   beforeEach(async () => {
     await loadFreshGetReplyModuleForTest();
-    vi.stubEnv("OPENCLAW_TEST_FAST", "1");
+    vi.stubEnv("XCLAW_TEST_FAST", "1");
     mocks.resolveReplyDirectives.mockReset();
     mocks.handleInlineActions.mockReset();
     mocks.initSessionState.mockReset();

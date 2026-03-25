@@ -1,17 +1,17 @@
 import { expect } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { XClawConfig } from "../../config/config.js";
 import { createMemoryGetTool, createMemorySearchTool } from "./memory-tool.js";
 
-export function asOpenClawConfig(config: Partial<OpenClawConfig>): OpenClawConfig {
-  return config as OpenClawConfig;
+export function asXClawConfig(config: Partial<XClawConfig>): XClawConfig {
+  return config as XClawConfig;
 }
 
-export function createDefaultMemoryToolConfig(): OpenClawConfig {
-  return asOpenClawConfig({ agents: { list: [{ id: "main", default: true }] } });
+export function createDefaultMemoryToolConfig(): XClawConfig {
+  return asXClawConfig({ agents: { list: [{ id: "main", default: true }] } });
 }
 
 export function createMemorySearchToolOrThrow(params?: {
-  config?: OpenClawConfig;
+  config?: XClawConfig;
   agentSessionKey?: string;
 }) {
   const tool = createMemorySearchTool({
@@ -25,7 +25,7 @@ export function createMemorySearchToolOrThrow(params?: {
 }
 
 export function createMemoryGetToolOrThrow(
-  config: OpenClawConfig = createDefaultMemoryToolConfig(),
+  config: XClawConfig = createDefaultMemoryToolConfig(),
 ) {
   const tool = createMemoryGetTool({ config });
   if (!tool) {
@@ -36,7 +36,7 @@ export function createMemoryGetToolOrThrow(
 
 export function createAutoCitationsMemorySearchTool(agentSessionKey: string) {
   return createMemorySearchToolOrThrow({
-    config: asOpenClawConfig({
+    config: asXClawConfig({
       memory: { citations: "auto" },
       agents: { list: [{ id: "main", default: true }] },
     }),

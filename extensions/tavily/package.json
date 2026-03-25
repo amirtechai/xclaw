@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/tavily-plugin",
+  "name": "@xclaw/tavily-plugin",
   "version": "2026.3.22",
   "private": true,
-  "description": "OpenClaw Tavily plugin",
+  "description": "XClaw Tavily plugin",
   "type": "module",
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

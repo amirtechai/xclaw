@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/nvidia-provider",
+  "name": "@xclaw/nvidia-provider",
   "version": "2026.3.22",
   "private": true,
-  "description": "OpenClaw NVIDIA provider plugin",
+  "description": "XClaw NVIDIA provider plugin",
   "type": "module",
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

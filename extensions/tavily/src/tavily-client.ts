@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { XClawConfig } from "xclaw/plugin-sdk/config-runtime";
 import {
   DEFAULT_CACHE_TTL_MINUTES,
   normalizeCacheKey,
@@ -6,8 +6,8 @@ import {
   readCache,
   resolveCacheTtlMs,
   writeCache,
-} from "openclaw/plugin-sdk/provider-web-search";
-import { wrapExternalContent, wrapWebContent } from "openclaw/plugin-sdk/security-runtime";
+} from "xclaw/plugin-sdk/provider-web-search";
+import { wrapExternalContent, wrapWebContent } from "xclaw/plugin-sdk/security-runtime";
 import {
   DEFAULT_TAVILY_BASE_URL,
   resolveTavilyApiKey,
@@ -27,7 +27,7 @@ const EXTRACT_CACHE = new Map<
 const DEFAULT_SEARCH_COUNT = 5;
 
 export type TavilySearchParams = {
-  cfg?: OpenClawConfig;
+  cfg?: XClawConfig;
   query: string;
   searchDepth?: string;
   topic?: string;
@@ -40,7 +40,7 @@ export type TavilySearchParams = {
 };
 
 export type TavilyExtractParams = {
-  cfg?: OpenClawConfig;
+  cfg?: XClawConfig;
   urls: string[];
   query?: string;
   extractDepth?: string;

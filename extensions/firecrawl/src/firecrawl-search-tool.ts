@@ -4,8 +4,8 @@ import {
   readNumberParam,
   readStringArrayParam,
   readStringParam,
-} from "openclaw/plugin-sdk/agent-runtime";
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-runtime";
+} from "xclaw/plugin-sdk/agent-runtime";
+import type { XClawPluginApi } from "xclaw/plugin-sdk/plugin-runtime";
 import { runFirecrawlSearch } from "./firecrawl-client.js";
 
 const FirecrawlSearchToolSchema = Type.Object(
@@ -43,7 +43,7 @@ const FirecrawlSearchToolSchema = Type.Object(
   { additionalProperties: false },
 );
 
-export function createFirecrawlSearchTool(api: OpenClawPluginApi) {
+export function createFirecrawlSearchTool(api: XClawPluginApi) {
   return {
     name: "firecrawl_search",
     label: "Firecrawl Search",

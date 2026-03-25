@@ -6,7 +6,7 @@ import {
   clearPluginManifestRegistryCache,
   loadPluginManifestRegistry,
 } from "./manifest-registry.js";
-import type { OpenClawPackageManifest } from "./manifest.js";
+import type { XClawPackageManifest } from "./manifest.js";
 import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fixtures.js";
 
 vi.unmock("../version.js");
@@ -26,11 +26,11 @@ function mkdirSafe(dir: string) {
 }
 
 function makeTempDir() {
-  return makeTrackedTempDir("openclaw-manifest-registry", tempDirs);
+  return makeTrackedTempDir("xclaw-manifest-registry", tempDirs);
 }
 
 function writeManifest(dir: string, manifest: Record<string, unknown>) {
-  fs.writeFileSync(path.join(dir, "openclaw.plugin.json"), JSON.stringify(manifest), "utf-8");
+  fs.writeFileSync(path.join(dir, "xclaw.plugin.json"), JSON.stringify(manifest), "utf-8");
 }
 
 function createPluginCandidate(params: {
@@ -38,9 +38,9 @@ function createPluginCandidate(params: {
   rootDir: string;
   sourceName?: string;
   origin: "bundled" | "global" | "workspace" | "config";
-  format?: "openclaw" | "bundle";
+  format?: "xclaw" | "bundle";
   bundleFormat?: "codex" | "claude" | "cursor";
-  packageManifest?: OpenClawPackageManifest;
+  packageManifest?: XClawPackageManifest;
   packageDir?: string;
 }): PluginCandidate {
   return {
@@ -64,9 +64,9 @@ function loadRegistry(candidates: PluginCandidate[]) {
 
 function hermeticEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
   return {
-    OPENCLAW_BUNDLED_PLUGINS_DIR: undefined,
-    OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
-    OPENCLAW_VERSION: undefined,
+    XCLAW_BUNDLED_PLUGINS_DIR: undefined,
+    XCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+    XCLAW_VERSION: undefined,
     VITEST: "true",
     ...overrides,
   };
@@ -85,8 +85,8 @@ function prepareLinkedManifestFixture(params: { id: string; mode: "symlink" | "h
 } {
   const rootDir = makeTempDir();
   const outsideDir = makeTempDir();
-  const outsideManifest = path.join(outsideDir, "openclaw.plugin.json");
-  const linkedManifest = path.join(rootDir, "openclaw.plugin.json");
+  const outsideManifest = path.join(outsideDir, "xclaw.plugin.json");
+  const linkedManifest = path.join(rootDir, "xclaw.plugin.json");
   fs.writeFileSync(path.join(rootDir, "index.ts"), "export default function () {}", "utf-8");
   fs.writeFileSync(
     outsideManifest,
@@ -263,7 +263,7 @@ describe("loadPluginManifestRegistry", () => {
 
     const registry = loadPluginManifestRegistry({
       cache: false,
-      env: { OPENCLAW_VERSION: "2026.3.21" },
+      env: { XCLAW_VERSION: "2026.3.21" },
       candidates: [
         createPluginCandidate({
           idHint: "synology-chat",
@@ -272,7 +272,7 @@ describe("loadPluginManifestRegistry", () => {
           origin: "global",
           packageManifest: {
             install: {
-              npmSpec: "@openclaw/synology-chat",
+              npmSpec: "@xclaw/synology-chat",
               minHostVersion: ">=2026.3.22",
             },
           },
@@ -283,7 +283,7 @@ describe("loadPluginManifestRegistry", () => {
     expect(registry.plugins).toEqual([]);
     expect(
       registry.diagnostics.some((diag) =>
-        diag.message.includes("plugin requires OpenClaw >=2026.3.22, but this host is 2026.3.21"),
+        diag.message.includes("plugin requires XClaw >=2026.3.22, but this host is 2026.3.21"),
       ),
     ).toBe(true);
   });
@@ -302,7 +302,7 @@ describe("loadPluginManifestRegistry", () => {
           origin: "global",
           packageManifest: {
             install: {
-              npmSpec: "@openclaw/synology-chat",
+              npmSpec: "@xclaw/synology-chat",
               minHostVersion: "2026.3.22",
             },
           },
@@ -313,7 +313,7 @@ describe("loadPluginManifestRegistry", () => {
     expect(registry.plugins).toEqual([]);
     expect(
       registry.diagnostics.some((diag) =>
-        diag.message.includes("plugin manifest invalid | openclaw.install.minHostVersion must use"),
+        diag.message.includes("plugin manifest invalid | xclaw.install.minHostVersion must use"),
       ),
     ).toBe(true);
   });
@@ -324,7 +324,7 @@ describe("loadPluginManifestRegistry", () => {
 
     const registry = loadPluginManifestRegistry({
       cache: false,
-      env: { OPENCLAW_VERSION: "unknown" },
+      env: { XCLAW_VERSION: "unknown" },
       candidates: [
         createPluginCandidate({
           idHint: "synology-chat",
@@ -333,7 +333,7 @@ describe("loadPluginManifestRegistry", () => {
           origin: "global",
           packageManifest: {
             install: {
-              npmSpec: "@openclaw/synology-chat",
+              npmSpec: "@xclaw/synology-chat",
               minHostVersion: ">=2026.3.22",
             },
           },
@@ -776,13 +776,13 @@ describe("loadPluginManifestRegistry", () => {
     const first = loadPluginManifestRegistry({
       cache: true,
       env: hermeticEnv({
-        OPENCLAW_BUNDLED_PLUGINS_DIR: bundledA,
+        XCLAW_BUNDLED_PLUGINS_DIR: bundledA,
       }),
     });
     const second = loadPluginManifestRegistry({
       cache: true,
       env: hermeticEnv({
-        OPENCLAW_BUNDLED_PLUGINS_DIR: bundledB,
+        XCLAW_BUNDLED_PLUGINS_DIR: bundledB,
       }),
     });
 
@@ -827,8 +827,8 @@ describe("loadPluginManifestRegistry", () => {
       config,
       env: hermeticEnv({
         HOME: homeA,
-        OPENCLAW_HOME: undefined,
-        OPENCLAW_STATE_DIR: path.join(homeA, ".state"),
+        XCLAW_HOME: undefined,
+        XCLAW_STATE_DIR: path.join(homeA, ".state"),
       }),
     });
     const second = loadPluginManifestRegistry({
@@ -836,8 +836,8 @@ describe("loadPluginManifestRegistry", () => {
       config,
       env: hermeticEnv({
         HOME: homeB,
-        OPENCLAW_HOME: undefined,
-        OPENCLAW_STATE_DIR: path.join(homeB, ".state"),
+        XCLAW_HOME: undefined,
+        XCLAW_STATE_DIR: path.join(homeB, ".state"),
       }),
     });
 
@@ -861,7 +861,7 @@ describe("loadPluginManifestRegistry", () => {
         origin: "global",
         packageManifest: {
           install: {
-            npmSpec: "@openclaw/synology-chat",
+            npmSpec: "@xclaw/synology-chat",
             minHostVersion: ">=2026.3.22",
           },
         },
@@ -872,14 +872,14 @@ describe("loadPluginManifestRegistry", () => {
       cache: true,
       candidates,
       env: hermeticEnv({
-        OPENCLAW_VERSION: "2026.3.21",
+        XCLAW_VERSION: "2026.3.21",
       }),
     });
     const newerHost = loadPluginManifestRegistry({
       cache: true,
       candidates,
       env: hermeticEnv({
-        OPENCLAW_VERSION: "2026.3.22",
+        XCLAW_VERSION: "2026.3.22",
       }),
     });
 

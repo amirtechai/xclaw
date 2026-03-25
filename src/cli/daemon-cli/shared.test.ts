@@ -20,52 +20,52 @@ describe("resolveRuntimeStatusColor", () => {
 });
 
 describe("renderGatewayServiceStartHints", () => {
-  it("prepends a single container restart hint when OPENCLAW_CONTAINER is set", () => {
+  it("prepends a single container restart hint when XCLAW_CONTAINER is set", () => {
     expect(
       renderGatewayServiceStartHints({
-        OPENCLAW_CONTAINER: "openclaw-demo-container",
+        XCLAW_CONTAINER: "xclaw-demo-container",
       } as NodeJS.ProcessEnv),
     ).toEqual(
       expect.arrayContaining([
-        "Restart the container or the service that manages it for openclaw-demo-container.",
+        "Restart the container or the service that manages it for xclaw-demo-container.",
       ]),
     );
   });
 
-  it("prepends a single container restart hint when OPENCLAW_CONTAINER_HINT is set", () => {
+  it("prepends a single container restart hint when XCLAW_CONTAINER_HINT is set", () => {
     expect(
       renderGatewayServiceStartHints({
-        OPENCLAW_CONTAINER_HINT: "openclaw-demo-container",
+        XCLAW_CONTAINER_HINT: "xclaw-demo-container",
       } as NodeJS.ProcessEnv),
     ).toEqual(
       expect.arrayContaining([
-        "Restart the container or the service that manages it for openclaw-demo-container.",
+        "Restart the container or the service that manages it for xclaw-demo-container.",
       ]),
     );
   });
 });
 
 describe("filterContainerGenericHints", () => {
-  it("drops the generic container foreground hint when OPENCLAW_CONTAINER is set", () => {
+  it("drops the generic container foreground hint when XCLAW_CONTAINER is set", () => {
     expect(
       filterContainerGenericHints(
         [
           "systemd user services are unavailable; install/enable systemd or run the gateway under your supervisor.",
-          "If you're in a container, run the gateway in the foreground instead of `openclaw gateway`.",
+          "If you're in a container, run the gateway in the foreground instead of `xclaw gateway`.",
         ],
-        { OPENCLAW_CONTAINER: "openclaw-demo-container" } as NodeJS.ProcessEnv,
+        { XCLAW_CONTAINER: "xclaw-demo-container" } as NodeJS.ProcessEnv,
       ),
     ).toEqual([]);
   });
 
-  it("drops the generic container foreground hint when OPENCLAW_CONTAINER_HINT is set", () => {
+  it("drops the generic container foreground hint when XCLAW_CONTAINER_HINT is set", () => {
     expect(
       filterContainerGenericHints(
         [
           "systemd user services are unavailable; install/enable systemd or run the gateway under your supervisor.",
-          "If you're in a container, run the gateway in the foreground instead of `openclaw gateway`.",
+          "If you're in a container, run the gateway in the foreground instead of `xclaw gateway`.",
         ],
-        { OPENCLAW_CONTAINER_HINT: "openclaw-demo-container" } as NodeJS.ProcessEnv,
+        { XCLAW_CONTAINER_HINT: "xclaw-demo-container" } as NodeJS.ProcessEnv,
       ),
     ).toEqual([]);
   });

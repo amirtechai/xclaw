@@ -1,6 +1,6 @@
-# @openclaw/voice-call
+# @xclaw/voice-call
 
-Official Voice Call plugin for **OpenClaw**.
+Official Voice Call plugin for **XClaw**.
 
 Providers:
 
@@ -9,15 +9,15 @@ Providers:
 - **Plivo** (Voice API + XML transfer + GetInput speech)
 - **Mock** (dev/no network)
 
-Docs: `https://docs.openclaw.ai/plugins/voice-call`
-Plugin system: `https://docs.openclaw.ai/plugin`
+Docs: `https://docs.xclaw.ai/plugins/voice-call`
+Plugin system: `https://docs.xclaw.ai/plugin`
 
 ## Install (local dev)
 
-### Option A: install via OpenClaw (recommended)
+### Option A: install via XClaw (recommended)
 
 ```bash
-openclaw plugins install @openclaw/voice-call
+xclaw plugins install @xclaw/voice-call
 ```
 
 Restart the Gateway afterwards.
@@ -25,9 +25,9 @@ Restart the Gateway afterwards.
 ### Option B: copy into your global extensions folder (dev)
 
 ```bash
-mkdir -p ~/.openclaw/extensions
-cp -R extensions/voice-call ~/.openclaw/extensions/voice-call
-cd ~/.openclaw/extensions/voice-call && pnpm install
+mkdir -p ~/.xclaw/extensions
+cp -R extensions/voice-call ~/.xclaw/extensions/voice-call
+cd ~/.xclaw/extensions/voice-call && pnpm install
 ```
 
 ## Config
@@ -89,29 +89,29 @@ Notes:
 - Twilio/Telnyx/Plivo require a **publicly reachable** webhook URL.
 - `mock` is a local dev provider (no network calls).
 - Telnyx requires `telnyx.publicKey` (or `TELNYX_PUBLIC_KEY`) unless `skipSignatureVerification` is true.
-- advanced webhook, streaming, and tunnel notes: `https://docs.openclaw.ai/plugins/voice-call`
+- advanced webhook, streaming, and tunnel notes: `https://docs.xclaw.ai/plugins/voice-call`
 
 ## Stale call reaper
 
 See the plugin docs for recommended ranges and production examples:
-`https://docs.openclaw.ai/plugins/voice-call#stale-call-reaper`
+`https://docs.xclaw.ai/plugins/voice-call#stale-call-reaper`
 
 ## TTS for calls
 
 Voice Call uses the core `messages.tts` configuration for
 streaming speech on calls. Override examples and provider caveats live here:
-`https://docs.openclaw.ai/plugins/voice-call#tts-for-calls`
+`https://docs.xclaw.ai/plugins/voice-call#tts-for-calls`
 
 ## CLI
 
 ```bash
-openclaw voicecall call --to "+15555550123" --message "Hello from OpenClaw"
-openclaw voicecall continue --call-id <id> --message "Any questions?"
-openclaw voicecall speak --call-id <id> --message "One moment"
-openclaw voicecall end --call-id <id>
-openclaw voicecall status --call-id <id>
-openclaw voicecall tail
-openclaw voicecall expose --mode funnel
+xclaw voicecall call --to "+15555550123" --message "Hello from XClaw"
+xclaw voicecall continue --call-id <id> --message "Any questions?"
+xclaw voicecall speak --call-id <id> --message "One moment"
+xclaw voicecall end --call-id <id>
+xclaw voicecall status --call-id <id>
+xclaw voicecall tail
+xclaw voicecall expose --mode funnel
 ```
 
 ## Tool

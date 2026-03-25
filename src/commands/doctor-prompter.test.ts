@@ -11,7 +11,7 @@ vi.mock("@clack/prompts", () => ({
 
 describe("createDoctorPrompter", () => {
   const originalStdinIsTTY = process.stdin.isTTY;
-  const originalUpdateInProgress = process.env.OPENCLAW_UPDATE_IN_PROGRESS;
+  const originalUpdateInProgress = process.env.XCLAW_UPDATE_IN_PROGRESS;
 
   afterEach(() => {
     vi.resetAllMocks();
@@ -20,9 +20,9 @@ describe("createDoctorPrompter", () => {
       configurable: true,
     });
     if (originalUpdateInProgress === undefined) {
-      delete process.env.OPENCLAW_UPDATE_IN_PROGRESS;
+      delete process.env.XCLAW_UPDATE_IN_PROGRESS;
     } else {
-      process.env.OPENCLAW_UPDATE_IN_PROGRESS = originalUpdateInProgress;
+      process.env.XCLAW_UPDATE_IN_PROGRESS = originalUpdateInProgress;
     }
   });
 
@@ -97,7 +97,7 @@ describe("createDoctorPrompter", () => {
       value: false,
       configurable: true,
     });
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
+    process.env.XCLAW_UPDATE_IN_PROGRESS = "1";
 
     const prompter = createDoctorPrompter({
       runtime: {

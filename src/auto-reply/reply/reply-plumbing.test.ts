@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { slackPlugin } from "../../../extensions/slack/src/channel.js";
 import type { SubagentRunRecord } from "../../agents/subagent-registry.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { XClawConfig } from "../../config/config.js";
 import { formatDurationCompact } from "../../infra/format-time/format-duration.js";
 import { resetPluginRuntimeStateForTest, setActivePluginRegistry } from "../../plugins/runtime.js";
 import { createTestRegistry } from "../../test-utils/channel-plugins.js";
@@ -16,7 +16,7 @@ import {
 } from "./subagents-utils.js";
 
 describe("buildThreadingToolContext", () => {
-  const cfg = {} as OpenClawConfig;
+  const cfg = {} as XClawConfig;
 
   afterEach(() => {
     resetPluginRuntimeStateForTest();
@@ -147,7 +147,7 @@ describe("buildThreadingToolContext", () => {
 
     const result = buildThreadingToolContext({
       sessionCtx,
-      config: { channels: { slack: { replyToMode: "all" } } } as OpenClawConfig,
+      config: { channels: { slack: { replyToMode: "all" } } } as XClawConfig,
       hasRepliedRef: undefined,
     });
 
@@ -167,7 +167,7 @@ describe("buildThreadingToolContext", () => {
 
     const result = buildThreadingToolContext({
       sessionCtx,
-      config: { channels: { slack: { replyToMode: "all" } } } as OpenClawConfig,
+      config: { channels: { slack: { replyToMode: "all" } } } as XClawConfig,
       hasRepliedRef: undefined,
     });
 

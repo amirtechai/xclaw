@@ -1,6 +1,6 @@
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth";
-import { OPENCODE_GO_DEFAULT_MODEL_REF } from "openclaw/plugin-sdk/provider-models";
+import { definePluginEntry } from "xclaw/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "xclaw/plugin-sdk/provider-auth";
+import { OPENCODE_GO_DEFAULT_MODEL_REF } from "xclaw/plugin-sdk/provider-models";
 import { applyOpencodeGoConfig } from "./onboard.js";
 
 const PROVIDER_ID = "opencode-go";

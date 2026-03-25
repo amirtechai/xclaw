@@ -7,25 +7,25 @@ const originalGetBuiltinModule = (
 ).getBuiltinModule;
 
 async function importBrowserSafeLogger(params?: {
-  resolvePreferredOpenClawTmpDir?: ReturnType<typeof vi.fn>;
+  resolvePreferredXClawTmpDir?: ReturnType<typeof vi.fn>;
 }): Promise<{
   module: LoggerModule;
-  resolvePreferredOpenClawTmpDir: ReturnType<typeof vi.fn>;
+  resolvePreferredXClawTmpDir: ReturnType<typeof vi.fn>;
 }> {
   vi.resetModules();
-  const resolvePreferredOpenClawTmpDir =
-    params?.resolvePreferredOpenClawTmpDir ??
+  const resolvePreferredXClawTmpDir =
+    params?.resolvePreferredXClawTmpDir ??
     vi.fn(() => {
-      throw new Error("resolvePreferredOpenClawTmpDir should not run during browser-safe import");
+      throw new Error("resolvePreferredXClawTmpDir should not run during browser-safe import");
     });
 
-  vi.doMock("../infra/tmp-openclaw-dir.js", async () => {
-    const actual = await vi.importActual<typeof import("../infra/tmp-openclaw-dir.js")>(
-      "../infra/tmp-openclaw-dir.js",
+  vi.doMock("../infra/tmp-xclaw-dir.js", async () => {
+    const actual = await vi.importActual<typeof import("../infra/tmp-xclaw-dir.js")>(
+      "../infra/tmp-xclaw-dir.js",
     );
     return {
       ...actual,
-      resolvePreferredOpenClawTmpDir,
+      resolvePreferredXClawTmpDir,
     };
   });
 
@@ -35,13 +35,13 @@ async function importBrowserSafeLogger(params?: {
   });
 
   const module = await import("./logger.js");
-  return { module, resolvePreferredOpenClawTmpDir };
+  return { module, resolvePreferredXClawTmpDir };
 }
 
 describe("logging/logger browser-safe import", () => {
   afterEach(() => {
     vi.resetModules();
-    vi.doUnmock("../infra/tmp-openclaw-dir.js");
+    vi.doUnmock("../infra/tmp-xclaw-dir.js");
     Object.defineProperty(process, "getBuiltinModule", {
       configurable: true,
       value: originalGetBuiltinModule,
@@ -49,22 +49,22 @@ describe("logging/logger browser-safe import", () => {
   });
 
   it("does not resolve the preferred temp dir at import time when node fs is unavailable", async () => {
-    const { module, resolvePreferredOpenClawTmpDir } = await importBrowserSafeLogger();
+    const { module, resolvePreferredXClawTmpDir } = await importBrowserSafeLogger();
 
-    expect(resolvePreferredOpenClawTmpDir).not.toHaveBeenCalled();
-    expect(module.DEFAULT_LOG_DIR).toBe("/tmp/openclaw");
-    expect(module.DEFAULT_LOG_FILE).toBe("/tmp/openclaw/openclaw.log");
+    expect(resolvePreferredXClawTmpDir).not.toHaveBeenCalled();
+    expect(module.DEFAULT_LOG_DIR).toBe("/tmp/xclaw");
+    expect(module.DEFAULT_LOG_FILE).toBe("/tmp/xclaw/xclaw.log");
   });
 
   it("disables file logging when imported in a browser-like environment", async () => {
-    const { module, resolvePreferredOpenClawTmpDir } = await importBrowserSafeLogger();
+    const { module, resolvePreferredXClawTmpDir } = await importBrowserSafeLogger();
 
     expect(module.getResolvedLoggerSettings()).toMatchObject({
       level: "silent",
-      file: "/tmp/openclaw/openclaw.log",
+      file: "/tmp/xclaw/xclaw.log",
     });
     expect(module.isFileLogLevelEnabled("info")).toBe(false);
     expect(() => module.getLogger().info("browser-safe")).not.toThrow();
-    expect(resolvePreferredOpenClawTmpDir).not.toHaveBeenCalled();
+    expect(resolvePreferredXClawTmpDir).not.toHaveBeenCalled();
   });
 });

@@ -7,9 +7,9 @@ import type {
 import type { Client } from "@buape/carbon";
 import { ChannelType } from "discord-api-types/v10";
 import type { GatewayPresenceUpdate } from "discord-api-types/v10";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
-import type { DiscordAccountConfig } from "openclaw/plugin-sdk/config-runtime";
-import { buildPluginBindingApprovalCustomId } from "openclaw/plugin-sdk/conversation-runtime";
+import type { XClawConfig } from "xclaw/plugin-sdk/config-runtime";
+import type { DiscordAccountConfig } from "xclaw/plugin-sdk/config-runtime";
+import { buildPluginBindingApprovalCustomId } from "xclaw/plugin-sdk/conversation-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   buildPluginBindingResolvedTextMock,
@@ -61,7 +61,7 @@ const dispatchPluginInteractiveHandlerMock = vi.hoisted(() => vi.fn());
 let lastDispatchCtx: Record<string, unknown> | undefined;
 
 async function createInfraRuntimeMock(
-  importOriginal: () => Promise<typeof import("openclaw/plugin-sdk/infra-runtime")>,
+  importOriginal: () => Promise<typeof import("xclaw/plugin-sdk/infra-runtime")>,
 ) {
   const actual = await importOriginal();
   return {
@@ -70,11 +70,11 @@ async function createInfraRuntimeMock(
   };
 }
 
-vi.mock("openclaw/plugin-sdk/infra-runtime", createInfraRuntimeMock);
-vi.mock("openclaw/plugin-sdk/infra-runtime.js", createInfraRuntimeMock);
+vi.mock("xclaw/plugin-sdk/infra-runtime", createInfraRuntimeMock);
+vi.mock("xclaw/plugin-sdk/infra-runtime.js", createInfraRuntimeMock);
 
-vi.mock("openclaw/plugin-sdk/reply-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/reply-runtime")>();
+vi.mock("xclaw/plugin-sdk/reply-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/reply-runtime")>();
   return {
     ...actual,
     dispatchReplyWithBufferedBlockDispatcher: (...args: unknown[]) => dispatchReplyMock(...args),
@@ -94,8 +94,8 @@ vi.mock("../../../../src/auto-reply/reply/provider-dispatcher.js", async (import
   };
 });
 
-vi.mock("openclaw/plugin-sdk/config-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/config-runtime")>();
+vi.mock("xclaw/plugin-sdk/config-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/config-runtime")>();
   return {
     ...actual,
     readSessionUpdatedAt: (...args: unknown[]) => readSessionUpdatedAtMock(...args),
@@ -103,8 +103,8 @@ vi.mock("openclaw/plugin-sdk/config-runtime", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/plugin-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/plugin-runtime")>();
+vi.mock("xclaw/plugin-sdk/plugin-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/plugin-runtime")>();
   return {
     ...actual,
     dispatchPluginInteractiveHandler: (...args: unknown[]) =>
@@ -114,14 +114,14 @@ vi.mock("openclaw/plugin-sdk/plugin-runtime", async (importOriginal) => {
 
 describe("discord component interactions", () => {
   let editDiscordComponentMessageMock: ReturnType<typeof vi.spyOn>;
-  const createCfg = (): OpenClawConfig =>
+  const createCfg = (): XClawConfig =>
     ({
       channels: {
         discord: {
           replyToMode: "first",
         },
       },
-    }) as OpenClawConfig;
+    }) as XClawConfig;
 
   const createDiscordConfig = (overrides?: Partial<DiscordAccountConfig>): DiscordAccountConfig =>
     ({
@@ -261,7 +261,7 @@ describe("discord component interactions", () => {
         cfg: {
           commands: { useAccessGroups: true },
           channels: { discord: { replyToMode: "first" } },
-        } as OpenClawConfig,
+        } as XClawConfig,
         allowFrom,
       }),
     );
@@ -324,7 +324,7 @@ describe("discord component interactions", () => {
     });
     recordInboundSessionMock.mockClear().mockResolvedValue(undefined);
     readSessionUpdatedAtMock.mockClear().mockReturnValue(undefined);
-    resolveStorePathMock.mockClear().mockReturnValue("/tmp/openclaw-sessions-test.json");
+    resolveStorePathMock.mockClear().mockReturnValue("/tmp/xclaw-sessions-test.json");
     dispatchPluginInteractiveHandlerMock.mockReset().mockResolvedValue({
       matched: false,
       handled: false,
@@ -473,7 +473,7 @@ describe("discord component interactions", () => {
         cfg: {
           commands: { useAccessGroups: true },
           channels: { discord: { replyToMode: "first" } },
-        } as OpenClawConfig,
+        } as XClawConfig,
         allowFrom: ["owner-1"],
       }),
     );
@@ -505,7 +505,7 @@ describe("discord component interactions", () => {
         cfg: {
           commands: { useAccessGroups: true },
           channels: { discord: { replyToMode: "first" } },
-        } as OpenClawConfig,
+        } as XClawConfig,
         allowFrom: ["123456789"],
       }),
     );

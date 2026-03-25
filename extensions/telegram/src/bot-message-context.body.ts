@@ -2,8 +2,8 @@ import {
   findModelInCatalog,
   loadModelCatalog,
   modelSupportsVision,
-} from "openclaw/plugin-sdk/agent-runtime";
-import { resolveDefaultModelForAgent } from "openclaw/plugin-sdk/agent-runtime";
+} from "xclaw/plugin-sdk/agent-runtime";
+import { resolveDefaultModelForAgent } from "xclaw/plugin-sdk/agent-runtime";
 import {
   buildMentionRegexes,
   formatLocationText,
@@ -11,21 +11,21 @@ import {
   matchesMentionWithExplicit,
   resolveMentionGatingWithBypass,
   type NormalizedLocation,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { resolveControlCommandGate } from "openclaw/plugin-sdk/command-auth";
-import { hasControlCommand } from "openclaw/plugin-sdk/command-auth";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+} from "xclaw/plugin-sdk/channel-inbound";
+import { resolveControlCommandGate } from "xclaw/plugin-sdk/command-auth";
+import { hasControlCommand } from "xclaw/plugin-sdk/command-auth";
+import type { XClawConfig } from "xclaw/plugin-sdk/config-runtime";
 import type {
   TelegramDirectConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "openclaw/plugin-sdk/config-runtime";
+} from "xclaw/plugin-sdk/config-runtime";
 import {
   recordPendingHistoryEntryIfEnabled,
   type HistoryEntry,
-} from "openclaw/plugin-sdk/reply-history";
-import type { MsgContext } from "openclaw/plugin-sdk/reply-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "xclaw/plugin-sdk/reply-history";
+import type { MsgContext } from "xclaw/plugin-sdk/reply-runtime";
+import { logVerbose } from "xclaw/plugin-sdk/runtime-env";
 import type { NormalizedAllowFrom } from "./bot-access.js";
 import { isSenderAllowed } from "./bot-access.js";
 import type {
@@ -58,7 +58,7 @@ export type TelegramInboundBodyResult = {
 };
 
 async function resolveStickerVisionSupport(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   agentId?: string;
 }): Promise<boolean> {
   try {
@@ -78,7 +78,7 @@ async function resolveStickerVisionSupport(params: {
 }
 
 export async function resolveTelegramInboundBody(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   primaryCtx: TelegramContext;
   msg: TelegramContext["message"];
   allMedia: TelegramMediaRef[];

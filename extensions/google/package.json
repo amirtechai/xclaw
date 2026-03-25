@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/google-plugin",
+  "name": "@xclaw/google-plugin",
   "version": "2026.3.22",
   "private": true,
-  "description": "OpenClaw Google plugin",
+  "description": "XClaw Google plugin",
   "type": "module",
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

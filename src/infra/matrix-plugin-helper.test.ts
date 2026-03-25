@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { withTempHome } from "../../test/helpers/temp-home.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import {
   isMatrixLegacyCryptoInspectorAvailable,
   loadMatrixLegacyCryptoInspector,
@@ -13,7 +13,7 @@ vi.unmock("../version.js");
 function writeMatrixPluginFixture(rootDir: string, helperBody: string): void {
   fs.mkdirSync(rootDir, { recursive: true });
   fs.writeFileSync(
-    path.join(rootDir, "openclaw.plugin.json"),
+    path.join(rootDir, "xclaw.plugin.json"),
     JSON.stringify({
       id: "matrix",
       configSchema: {
@@ -30,7 +30,7 @@ function writeMatrixPluginFixture(rootDir: string, helperBody: string): void {
 function writeMatrixPluginManifest(rootDir: string): void {
   fs.mkdirSync(rootDir, { recursive: true });
   fs.writeFileSync(
-    path.join(rootDir, "openclaw.plugin.json"),
+    path.join(rootDir, "xclaw.plugin.json"),
     JSON.stringify({
       id: "matrix",
       configSchema: {
@@ -49,9 +49,9 @@ describe("matrix plugin helper resolution", () => {
   });
 
   const helperEnv = {
-    OPENCLAW_BUNDLED_PLUGINS_DIR: (home: string) => path.join(home, "bundled"),
-    OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
-    OPENCLAW_VERSION: undefined,
+    XCLAW_BUNDLED_PLUGINS_DIR: (home: string) => path.join(home, "bundled"),
+    XCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+    XCLAW_VERSION: undefined,
     VITEST: "true",
   } as const;
 
@@ -115,7 +115,7 @@ describe("matrix plugin helper resolution", () => {
           ].join("\n"),
         );
 
-        const cfg: OpenClawConfig = {
+        const cfg: XClawConfig = {
           plugins: {
             load: {
               paths: [customRoot],
@@ -167,7 +167,7 @@ describe("matrix plugin helper resolution", () => {
           "utf8",
         );
 
-        const cfg: OpenClawConfig = {
+        const cfg: XClawConfig = {
           plugins: {
             load: {
               paths: [customRoot],
@@ -196,7 +196,7 @@ describe("matrix plugin helper resolution", () => {
       },
       {
         env: {
-          OPENCLAW_BUNDLED_PLUGINS_DIR: (home) => path.join(home, "empty-bundled"),
+          XCLAW_BUNDLED_PLUGINS_DIR: (home) => path.join(home, "empty-bundled"),
         },
       },
     );
@@ -210,7 +210,7 @@ describe("matrix plugin helper resolution", () => {
         fs.mkdirSync(customRoot, { recursive: true });
         fs.mkdirSync(outsideRoot, { recursive: true });
         fs.writeFileSync(
-          path.join(customRoot, "openclaw.plugin.json"),
+          path.join(customRoot, "xclaw.plugin.json"),
           JSON.stringify({
             id: "matrix",
             configSchema: {
@@ -238,7 +238,7 @@ describe("matrix plugin helper resolution", () => {
           return;
         }
 
-        const cfg: OpenClawConfig = {
+        const cfg: XClawConfig = {
           plugins: {
             load: {
               paths: [customRoot],
@@ -256,7 +256,7 @@ describe("matrix plugin helper resolution", () => {
       },
       {
         env: {
-          OPENCLAW_BUNDLED_PLUGINS_DIR: (home) => path.join(home, "empty-bundled"),
+          XCLAW_BUNDLED_PLUGINS_DIR: (home) => path.join(home, "empty-bundled"),
         },
       },
     );

@@ -3,7 +3,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { resolveMatrixAccountStorageRoot } from "../../extensions/matrix/runtime-api.js";
 import { withTempHome } from "../../test/helpers/temp-home.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import { autoPrepareLegacyMatrixCrypto, detectLegacyMatrixCrypto } from "./matrix-legacy-crypto.js";
 import { MATRIX_LEGACY_CRYPTO_INSPECTOR_UNAVAILABLE_MESSAGE } from "./matrix-plugin-helper.js";
 
@@ -17,7 +17,7 @@ function writeFile(filePath: string, value: string) {
 function writeMatrixPluginFixture(rootDir: string): void {
   fs.mkdirSync(rootDir, { recursive: true });
   fs.writeFileSync(
-    path.join(rootDir, "openclaw.plugin.json"),
+    path.join(rootDir, "xclaw.plugin.json"),
     JSON.stringify({
       id: "matrix",
       configSchema: {
@@ -40,9 +40,9 @@ function writeMatrixPluginFixture(rootDir: string): void {
 }
 
 const matrixHelperEnv = {
-  OPENCLAW_BUNDLED_PLUGINS_DIR: (home: string) => path.join(home, "bundled"),
-  OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
-  OPENCLAW_VERSION: undefined,
+  XCLAW_BUNDLED_PLUGINS_DIR: (home: string) => path.join(home, "bundled"),
+  XCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+  XCLAW_VERSION: undefined,
   VITEST: "true",
 };
 
@@ -55,8 +55,8 @@ describe("matrix legacy encrypted-state migration", () => {
     await withTempHome(
       async (home) => {
         writeMatrixPluginFixture(path.join(home, "bundled", "matrix"));
-        const stateDir = path.join(home, ".openclaw");
-        const cfg: OpenClawConfig = {
+        const stateDir = path.join(home, ".xclaw");
+        const cfg: XClawConfig = {
           channels: {
             matrix: {
               homeserver: "https://matrix.example.org",
@@ -116,8 +116,8 @@ describe("matrix legacy encrypted-state migration", () => {
 
   it("warns when legacy local-only room keys cannot be recovered automatically", async () => {
     await withTempHome(async (home) => {
-      const stateDir = path.join(home, ".openclaw");
-      const cfg: OpenClawConfig = {
+      const stateDir = path.join(home, ".xclaw");
+      const cfg: XClawConfig = {
         channels: {
           matrix: {
             homeserver: "https://matrix.example.org",
@@ -165,8 +165,8 @@ describe("matrix legacy encrypted-state migration", () => {
 
   it("warns instead of throwing when recovery-key persistence fails", async () => {
     await withTempHome(async (home) => {
-      const stateDir = path.join(home, ".openclaw");
-      const cfg: OpenClawConfig = {
+      const stateDir = path.join(home, ".xclaw");
+      const cfg: XClawConfig = {
         channels: {
           matrix: {
             homeserver: "https://matrix.example.org",
@@ -215,7 +215,7 @@ describe("matrix legacy encrypted-state migration", () => {
     await withTempHome(
       async (home) => {
         writeMatrixPluginFixture(path.join(home, "bundled", "matrix"));
-        const stateDir = path.join(home, ".openclaw");
+        const stateDir = path.join(home, ".xclaw");
         writeFile(
           path.join(stateDir, "matrix", "crypto", "bot-sdk.json"),
           JSON.stringify({ deviceId: "DEVICEOPS" }),
@@ -234,7 +234,7 @@ describe("matrix legacy encrypted-state migration", () => {
           ),
         );
 
-        const cfg: OpenClawConfig = {
+        const cfg: XClawConfig = {
           channels: {
             matrix: {
               accounts: {
@@ -295,13 +295,13 @@ describe("matrix legacy encrypted-state migration", () => {
     await withTempHome(
       async (home) => {
         writeMatrixPluginFixture(path.join(home, "bundled", "matrix"));
-        const stateDir = path.join(home, ".openclaw");
+        const stateDir = path.join(home, ".xclaw");
         writeFile(
           path.join(stateDir, "matrix", "crypto", "bot-sdk.json"),
           JSON.stringify({ deviceId: "DEVICEOPS" }),
         );
 
-        const cfg: OpenClawConfig = {
+        const cfg: XClawConfig = {
           channels: {
             matrix: {
               accounts: {
@@ -358,13 +358,13 @@ describe("matrix legacy encrypted-state migration", () => {
 
   it("requires channels.matrix.defaultAccount before preparing flat legacy crypto for one of multiple accounts", async () => {
     await withTempHome(async (home) => {
-      const stateDir = path.join(home, ".openclaw");
+      const stateDir = path.join(home, ".xclaw");
       writeFile(
         path.join(stateDir, "matrix", "crypto", "bot-sdk.json"),
         JSON.stringify({ deviceId: "DEVICEOPS" }),
       );
 
-      const cfg: OpenClawConfig = {
+      const cfg: XClawConfig = {
         channels: {
           matrix: {
             accounts: {
@@ -388,17 +388,17 @@ describe("matrix legacy encrypted-state migration", () => {
       expect(detection.warnings).toContain(
         "Legacy Matrix encrypted state detected at " +
           path.join(stateDir, "matrix", "crypto") +
-          ', but multiple Matrix accounts are configured and channels.matrix.defaultAccount is not set. Set "channels.matrix.defaultAccount" to the intended target account before rerunning "openclaw doctor --fix" or restarting the gateway.',
+          ', but multiple Matrix accounts are configured and channels.matrix.defaultAccount is not set. Set "channels.matrix.defaultAccount" to the intended target account before rerunning "xclaw doctor --fix" or restarting the gateway.',
       );
     });
   });
 
   it("warns instead of throwing when a legacy crypto path is a file", async () => {
     await withTempHome(async (home) => {
-      const stateDir = path.join(home, ".openclaw");
+      const stateDir = path.join(home, ".xclaw");
       writeFile(path.join(stateDir, "matrix", "crypto"), "not-a-directory");
 
-      const cfg: OpenClawConfig = {
+      const cfg: XClawConfig = {
         channels: {
           matrix: {
             homeserver: "https://matrix.example.org",
@@ -411,7 +411,7 @@ describe("matrix legacy encrypted-state migration", () => {
       const detection = detectLegacyMatrixCrypto({ cfg, env: process.env });
       expect(detection.plans).toHaveLength(0);
       expect(detection.warnings).toContain(
-        `Legacy Matrix encrypted state path exists but is not a directory: ${path.join(stateDir, "matrix", "crypto")}. OpenClaw skipped automatic crypto migration for that path.`,
+        `Legacy Matrix encrypted state path exists but is not a directory: ${path.join(stateDir, "matrix", "crypto")}. XClaw skipped automatic crypto migration for that path.`,
       );
     });
   });
@@ -419,13 +419,13 @@ describe("matrix legacy encrypted-state migration", () => {
   it("reports a missing matrix plugin helper once when encrypted-state migration cannot run", async () => {
     await withTempHome(
       async (home) => {
-        const stateDir = path.join(home, ".openclaw");
+        const stateDir = path.join(home, ".xclaw");
         writeFile(
           path.join(stateDir, "matrix", "crypto", "bot-sdk.json"),
           '{"deviceId":"DEVICE123"}',
         );
 
-        const cfg: OpenClawConfig = {
+        const cfg: XClawConfig = {
           channels: {
             matrix: {
               homeserver: "https://matrix.example.org",
@@ -449,7 +449,7 @@ describe("matrix legacy encrypted-state migration", () => {
       },
       {
         env: {
-          OPENCLAW_BUNDLED_PLUGINS_DIR: (home) => path.join(home, "empty-bundled"),
+          XCLAW_BUNDLED_PLUGINS_DIR: (home) => path.join(home, "empty-bundled"),
         },
       },
     );

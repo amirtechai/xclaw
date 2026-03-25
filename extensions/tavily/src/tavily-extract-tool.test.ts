@@ -1,4 +1,4 @@
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/plugin-runtime";
+import type { XClawPluginApi } from "xclaw/plugin-sdk/plugin-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const { runTavilyExtract } = vi.hoisted(() => ({
@@ -11,10 +11,10 @@ vi.mock("./tavily-client.js", () => ({
 
 let createTavilyExtractTool: typeof import("./tavily-extract-tool.js").createTavilyExtractTool;
 
-function fakeApi(): OpenClawPluginApi {
+function fakeApi(): XClawPluginApi {
   return {
     config: {},
-  } as OpenClawPluginApi;
+  } as XClawPluginApi;
 }
 
 describe("tavily_extract", () => {

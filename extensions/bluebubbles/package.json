@@ -1,23 +1,23 @@
 {
-  "name": "@openclaw/bluebubbles",
+  "name": "@xclaw/bluebubbles",
   "version": "2026.3.22",
-  "description": "OpenClaw BlueBubbles channel plugin",
+  "description": "XClaw BlueBubbles channel plugin",
   "type": "module",
   "dependencies": {
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "xclaw": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.22"
+    "xclaw": ">=2026.3.22"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "xclaw": {
       "optional": true
     }
   },
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ],
@@ -40,7 +40,7 @@
       "order": 75
     },
     "install": {
-      "npmSpec": "@openclaw/bluebubbles",
+      "npmSpec": "@xclaw/bluebubbles",
       "localPath": "extensions/bluebubbles",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.3.22"

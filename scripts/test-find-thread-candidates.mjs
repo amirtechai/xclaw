@@ -13,15 +13,15 @@ import { formatMs } from "./lib/vitest-report-cli-utils.mjs";
 import { loadTestRunnerBehavior, loadUnitTimingManifest } from "./test-runner-manifest.mjs";
 
 export function parseArgs(argv) {
-  const envLimit = readEnvNumber("OPENCLAW_TEST_THREAD_CANDIDATE_LIMIT");
+  const envLimit = readEnvNumber("XCLAW_TEST_THREAD_CANDIDATE_LIMIT");
   return parseFlagArgs(
     argv,
     {
       config: "vitest.unit.config.ts",
       limit: Number.isFinite(envLimit) ? Math.max(1, Math.floor(envLimit)) : 20,
-      minDurationMs: readEnvNumber("OPENCLAW_TEST_THREAD_CANDIDATE_MIN_DURATION_MS") ?? 250,
-      minGainMs: readEnvNumber("OPENCLAW_TEST_THREAD_CANDIDATE_MIN_GAIN_MS") ?? 100,
-      minGainPct: readEnvNumber("OPENCLAW_TEST_THREAD_CANDIDATE_MIN_GAIN_PCT") ?? 10,
+      minDurationMs: readEnvNumber("XCLAW_TEST_THREAD_CANDIDATE_MIN_DURATION_MS") ?? 250,
+      minGainMs: readEnvNumber("XCLAW_TEST_THREAD_CANDIDATE_MIN_GAIN_MS") ?? 100,
+      minGainPct: readEnvNumber("XCLAW_TEST_THREAD_CANDIDATE_MIN_GAIN_PCT") ?? 10,
       json: false,
       files: [],
     },

@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { normalizeEnv } from "../infra/env.js";
 import { formatUncaughtError } from "../infra/errors.js";
 import { isMainModule } from "../infra/is-main.js";
-import { ensureOpenClawCliOnPath } from "../infra/path-env.js";
+import { ensureXClawCliOnPath } from "../infra/path-env.js";
 import { assertSupportedRuntime } from "../infra/runtime-guard.js";
 import { enableConsoleCapture } from "../logging.js";
 import {
@@ -94,15 +94,15 @@ export async function runCli(argv: string[] = process.argv) {
     applyCliProfileEnv({ profile: parsedProfile.profile });
   }
   const containerTargetName =
-    parsedContainer.container ?? process.env.OPENCLAW_CONTAINER?.trim() ?? null;
+    parsedContainer.container ?? process.env.XCLAW_CONTAINER?.trim() ?? null;
   if (
     containerTargetName &&
     (parsedProfile.profile ||
-      process.env.OPENCLAW_PROFILE?.trim() ||
-      process.env.OPENCLAW_GATEWAY_PORT?.trim() ||
-      process.env.OPENCLAW_GATEWAY_URL?.trim() ||
-      process.env.OPENCLAW_GATEWAY_TOKEN?.trim() ||
-      process.env.OPENCLAW_GATEWAY_PASSWORD?.trim())
+      process.env.XCLAW_PROFILE?.trim() ||
+      process.env.XCLAW_GATEWAY_PORT?.trim() ||
+      process.env.XCLAW_GATEWAY_URL?.trim() ||
+      process.env.XCLAW_GATEWAY_TOKEN?.trim() ||
+      process.env.XCLAW_GATEWAY_PASSWORD?.trim())
   ) {
     throw new Error(
       "--container cannot be combined with --profile/--dev or gateway override env vars",
@@ -121,7 +121,7 @@ export async function runCli(argv: string[] = process.argv) {
   loadCliDotEnv({ quiet: true });
   normalizeEnv();
   if (shouldEnsureCliPath(normalizedArgv)) {
-    ensureOpenClawCliOnPath();
+    ensureXClawCliOnPath();
   }
 
   // Enforce the minimum supported runtime before doing any work.
@@ -150,7 +150,7 @@ export async function runCli(argv: string[] = process.argv) {
     installUnhandledRejectionHandler();
 
     process.on("uncaughtException", (error) => {
-      console.error("[openclaw] Uncaught exception:", formatUncaughtError(error));
+      console.error("[xclaw] Uncaught exception:", formatUncaughtError(error));
       process.exit(1);
     });
 

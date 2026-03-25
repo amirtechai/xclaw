@@ -7,15 +7,15 @@ describe("buildPlatformRuntimeLogHints", () => {
       buildPlatformRuntimeLogHints({
         platform: "darwin",
         env: {
-          OPENCLAW_STATE_DIR: "/tmp/openclaw-state",
-          OPENCLAW_LOG_PREFIX: "gateway",
+          XCLAW_STATE_DIR: "/tmp/xclaw-state",
+          XCLAW_LOG_PREFIX: "gateway",
         },
-        systemdServiceName: "openclaw-gateway",
-        windowsTaskName: "OpenClaw Gateway",
+        systemdServiceName: "xclaw-gateway",
+        windowsTaskName: "XClaw Gateway",
       }),
     ).toEqual([
-      "Launchd stdout (if installed): /tmp/openclaw-state/logs/gateway.log",
-      "Launchd stderr (if installed): /tmp/openclaw-state/logs/gateway.err.log",
+      "Launchd stdout (if installed): /tmp/xclaw-state/logs/gateway.log",
+      "Launchd stderr (if installed): /tmp/xclaw-state/logs/gateway.err.log",
     ]);
   });
 
@@ -23,17 +23,17 @@ describe("buildPlatformRuntimeLogHints", () => {
     expect(
       buildPlatformRuntimeLogHints({
         platform: "linux",
-        systemdServiceName: "openclaw-gateway",
-        windowsTaskName: "OpenClaw Gateway",
+        systemdServiceName: "xclaw-gateway",
+        windowsTaskName: "XClaw Gateway",
       }),
-    ).toEqual(["Logs: journalctl --user -u openclaw-gateway.service -n 200 --no-pager"]);
+    ).toEqual(["Logs: journalctl --user -u xclaw-gateway.service -n 200 --no-pager"]);
     expect(
       buildPlatformRuntimeLogHints({
         platform: "win32",
-        systemdServiceName: "openclaw-gateway",
-        windowsTaskName: "OpenClaw Gateway",
+        systemdServiceName: "xclaw-gateway",
+        windowsTaskName: "XClaw Gateway",
       }),
-    ).toEqual(['Logs: schtasks /Query /TN "OpenClaw Gateway" /V /FO LIST']);
+    ).toEqual(['Logs: schtasks /Query /TN "XClaw Gateway" /V /FO LIST']);
   });
 });
 
@@ -42,30 +42,30 @@ describe("buildPlatformServiceStartHints", () => {
     expect(
       buildPlatformServiceStartHints({
         platform: "darwin",
-        installCommand: "openclaw gateway install",
-        startCommand: "openclaw gateway",
-        launchAgentPlistPath: "~/Library/LaunchAgents/com.openclaw.gateway.plist",
-        systemdServiceName: "openclaw-gateway",
-        windowsTaskName: "OpenClaw Gateway",
+        installCommand: "xclaw gateway install",
+        startCommand: "xclaw gateway",
+        launchAgentPlistPath: "~/Library/LaunchAgents/com.xclaw.gateway.plist",
+        systemdServiceName: "xclaw-gateway",
+        windowsTaskName: "XClaw Gateway",
       }),
     ).toEqual([
-      "openclaw gateway install",
-      "openclaw gateway",
-      "launchctl bootstrap gui/$UID ~/Library/LaunchAgents/com.openclaw.gateway.plist",
+      "xclaw gateway install",
+      "xclaw gateway",
+      "launchctl bootstrap gui/$UID ~/Library/LaunchAgents/com.xclaw.gateway.plist",
     ]);
     expect(
       buildPlatformServiceStartHints({
         platform: "linux",
-        installCommand: "openclaw gateway install",
-        startCommand: "openclaw gateway",
-        launchAgentPlistPath: "~/Library/LaunchAgents/com.openclaw.gateway.plist",
-        systemdServiceName: "openclaw-gateway",
-        windowsTaskName: "OpenClaw Gateway",
+        installCommand: "xclaw gateway install",
+        startCommand: "xclaw gateway",
+        launchAgentPlistPath: "~/Library/LaunchAgents/com.xclaw.gateway.plist",
+        systemdServiceName: "xclaw-gateway",
+        windowsTaskName: "XClaw Gateway",
       }),
     ).toEqual([
-      "openclaw gateway install",
-      "openclaw gateway",
-      "systemctl --user start openclaw-gateway.service",
+      "xclaw gateway install",
+      "xclaw gateway",
+      "systemctl --user start xclaw-gateway.service",
     ]);
   });
 });

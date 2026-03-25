@@ -1,8 +1,8 @@
-import type { OpenClawConfig } from "../../config/config.js";
+import type { XClawConfig } from "../../config/config.js";
 import { buildAgentSessionKey, type RoutePeer } from "../../routing/resolve-route.js";
 
 export function buildOutboundBaseSessionKey(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   agentId: string;
   channel: string;
   accountId?: string | null;

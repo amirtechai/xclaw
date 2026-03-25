@@ -1,15 +1,15 @@
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
-import { formatAllowFromLowercase } from "openclaw/plugin-sdk/allow-from";
+import { describeAccountSnapshot } from "xclaw/plugin-sdk/account-helpers";
+import { formatAllowFromLowercase } from "xclaw/plugin-sdk/allow-from";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
-} from "openclaw/plugin-sdk/channel-config-helpers";
-import { createChannelPluginBase } from "openclaw/plugin-sdk/core";
+} from "xclaw/plugin-sdk/channel-config-helpers";
+import { createChannelPluginBase } from "xclaw/plugin-sdk/core";
 import {
   formatDocsLink,
   hasConfiguredSecretInput,
   patchChannelConfigForAccount,
-} from "openclaw/plugin-sdk/setup";
+} from "xclaw/plugin-sdk/setup";
 import { inspectSlackAccount } from "./account-inspect.js";
 import {
   listSlackAccountIds,
@@ -23,17 +23,17 @@ import {
   getChatChannelMeta,
   SlackConfigSchema,
   type ChannelPlugin,
-  type OpenClawConfig,
+  type XClawConfig,
 } from "./runtime-api.js";
 
 export const SLACK_CHANNEL = "slack" as const;
 
 function buildSlackManifest(botName: string) {
-  const safeName = botName.trim() || "OpenClaw";
+  const safeName = botName.trim() || "XClaw";
   const manifest = {
     display_information: {
       name: safeName,
-      description: `${safeName} connector for OpenClaw`,
+      description: `${safeName} connector for XClaw`,
     },
     features: {
       bot_user: {
@@ -46,8 +46,8 @@ function buildSlackManifest(botName: string) {
       },
       slash_commands: [
         {
-          command: "/openclaw",
-          description: "Send a message to OpenClaw",
+          command: "/xclaw",
+          description: "Send a message to XClaw",
           should_escape: false,
         },
       ],
@@ -97,7 +97,7 @@ function buildSlackManifest(botName: string) {
   return JSON.stringify(manifest, null, 2);
 }
 
-export function buildSlackSetupLines(botName = "OpenClaw"): string[] {
+export function buildSlackSetupLines(botName = "XClaw"): string[] {
   return [
     "1) Slack API -> Create App -> From scratch or From manifest (with the JSON below)",
     "2) Add Socket Mode + enable it to get the app-level token (xapp-...)",
@@ -113,10 +113,10 @@ export function buildSlackSetupLines(botName = "OpenClaw"): string[] {
 }
 
 export function setSlackChannelAllowlist(
-  cfg: OpenClawConfig,
+  cfg: XClawConfig,
   accountId: string,
   channelKeys: string[],
-): OpenClawConfig {
+): XClawConfig {
   const channels = Object.fromEntries(channelKeys.map((key) => [key, { allow: true }]));
   return patchChannelConfigForAccount({
     cfg,

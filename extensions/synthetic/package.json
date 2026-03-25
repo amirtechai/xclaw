@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/synthetic-provider",
+  "name": "@xclaw/synthetic-provider",
   "version": "2026.3.22",
   "private": true,
-  "description": "OpenClaw Synthetic provider plugin",
+  "description": "XClaw Synthetic provider plugin",
   "type": "module",
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

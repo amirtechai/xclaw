@@ -9,7 +9,7 @@ const opts = parseVitestReportArgs(process.argv.slice(2), {
   config: "vitest.unit.config.ts",
   limit: 20,
 });
-const report = loadVitestReportFromArgs(opts, "openclaw-vitest-hotspots");
+const report = loadVitestReportFromArgs(opts, "xclaw-vitest-hotspots");
 const fileResults = collectVitestFileDurations(report).toSorted(
   (a, b) => b.durationMs - a.durationMs,
 );

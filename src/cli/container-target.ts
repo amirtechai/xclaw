@@ -82,7 +82,7 @@ export function resolveCliContainerTarget(
   if (!parsed.ok) {
     throw new Error(parsed.error);
   }
-  return parsed.container ?? env.OPENCLAW_CONTAINER?.trim() ?? null;
+  return parsed.container ?? env.XCLAW_CONTAINER?.trim() ?? null;
 }
 
 function isContainerRunning(params: {
@@ -113,7 +113,7 @@ function candidateContainerRuntimes(env: NodeJS.ProcessEnv): ContainerRuntimeExe
       argsPrefix: [],
     },
   ];
-  const podmanUser = env.OPENCLAW_PODMAN_USER?.trim() || "openclaw";
+  const podmanUser = env.XCLAW_PODMAN_USER?.trim() || "xclaw";
   const currentUser = env.USER?.trim() || env.LOGNAME?.trim() || "";
   if (podmanUser && currentUser && podmanUser !== currentUser) {
     candidates.push({
@@ -180,11 +180,11 @@ function buildContainerExecArgs(params: {
     "exec",
     ...interactiveFlags,
     envFlag,
-    `OPENCLAW_CONTAINER_HINT=${params.containerName}`,
+    `XCLAW_CONTAINER_HINT=${params.containerName}`,
     envFlag,
-    "OPENCLAW_CLI_CONTAINER_BYPASS=1",
+    "XCLAW_CLI_CONTAINER_BYPASS=1",
     params.containerName,
-    "openclaw",
+    "xclaw",
     ...params.argv,
   ];
 }
@@ -193,14 +193,14 @@ function buildContainerExecEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
   return {
     ...env,
     // The child CLI should render container-aware follow-up commands via
-    // OPENCLAW_CONTAINER_HINT, but it should not treat itself as still
+    // XCLAW_CONTAINER_HINT, but it should not treat itself as still
     // container-targeted for validation/routing.
-    OPENCLAW_CONTAINER: "",
+    XCLAW_CONTAINER: "",
   };
 }
 
 function isBlockedContainerCommand(argv: string[]): boolean {
-  if (getPrimaryCommand(["node", "openclaw", ...argv]) === "update") {
+  if (getPrimaryCommand(["node", "xclaw", ...argv]) === "update") {
     return true;
   }
   for (let i = 0; i < argv.length; i += 1) {
@@ -234,7 +234,7 @@ export function maybeRunCliInContainer(
     stdoutIsTTY: deps?.stdoutIsTTY ?? Boolean(process.stdout.isTTY),
   };
 
-  if (resolvedDeps.env.OPENCLAW_CLI_CONTAINER_BYPASS === "1") {
+  if (resolvedDeps.env.XCLAW_CLI_CONTAINER_BYPASS === "1") {
     return { handled: false, argv };
   }
 
@@ -248,7 +248,7 @@ export function maybeRunCliInContainer(
   }
   if (isBlockedContainerCommand(parsed.argv.slice(2))) {
     throw new Error(
-      "openclaw update is not supported with --container; rebuild or restart the container image instead.",
+      "xclaw update is not supported with --container; rebuild or restart the container image instead.",
     );
   }
 

@@ -2,17 +2,17 @@ export const DEFAULT_PLUGIN_DISCOVERY_CACHE_MS = 1000;
 export const DEFAULT_PLUGIN_MANIFEST_CACHE_MS = 1000;
 
 export function shouldUsePluginSnapshotCache(env: NodeJS.ProcessEnv): boolean {
-  if (env.OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE?.trim()) {
+  if (env.XCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE?.trim()) {
     return false;
   }
-  if (env.OPENCLAW_DISABLE_PLUGIN_MANIFEST_CACHE?.trim()) {
+  if (env.XCLAW_DISABLE_PLUGIN_MANIFEST_CACHE?.trim()) {
     return false;
   }
-  const discoveryCacheMs = env.OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS?.trim();
+  const discoveryCacheMs = env.XCLAW_PLUGIN_DISCOVERY_CACHE_MS?.trim();
   if (discoveryCacheMs === "0") {
     return false;
   }
-  const manifestCacheMs = env.OPENCLAW_PLUGIN_MANIFEST_CACHE_MS?.trim();
+  const manifestCacheMs = env.XCLAW_PLUGIN_MANIFEST_CACHE_MS?.trim();
   if (manifestCacheMs === "0") {
     return false;
   }
@@ -36,11 +36,11 @@ export function resolvePluginCacheMs(rawValue: string | undefined, defaultMs: nu
 
 export function resolvePluginSnapshotCacheTtlMs(env: NodeJS.ProcessEnv): number {
   const discoveryCacheMs = resolvePluginCacheMs(
-    env.OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS,
+    env.XCLAW_PLUGIN_DISCOVERY_CACHE_MS,
     DEFAULT_PLUGIN_DISCOVERY_CACHE_MS,
   );
   const manifestCacheMs = resolvePluginCacheMs(
-    env.OPENCLAW_PLUGIN_MANIFEST_CACHE_MS,
+    env.XCLAW_PLUGIN_MANIFEST_CACHE_MS,
     DEFAULT_PLUGIN_MANIFEST_CACHE_MS,
   );
   return Math.min(discoveryCacheMs, manifestCacheMs);
@@ -51,14 +51,14 @@ export function buildPluginSnapshotCacheEnvKey(
   options: { includeProcessVitestFallback?: boolean } = {},
 ) {
   return {
-    OPENCLAW_BUNDLED_PLUGINS_DIR: env.OPENCLAW_BUNDLED_PLUGINS_DIR ?? "",
-    OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: env.OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE ?? "",
-    OPENCLAW_DISABLE_PLUGIN_MANIFEST_CACHE: env.OPENCLAW_DISABLE_PLUGIN_MANIFEST_CACHE ?? "",
-    OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: env.OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS ?? "",
-    OPENCLAW_PLUGIN_MANIFEST_CACHE_MS: env.OPENCLAW_PLUGIN_MANIFEST_CACHE_MS ?? "",
-    OPENCLAW_HOME: env.OPENCLAW_HOME ?? "",
-    OPENCLAW_STATE_DIR: env.OPENCLAW_STATE_DIR ?? "",
-    OPENCLAW_CONFIG_PATH: env.OPENCLAW_CONFIG_PATH ?? "",
+    XCLAW_BUNDLED_PLUGINS_DIR: env.XCLAW_BUNDLED_PLUGINS_DIR ?? "",
+    XCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: env.XCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE ?? "",
+    XCLAW_DISABLE_PLUGIN_MANIFEST_CACHE: env.XCLAW_DISABLE_PLUGIN_MANIFEST_CACHE ?? "",
+    XCLAW_PLUGIN_DISCOVERY_CACHE_MS: env.XCLAW_PLUGIN_DISCOVERY_CACHE_MS ?? "",
+    XCLAW_PLUGIN_MANIFEST_CACHE_MS: env.XCLAW_PLUGIN_MANIFEST_CACHE_MS ?? "",
+    XCLAW_HOME: env.XCLAW_HOME ?? "",
+    XCLAW_STATE_DIR: env.XCLAW_STATE_DIR ?? "",
+    XCLAW_CONFIG_PATH: env.XCLAW_CONFIG_PATH ?? "",
     HOME: env.HOME ?? "",
     USERPROFILE: env.USERPROFILE ?? "",
     VITEST: options.includeProcessVitestFallback

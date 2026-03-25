@@ -3,20 +3,20 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const loadJsonFile = vi.fn();
 const saveJsonFile = vi.fn();
 
-vi.mock("openclaw/plugin-sdk/json-store", () => ({
+vi.mock("xclaw/plugin-sdk/json-store", () => ({
   loadJsonFile,
   saveJsonFile,
 }));
 
-vi.mock("openclaw/plugin-sdk/state-paths", () => ({
-  resolveStateDir: () => "/tmp/openclaw-state",
+vi.mock("xclaw/plugin-sdk/state-paths", () => ({
+  resolveStateDir: () => "/tmp/xclaw-state",
 }));
 
 let deriveCopilotApiBaseUrlFromToken: typeof import("./token.js").deriveCopilotApiBaseUrlFromToken;
 let resolveCopilotApiToken: typeof import("./token.js").resolveCopilotApiToken;
 
 describe("github-copilot token", () => {
-  const cachePath = "/tmp/openclaw-state/credentials/github-copilot.token.json";
+  const cachePath = "/tmp/xclaw-state/credentials/github-copilot.token.json";
 
   beforeEach(async () => {
     vi.resetModules();

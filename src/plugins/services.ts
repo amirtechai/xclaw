@@ -1,8 +1,8 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import { STATE_DIR } from "../config/paths.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import type { PluginRegistry } from "./registry.js";
-import type { OpenClawPluginServiceContext, PluginLogger } from "./types.js";
+import type { XClawPluginServiceContext, PluginLogger } from "./types.js";
 
 const log = createSubsystemLogger("plugins");
 function createPluginLogger(): PluginLogger {
@@ -15,9 +15,9 @@ function createPluginLogger(): PluginLogger {
 }
 
 function createServiceContext(params: {
-  config: OpenClawConfig;
+  config: XClawConfig;
   workspaceDir?: string;
-}): OpenClawPluginServiceContext {
+}): XClawPluginServiceContext {
   return {
     config: params.config,
     workspaceDir: params.workspaceDir,
@@ -32,7 +32,7 @@ export type PluginServicesHandle = {
 
 export async function startPluginServices(params: {
   registry: PluginRegistry;
-  config: OpenClawConfig;
+  config: XClawConfig;
   workspaceDir?: string;
 }): Promise<PluginServicesHandle> {
   const running: Array<{

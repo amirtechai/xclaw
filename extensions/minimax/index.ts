@@ -3,19 +3,19 @@ import {
   type ProviderAuthContext,
   type ProviderAuthResult,
   type ProviderCatalogContext,
-} from "openclaw/plugin-sdk/plugin-entry";
+} from "xclaw/plugin-sdk/plugin-entry";
 import {
   MINIMAX_OAUTH_MARKER,
   createProviderApiKeyAuthMethod,
   ensureAuthProfileStore,
   listProfilesForProvider,
-} from "openclaw/plugin-sdk/provider-auth";
-import { buildOauthProviderAuthResult } from "openclaw/plugin-sdk/provider-auth";
+} from "xclaw/plugin-sdk/provider-auth";
+import { buildOauthProviderAuthResult } from "xclaw/plugin-sdk/provider-auth";
 import {
   isMiniMaxModernModelId,
   MINIMAX_DEFAULT_MODEL_ID,
-} from "openclaw/plugin-sdk/provider-models";
-import { fetchMinimaxUsage } from "openclaw/plugin-sdk/provider-usage";
+} from "xclaw/plugin-sdk/provider-models";
+import { fetchMinimaxUsage } from "xclaw/plugin-sdk/provider-usage";
 import {
   minimaxMediaUnderstandingProvider,
   minimaxPortalMediaUnderstandingProvider,

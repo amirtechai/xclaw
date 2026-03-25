@@ -1,9 +1,9 @@
 import { vi } from "vitest";
-import type { OpenClawConfig } from "../config/types.js";
+import type { XClawConfig } from "../config/types.js";
 
 export function createStatusScanSharedMocks(configPathLabel: string) {
   return {
-    resolveConfigPath: vi.fn(() => `/tmp/openclaw-${configPathLabel}-missing-${process.pid}.json`),
+    resolveConfigPath: vi.fn(() => `/tmp/xclaw-${configPathLabel}-missing-${process.pid}.json`),
     hasPotentialConfiguredChannels: vi.fn(),
     readBestEffortConfig: vi.fn(),
     resolveCommandSecretRefsViaGateway: vi.fn(),
@@ -72,14 +72,14 @@ export function createStatusPluginStatusModuleMock(
   };
 }
 
-export function createStatusScanConfig<T extends object = OpenClawConfig>(
+export function createStatusScanConfig<T extends object = XClawConfig>(
   overrides: T = {} as T,
-): OpenClawConfig & T {
+): XClawConfig & T {
   return {
     session: {},
     gateway: {},
     ...overrides,
-  } as OpenClawConfig & T;
+  } as XClawConfig & T;
 }
 
 export function createStatusSummary(
@@ -138,7 +138,7 @@ export function createStatusGatewayProbeFailure() {
   };
 }
 
-export function createStatusMemorySearchConfig(): OpenClawConfig {
+export function createStatusMemorySearchConfig(): XClawConfig {
   return createStatusScanConfig({
     agents: {
       defaults: {
@@ -166,8 +166,8 @@ export function applyStatusScanDefaults(
   mocks: StatusScanSharedMocks,
   options: {
     hasConfiguredChannels?: boolean;
-    sourceConfig?: OpenClawConfig;
-    resolvedConfig?: OpenClawConfig;
+    sourceConfig?: XClawConfig;
+    resolvedConfig?: XClawConfig;
     summary?: ReturnType<typeof createStatusSummary>;
     update?: ReturnType<typeof createStatusUpdateResult> | false;
     gatewayProbe?: ReturnType<typeof createStatusGatewayProbeFailure> | false;

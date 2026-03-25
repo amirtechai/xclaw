@@ -1,5 +1,5 @@
 ---
-summary: "Install, configure, and manage OpenClaw plugins"
+summary: "Install, configure, and manage XClaw plugins"
 read_when:
   - Installing or configuring plugins
   - Understanding plugin discovery and load rules
@@ -10,34 +10,34 @@ sidebarTitle: "Install and Configure"
 
 # Plugins
 
-Plugins extend OpenClaw with new capabilities: channels, model providers, tools,
+Plugins extend XClaw with new capabilities: channels, model providers, tools,
 skills, speech, image generation, and more. Some plugins are **core** (shipped
-with OpenClaw), others are **external** (published on npm by the community).
+with XClaw), others are **external** (published on npm by the community).
 
 ## Quick start
 
 <Steps>
   <Step title="See what is loaded">
     ```bash
-    openclaw plugins list
+    xclaw plugins list
     ```
   </Step>
 
   <Step title="Install a plugin">
     ```bash
     # From npm
-    openclaw plugins install @openclaw/voice-call
+    xclaw plugins install @xclaw/voice-call
 
     # From a local directory or archive
-    openclaw plugins install ./my-plugin
-    openclaw plugins install ./my-plugin.tgz
+    xclaw plugins install ./my-plugin
+    xclaw plugins install ./my-plugin.tgz
     ```
 
   </Step>
 
   <Step title="Restart the Gateway">
     ```bash
-    openclaw gateway restart
+    xclaw gateway restart
     ```
 
     Then configure under `plugins.entries.\<id\>.config` in your config file.
@@ -48,7 +48,7 @@ with OpenClaw), others are **external** (published on npm by the community).
 If you prefer chat-native control, enable `commands.plugins: true` and use:
 
 ```text
-/plugin install clawhub:@openclaw/voice-call
+/plugin install clawhub:@xclaw/voice-call
 /plugin show voice-call
 /plugin enable voice-call
 ```
@@ -58,14 +58,14 @@ The install path uses the same resolver as the CLI: local path/archive, explicit
 
 ## Plugin types
 
-OpenClaw recognizes two plugin formats:
+XClaw recognizes two plugin formats:
 
 | Format     | How it works                                                       | Examples                                               |
 | ---------- | ------------------------------------------------------------------ | ------------------------------------------------------ |
-| **Native** | `openclaw.plugin.json` + runtime module; executes in-process       | Official plugins, community npm packages               |
-| **Bundle** | Codex/Claude/Cursor-compatible layout; mapped to OpenClaw features | `.codex-plugin/`, `.claude-plugin/`, `.cursor-plugin/` |
+| **Native** | `xclaw.plugin.json` + runtime module; executes in-process       | Official plugins, community npm packages               |
+| **Bundle** | Codex/Claude/Cursor-compatible layout; mapped to XClaw features | `.codex-plugin/`, `.claude-plugin/`, `.cursor-plugin/` |
 
-Both show up under `openclaw plugins list`. See [Plugin Bundles](/plugins/bundles) for bundle details.
+Both show up under `xclaw plugins list`. See [Plugin Bundles](/plugins/bundles) for bundle details.
 
 If you are writing a native plugin, start with [Building Plugins](/plugins/building-plugins)
 and the [Plugin SDK Overview](/plugins/sdk-overview).
@@ -76,14 +76,14 @@ and the [Plugin SDK Overview](/plugins/sdk-overview).
 
 | Plugin          | Package                | Docs                                 |
 | --------------- | ---------------------- | ------------------------------------ |
-| Matrix          | `@openclaw/matrix`     | [Matrix](/channels/matrix)           |
-| Microsoft Teams | `@openclaw/msteams`    | [Microsoft Teams](/channels/msteams) |
-| Nostr           | `@openclaw/nostr`      | [Nostr](/channels/nostr)             |
-| Voice Call      | `@openclaw/voice-call` | [Voice Call](/plugins/voice-call)    |
-| Zalo            | `@openclaw/zalo`       | [Zalo](/channels/zalo)               |
-| Zalo Personal   | `@openclaw/zalouser`   | [Zalo Personal](/plugins/zalouser)   |
+| Matrix          | `@xclaw/matrix`     | [Matrix](/channels/matrix)           |
+| Microsoft Teams | `@xclaw/msteams`    | [Microsoft Teams](/channels/msteams) |
+| Nostr           | `@xclaw/nostr`      | [Nostr](/channels/nostr)             |
+| Voice Call      | `@xclaw/voice-call` | [Voice Call](/plugins/voice-call)    |
+| Zalo            | `@xclaw/zalo`       | [Zalo](/channels/zalo)               |
+| Zalo Personal   | `@xclaw/zalouser`   | [Zalo Personal](/plugins/zalouser)   |
 
-### Core (shipped with OpenClaw)
+### Core (shipped with XClaw)
 
 <AccordionGroup>
   <Accordion title="Model providers (enabled by default)">
@@ -136,7 +136,7 @@ Looking for third-party plugins? See [Community Plugins](/plugins/community).
 | `entries.\<id\>` | Per-plugin toggles + config                               |
 
 Config changes **require a gateway restart**. If the Gateway is running with config
-watch + in-process restart enabled (the default `openclaw gateway` path), that
+watch + in-process restart enabled (the default `xclaw gateway` path), that
 restart is usually performed automatically a moment after the config write lands.
 
 <Accordion title="Plugin states: disabled vs missing vs invalid">
@@ -147,7 +147,7 @@ restart is usually performed automatically a moment after the config write lands
 
 ## Discovery and precedence
 
-OpenClaw scans for plugins in this order (first match wins):
+XClaw scans for plugins in this order (first match wins):
 
 <Steps>
   <Step title="Config paths">
@@ -155,15 +155,15 @@ OpenClaw scans for plugins in this order (first match wins):
   </Step>
 
   <Step title="Workspace extensions">
-    `\<workspace\>/.openclaw/extensions/*.ts` and `\<workspace\>/.openclaw/extensions/*/index.ts`.
+    `\<workspace\>/.xclaw/extensions/*.ts` and `\<workspace\>/.xclaw/extensions/*/index.ts`.
   </Step>
 
   <Step title="Global extensions">
-    `~/.openclaw/extensions/*.ts` and `~/.openclaw/extensions/*/index.ts`.
+    `~/.xclaw/extensions/*.ts` and `~/.xclaw/extensions/*/index.ts`.
   </Step>
 
   <Step title="Bundled plugins">
-    Shipped with OpenClaw. Many are enabled by default (model providers, speech).
+    Shipped with XClaw. Many are enabled by default (model providers, speech).
     Others require explicit enablement.
   </Step>
 </Steps>
@@ -200,24 +200,24 @@ Some categories are exclusive (only one active at a time):
 ## CLI reference
 
 ```bash
-openclaw plugins list                    # compact inventory
-openclaw plugins inspect <id>            # deep detail
-openclaw plugins inspect <id> --json     # machine-readable
-openclaw plugins status                  # operational summary
-openclaw plugins doctor                  # diagnostics
+xclaw plugins list                    # compact inventory
+xclaw plugins inspect <id>            # deep detail
+xclaw plugins inspect <id> --json     # machine-readable
+xclaw plugins status                  # operational summary
+xclaw plugins doctor                  # diagnostics
 
-openclaw plugins install <package>        # install (ClawHub first, then npm)
-openclaw plugins install clawhub:<pkg>   # install from ClawHub only
-openclaw plugins install <path>          # install from local path
-openclaw plugins install -l <path>       # link (no copy) for dev
-openclaw plugins update <id>             # update one plugin
-openclaw plugins update --all            # update all
+xclaw plugins install <package>        # install (ClawHub first, then npm)
+xclaw plugins install clawhub:<pkg>   # install from ClawHub only
+xclaw plugins install <path>          # install from local path
+xclaw plugins install -l <path>       # link (no copy) for dev
+xclaw plugins update <id>             # update one plugin
+xclaw plugins update --all            # update all
 
-openclaw plugins enable <id>
-openclaw plugins disable <id>
+xclaw plugins enable <id>
+xclaw plugins disable <id>
 ```
 
-See [`openclaw plugins` CLI reference](/cli/plugins) for full details.
+See [`xclaw plugins` CLI reference](/cli/plugins) for full details.
 
 ## Plugin API overview
 

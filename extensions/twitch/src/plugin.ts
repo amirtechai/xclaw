@@ -1,22 +1,22 @@
 /**
- * Twitch channel plugin for OpenClaw.
+ * Twitch channel plugin for XClaw.
  *
  * Main plugin export combining all adapters (outbound, actions, status, gateway).
  * This is the primary entry point for the Twitch channel integration.
  */
 
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
+import { describeAccountSnapshot } from "xclaw/plugin-sdk/account-helpers";
 import {
   createLoggedPairingApprovalNotifier,
   createPairingPrefixStripper,
-} from "openclaw/plugin-sdk/channel-pairing";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/core";
-import { buildPassiveProbedChannelStatusSummary } from "openclaw/plugin-sdk/extension-shared";
+} from "xclaw/plugin-sdk/channel-pairing";
+import { createChatChannelPlugin } from "xclaw/plugin-sdk/core";
+import { buildPassiveProbedChannelStatusSummary } from "xclaw/plugin-sdk/extension-shared";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
-import type { OpenClawConfig } from "../api.js";
+} from "xclaw/plugin-sdk/status-helpers";
+import type { XClawConfig } from "../api.js";
 import { buildChannelConfigSchema } from "../api.js";
 import { twitchMessageActions } from "./actions.js";
 import { removeClientManager } from "./client-manager-registry.js";
@@ -48,7 +48,7 @@ type ResolvedTwitchAccount = TwitchAccountConfig & { accountId?: string | null }
  * Twitch channel plugin.
  *
  * Implements the ChannelPlugin interface to provide Twitch chat integration
- * for OpenClaw. Supports message sending, receiving, access control, and
+ * for XClaw. Supports message sending, receiving, access control, and
  * status monitoring.
  */
 export const twitchPlugin: ChannelPlugin<ResolvedTwitchAccount> =
@@ -79,8 +79,8 @@ export const twitchPlugin: ChannelPlugin<ResolvedTwitchAccount> =
       },
       configSchema: buildChannelConfigSchema(TwitchConfigSchema),
       config: {
-        listAccountIds: (cfg: OpenClawConfig): string[] => listAccountIds(cfg),
-        resolveAccount: (cfg: OpenClawConfig, accountId?: string | null): ResolvedTwitchAccount => {
+        listAccountIds: (cfg: XClawConfig): string[] => listAccountIds(cfg),
+        resolveAccount: (cfg: XClawConfig, accountId?: string | null): ResolvedTwitchAccount => {
           const resolvedAccountId = accountId ?? DEFAULT_ACCOUNT_ID;
           const account = getAccountConfig(cfg, resolvedAccountId);
           if (!account) {
@@ -99,7 +99,7 @@ export const twitchPlugin: ChannelPlugin<ResolvedTwitchAccount> =
           };
         },
         defaultAccountId: (): string => DEFAULT_ACCOUNT_ID,
-        isConfigured: (_account: unknown, cfg: OpenClawConfig): boolean =>
+        isConfigured: (_account: unknown, cfg: XClawConfig): boolean =>
           resolveTwitchAccountContext(cfg, DEFAULT_ACCOUNT_ID).configured,
         isEnabled: (account: ResolvedTwitchAccount | undefined): boolean =>
           account?.enabled !== false,
@@ -124,11 +124,11 @@ export const twitchPlugin: ChannelPlugin<ResolvedTwitchAccount> =
           kind,
           runtime,
         }: {
-          cfg: OpenClawConfig;
+          cfg: XClawConfig;
           accountId?: string | null;
           inputs: string[];
           kind: ChannelResolveKind;
-          runtime: import("openclaw/plugin-sdk/runtime-env").RuntimeEnv;
+          runtime: import("xclaw/plugin-sdk/runtime-env").RuntimeEnv;
         }): Promise<ChannelResolveResult[]> => {
           const account = getAccountConfig(cfg, accountId ?? DEFAULT_ACCOUNT_ID);
           if (!account) {

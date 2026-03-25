@@ -13,7 +13,7 @@ describe("fetchGraphJson User-Agent", () => {
     vi.restoreAllMocks();
   });
 
-  it("sends User-Agent header with OpenClaw version", async () => {
+  it("sends User-Agent header with XClaw version", async () => {
     const mockFetch = vi.fn().mockResolvedValueOnce({
       ok: true,
       json: async () => ({ value: [] }),
@@ -24,7 +24,7 @@ describe("fetchGraphJson User-Agent", () => {
 
     expect(mockFetch).toHaveBeenCalledOnce();
     const [, init] = mockFetch.mock.calls[0];
-    expect(init.headers["User-Agent"]).toMatch(/^teams\.ts\[apps\]\/.+ OpenClaw\/2026\.3\.19$/);
+    expect(init.headers["User-Agent"]).toMatch(/^teams\.ts\[apps\]\/.+ XClaw\/2026\.3\.19$/);
     expect(init.headers).toHaveProperty("Authorization", "Bearer test-token");
 
     vi.unstubAllGlobals();

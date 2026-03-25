@@ -1,10 +1,10 @@
-import { createActionGate } from "openclaw/plugin-sdk/agent-runtime";
-import type { ChannelMessageActionName } from "openclaw/plugin-sdk/channel-contract";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
-import type { ChannelToolSend } from "openclaw/plugin-sdk/tool-send";
+import { createActionGate } from "xclaw/plugin-sdk/agent-runtime";
+import type { ChannelMessageActionName } from "xclaw/plugin-sdk/channel-contract";
+import type { XClawConfig } from "xclaw/plugin-sdk/config-runtime";
+import type { ChannelToolSend } from "xclaw/plugin-sdk/tool-send";
 import { listEnabledSlackAccounts } from "./accounts.js";
 
-export function listSlackMessageActions(cfg: OpenClawConfig): ChannelMessageActionName[] {
+export function listSlackMessageActions(cfg: XClawConfig): ChannelMessageActionName[] {
   const accounts = listEnabledSlackAccounts(cfg).filter(
     (account) => account.botTokenSource !== "none",
   );

@@ -1,37 +1,37 @@
 import { ChannelType, MessageType, type Message, type User } from "@buape/carbon";
 import { Routes, type APIMessage } from "discord-api-types/v10";
-import { formatAllowlistMatchMeta } from "openclaw/plugin-sdk/allow-from";
+import { formatAllowlistMatchMeta } from "xclaw/plugin-sdk/allow-from";
 import {
   buildMentionRegexes,
   logInboundDrop,
   matchesMentionWithExplicit,
   resolveMentionGatingWithBypass,
-} from "openclaw/plugin-sdk/channel-inbound";
-import { resolveControlCommandGate } from "openclaw/plugin-sdk/command-auth";
-import { hasControlCommand } from "openclaw/plugin-sdk/command-auth";
-import { shouldHandleTextCommands } from "openclaw/plugin-sdk/command-auth";
-import { loadConfig } from "openclaw/plugin-sdk/config-runtime";
-import { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/config-runtime";
+} from "xclaw/plugin-sdk/channel-inbound";
+import { resolveControlCommandGate } from "xclaw/plugin-sdk/command-auth";
+import { hasControlCommand } from "xclaw/plugin-sdk/command-auth";
+import { shouldHandleTextCommands } from "xclaw/plugin-sdk/command-auth";
+import { loadConfig } from "xclaw/plugin-sdk/config-runtime";
+import { isDangerousNameMatchingEnabled } from "xclaw/plugin-sdk/config-runtime";
 import {
   ensureConfiguredBindingRouteReady,
   resolveConfiguredBindingRoute,
-} from "openclaw/plugin-sdk/conversation-runtime";
+} from "xclaw/plugin-sdk/conversation-runtime";
 import {
   getSessionBindingService,
   type SessionBindingRecord,
-} from "openclaw/plugin-sdk/conversation-runtime";
-import { buildPairingReply } from "openclaw/plugin-sdk/conversation-runtime";
-import { isPluginOwnedSessionBindingRecord } from "openclaw/plugin-sdk/conversation-runtime";
-import { recordChannelActivity } from "openclaw/plugin-sdk/infra-runtime";
-import { enqueueSystemEvent } from "openclaw/plugin-sdk/infra-runtime";
+} from "xclaw/plugin-sdk/conversation-runtime";
+import { buildPairingReply } from "xclaw/plugin-sdk/conversation-runtime";
+import { isPluginOwnedSessionBindingRecord } from "xclaw/plugin-sdk/conversation-runtime";
+import { recordChannelActivity } from "xclaw/plugin-sdk/infra-runtime";
+import { enqueueSystemEvent } from "xclaw/plugin-sdk/infra-runtime";
 import {
   recordPendingHistoryEntryIfEnabled,
   type HistoryEntry,
-} from "openclaw/plugin-sdk/reply-history";
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/routing";
-import { logVerbose, shouldLogVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { getChildLogger } from "openclaw/plugin-sdk/runtime-env";
-import { logDebug } from "openclaw/plugin-sdk/text-runtime";
+} from "xclaw/plugin-sdk/reply-history";
+import { DEFAULT_ACCOUNT_ID } from "xclaw/plugin-sdk/routing";
+import { logVerbose, shouldLogVerbose } from "xclaw/plugin-sdk/runtime-env";
+import { getChildLogger } from "xclaw/plugin-sdk/runtime-env";
+import { logDebug } from "xclaw/plugin-sdk/text-runtime";
 import { fetchPluralKitMessageInfo } from "../pluralkit.js";
 import { sendMessageDiscord } from "../send.js";
 import {

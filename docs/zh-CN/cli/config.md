@@ -1,7 +1,7 @@
 ---
 read_when:
   - 你想以非交互方式读取或编辑配置
-summary: "`openclaw config` 的 CLI 参考（获取/设置/取消设置配置值）"
+summary: "`xclaw config` 的 CLI 参考（获取/设置/取消设置配置值）"
 title: config
 x-i18n:
   generated_at: "2026-02-03T10:04:13Z"
@@ -12,19 +12,19 @@ x-i18n:
   workflow: 15
 ---
 
-# `openclaw config`
+# `xclaw config`
 
 配置辅助命令：通过路径获取/设置/取消设置值。不带子命令运行将打开
-配置向导（与 `openclaw configure` 相同）。
+配置向导（与 `xclaw configure` 相同）。
 
 ## 示例
 
 ```bash
-openclaw config get browser.executablePath
-openclaw config set browser.executablePath "/usr/bin/google-chrome"
-openclaw config set agents.defaults.heartbeat.every "2h"
-openclaw config set agents.list[0].tools.exec.node "node-id-or-name"
-openclaw config unset plugins.entries.brave.config.webSearch.apiKey
+xclaw config get browser.executablePath
+xclaw config set browser.executablePath "/usr/bin/google-chrome"
+xclaw config set agents.defaults.heartbeat.every "2h"
+xclaw config set agents.list[0].tools.exec.node "node-id-or-name"
+xclaw config unset plugins.entries.brave.config.webSearch.apiKey
 ```
 
 ## 路径
@@ -32,15 +32,15 @@ openclaw config unset plugins.entries.brave.config.webSearch.apiKey
 路径使用点号或括号表示法：
 
 ```bash
-openclaw config get agents.defaults.workspace
-openclaw config get agents.list[0].id
+xclaw config get agents.defaults.workspace
+xclaw config get agents.list[0].id
 ```
 
 使用智能体列表索引来定位特定智能体：
 
 ```bash
-openclaw config get agents.list
-openclaw config set agents.list[1].tools.exec.node "node-id-or-name"
+xclaw config get agents.list
+xclaw config set agents.list[1].tools.exec.node "node-id-or-name"
 ```
 
 ## 值
@@ -49,9 +49,9 @@ openclaw config set agents.list[1].tools.exec.node "node-id-or-name"
 使用 `--json` 强制要求 JSON5 解析。
 
 ```bash
-openclaw config set agents.defaults.heartbeat.every "0m"
-openclaw config set gateway.port 19001 --json
-openclaw config set channels.whatsapp.groups '["*"]' --json
+xclaw config set agents.defaults.heartbeat.every "0m"
+xclaw config set gateway.port 19001 --json
+xclaw config set channels.whatsapp.groups '["*"]' --json
 ```
 
 编辑后请重启 Gateway 网关。

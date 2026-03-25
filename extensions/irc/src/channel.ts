@@ -1,25 +1,25 @@
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
-import { formatNormalizedAllowFromEntries } from "openclaw/plugin-sdk/allow-from";
+import { describeAccountSnapshot } from "xclaw/plugin-sdk/account-helpers";
+import { formatNormalizedAllowFromEntries } from "xclaw/plugin-sdk/allow-from";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
   createScopedDmSecurityResolver,
-} from "openclaw/plugin-sdk/channel-config-helpers";
+} from "xclaw/plugin-sdk/channel-config-helpers";
 import {
   composeAccountWarningCollectors,
   composeWarningCollectors,
   createAllowlistProviderOpenWarningCollector,
-} from "openclaw/plugin-sdk/channel-policy";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/core";
+} from "xclaw/plugin-sdk/channel-policy";
+import { createChatChannelPlugin } from "xclaw/plugin-sdk/core";
 import {
   createChannelDirectoryAdapter,
   listResolvedDirectoryEntriesFromSources,
-} from "openclaw/plugin-sdk/directory-runtime";
-import { runStoppablePassiveMonitor } from "openclaw/plugin-sdk/extension-shared";
+} from "xclaw/plugin-sdk/directory-runtime";
+import { runStoppablePassiveMonitor } from "xclaw/plugin-sdk/extension-shared";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "xclaw/plugin-sdk/status-helpers";
 import {
   listIrcAccountIds,
   resolveDefaultIrcAccountId,

@@ -4,7 +4,7 @@ import {
   buildChutesModelDefinition,
   discoverChutesModels,
   type ModelProviderConfig,
-} from "openclaw/plugin-sdk/provider-models";
+} from "xclaw/plugin-sdk/provider-models";
 
 /**
  * Build the Chutes provider with dynamic model discovery.

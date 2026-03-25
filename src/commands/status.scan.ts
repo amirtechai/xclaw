@@ -4,7 +4,7 @@ import { hasPotentialConfiguredChannels } from "../channels/config-presence.js";
 import { resolveCommandSecretRefsViaGateway } from "../cli/command-secret-gateway.js";
 import { getStatusCommandSecretTargetIds } from "../cli/command-secret-targets.js";
 import { withProgress } from "../cli/progress.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import { readBestEffortConfig } from "../config/config.js";
 import { resolveConfigPath } from "../config/paths.js";
 import { callGateway } from "../gateway/call.js";
@@ -68,7 +68,7 @@ function isMissingConfigColdStart(): boolean {
 }
 
 async function resolveChannelsStatus(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   gatewayReachable: boolean;
   opts: { timeoutMs?: number; all?: boolean };
 }) {
@@ -87,8 +87,8 @@ async function resolveChannelsStatus(params: {
 }
 
 export type StatusScanResult = {
-  cfg: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
+  cfg: XClawConfig;
+  sourceConfig: XClawConfig;
   secretDiagnostics: string[];
   osSummary: ReturnType<typeof resolveOsSummary>;
   tailscaleMode: string;
@@ -116,7 +116,7 @@ export type StatusScanResult = {
 };
 
 async function resolveMemoryStatusSnapshot(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   agentStatus: Awaited<ReturnType<typeof getAgentLocalStatuses>>;
   memoryPlugin: MemoryPluginStatus;
 }): Promise<MemoryStatusSnapshot | null> {
@@ -268,8 +268,8 @@ export async function scanStatus(
       progress.setLabel("Summarizing channels…");
       const channels = await buildChannelsTable(cfg, {
         // Show token previews in regular status; keep `status --all` redacted.
-        // Set `OPENCLAW_SHOW_SECRETS=0` to force redaction.
-        showSecrets: process.env.OPENCLAW_SHOW_SECRETS?.trim() !== "0",
+        // Set `XCLAW_SHOW_SECRETS=0` to force redaction.
+        showSecrets: process.env.XCLAW_SHOW_SECRETS?.trim() !== "0",
         sourceConfig: loadedRaw,
       });
       progress.tick();

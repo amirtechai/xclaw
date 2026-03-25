@@ -148,3 +148,85 @@ export function validateJsonSchemaValue(params: {
   }
   return { ok: false, errors: formatAjvErrors(cached.validate.errors) };
 }
+
+/**
+ * System paths that plugins must never claim fs write or root access to.
+ * Any plugin declaring permissions for these paths is rejected as unsafe.
+ */
+const FORBIDDEN_FS_SYSTEM_PATHS = [
+  "/",
+  "/bin",
+  "/boot",
+  "/dev",
+  "/etc",
+  "/lib",
+  "/lib64",
+  "/opt",
+  "/proc",
+  "/root",
+  "/run",
+  "/sbin",
+  "/sys",
+  "/usr",
+  "/var",
+];
+
+function isSystemPath(p: string): boolean {
+  const normalized = p.replace(/\/+$/, "").toLowerCase();
+  return FORBIDDEN_FS_SYSTEM_PATHS.some(
+    (forbidden) => normalized === forbidden || normalized.startsWith(forbidden + "/"),
+  );
+}
+
+export type PluginFsPermissionViolation = {
+  field: string;
+  value: string;
+  reason: string;
+};
+
+/**
+ * Validates that a plugin manifest does not claim filesystem permissions
+ * (fs.root or fs.write) for system paths outside its sandbox.
+ *
+ * Returns an array of violations. An empty array means the manifest is clean.
+ */
+export function checkPluginFsPermissions(
+  manifest: Record<string, unknown>,
+): PluginFsPermissionViolation[] {
+  const violations: PluginFsPermissionViolation[] = [];
+  const permissions = manifest.permissions;
+  if (!permissions || typeof permissions !== "object" || Array.isArray(permissions)) {
+    return violations;
+  }
+  const perms = permissions as Record<string, unknown>;
+  const fs = perms.fs;
+  if (!fs || typeof fs !== "object" || Array.isArray(fs)) {
+    return violations;
+  }
+  const fsPerms = fs as Record<string, unknown>;
+
+  const checkPath = (field: string, value: unknown) => {
+    if (typeof value !== "string" || !value.trim()) return;
+    if (isSystemPath(value.trim())) {
+      violations.push({
+        field,
+        value: value.trim(),
+        reason: `Plugin claims ${field} access to system path "${value.trim()}" which is outside its sandbox`,
+      });
+    }
+  };
+
+  // Check fs.root
+  checkPath("permissions.fs.root", fsPerms.root);
+
+  // Check fs.write — can be a string or an array of strings
+  if (Array.isArray(fsPerms.write)) {
+    for (const entry of fsPerms.write) {
+      checkPath("permissions.fs.write[]", entry);
+    }
+  } else {
+    checkPath("permissions.fs.write", fsPerms.write);
+  }
+
+  return violations;
+}

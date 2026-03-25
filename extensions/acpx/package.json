@@ -1,12 +1,12 @@
 {
-  "name": "@openclaw/acpx",
+  "name": "@xclaw/acpx",
   "version": "2026.3.22",
-  "description": "OpenClaw ACP runtime backend via acpx",
+  "description": "XClaw ACP runtime backend via acpx",
   "type": "module",
   "dependencies": {
     "acpx": "0.3.1"
   },
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { XClawConfig } from "../../../config/config.js";
 import type { PluginManifestRecord } from "../../../plugins/manifest-registry.js";
 import * as manifestRegistry from "../../../plugins/manifest-registry.js";
 import {
@@ -18,7 +18,7 @@ function manifest(id: string): PluginManifestRecord {
     origin: "bundled",
     rootDir: `/plugins/${id}`,
     source: `/plugins/${id}`,
-    manifestPath: `/plugins/${id}/openclaw.plugin.json`,
+    manifestPath: `/plugins/${id}/xclaw.plugin.json`,
   };
 }
 
@@ -43,7 +43,7 @@ describe("doctor stale plugin config helpers", () => {
           acpx: { enabled: true },
         },
       },
-    } as OpenClawConfig);
+    } as XClawConfig);
 
     expect(hits).toEqual([
       {
@@ -68,7 +68,7 @@ describe("doctor stale plugin config helpers", () => {
           acpx: { enabled: true },
         },
       },
-    } as OpenClawConfig);
+    } as XClawConfig);
 
     expect(result.changes).toEqual([
       "- plugins.allow: removed 1 stale plugin id (acpx)",
@@ -89,12 +89,12 @@ describe("doctor stale plugin config helpers", () => {
           surface: "allow",
         },
       ],
-      doctorFixCommand: "openclaw doctor --fix",
+      doctorFixCommand: "xclaw doctor --fix",
     });
 
     expect(warnings).toEqual([
       expect.stringContaining('plugins.allow: stale plugin reference "acpx"'),
-      expect.stringContaining('Run "openclaw doctor --fix"'),
+      expect.stringContaining('Run "xclaw doctor --fix"'),
     ]);
   });
 
@@ -113,7 +113,7 @@ describe("doctor stale plugin config helpers", () => {
           acpx: { enabled: true },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
 
     const hits = scanStalePluginConfig(cfg);
     expect(hits).toEqual([
@@ -135,7 +135,7 @@ describe("doctor stale plugin config helpers", () => {
 
     const warnings = collectStalePluginConfigWarnings({
       hits,
-      doctorFixCommand: "openclaw doctor --fix",
+      doctorFixCommand: "xclaw doctor --fix",
       autoRepairBlocked: true,
     });
     expect(warnings[2]).toContain("Auto-removal is paused");
@@ -150,7 +150,7 @@ describe("doctor stale plugin config helpers", () => {
           acpx: { enabled: true },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
 
     expect(scanStalePluginConfig(cfg)).toEqual([
       {

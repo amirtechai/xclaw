@@ -5,8 +5,8 @@ import {
   readLocalFileSafely,
   assertNoWindowsNetworkPath,
   safeFileURLToPath,
-} from "openclaw/plugin-sdk/infra-runtime";
-import type { SsrFPolicy } from "openclaw/plugin-sdk/infra-runtime";
+} from "xclaw/plugin-sdk/infra-runtime";
+import type { SsrFPolicy } from "xclaw/plugin-sdk/infra-runtime";
 import {
   assertLocalMediaAllowed,
   getDefaultLocalRoots,
@@ -14,17 +14,17 @@ import {
   type LocalMediaAccessErrorCode,
   type MediaKind,
   maxBytesForKind,
-} from "openclaw/plugin-sdk/media-runtime";
-import { fetchRemoteMedia } from "openclaw/plugin-sdk/media-runtime";
+} from "xclaw/plugin-sdk/media-runtime";
+import { fetchRemoteMedia } from "xclaw/plugin-sdk/media-runtime";
 import {
   convertHeicToJpeg,
   hasAlphaChannel,
   optimizeImageToPng,
   resizeToJpeg,
-} from "openclaw/plugin-sdk/media-runtime";
-import { detectMime, extensionForMime, kindFromMime } from "openclaw/plugin-sdk/media-runtime";
-import { logVerbose, shouldLogVerbose } from "openclaw/plugin-sdk/runtime-env";
-import { resolveUserPath } from "openclaw/plugin-sdk/text-runtime";
+} from "xclaw/plugin-sdk/media-runtime";
+import { detectMime, extensionForMime, kindFromMime } from "xclaw/plugin-sdk/media-runtime";
+import { logVerbose, shouldLogVerbose } from "xclaw/plugin-sdk/runtime-env";
+import { resolveUserPath } from "xclaw/plugin-sdk/text-runtime";
 
 export { getDefaultLocalRoots, LocalMediaAccessError };
 export type { LocalMediaAccessErrorCode };

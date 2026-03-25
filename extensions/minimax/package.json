@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/minimax-provider",
+  "name": "@xclaw/minimax-provider",
   "version": "2026.3.22",
   "private": true,
-  "description": "OpenClaw MiniMax provider and OAuth plugin",
+  "description": "XClaw MiniMax provider and OAuth plugin",
   "type": "module",
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

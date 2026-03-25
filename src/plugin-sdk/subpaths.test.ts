@@ -14,13 +14,13 @@ import type {
   ChannelStatusIssue as ContractChannelStatusIssue,
   ChannelThreadingContext as ContractChannelThreadingContext,
   ChannelThreadingToolContext as ContractChannelThreadingToolContext,
-} from "openclaw/plugin-sdk/channel-contract";
+} from "xclaw/plugin-sdk/channel-contract";
 import type {
   ChannelMessageActionContext as CoreChannelMessageActionContext,
-  OpenClawPluginApi as CoreOpenClawPluginApi,
+  XClawPluginApi as CoreXClawPluginApi,
   PluginRuntime as CorePluginRuntime,
-} from "openclaw/plugin-sdk/core";
-import * as providerEntrySdk from "openclaw/plugin-sdk/provider-entry";
+} from "xclaw/plugin-sdk/core";
+import * as providerEntrySdk from "xclaw/plugin-sdk/provider-entry";
 import { describe, expect, expectTypeOf, it } from "vitest";
 import type { ChannelMessageActionContext } from "../channels/plugins/types.js";
 import type {
@@ -37,10 +37,10 @@ import type {
   ChannelThreadingToolContext,
 } from "../channels/plugins/types.js";
 import type { PluginRuntime } from "../plugins/runtime/types.js";
-import type { OpenClawPluginApi } from "../plugins/types.js";
+import type { XClawPluginApi } from "../plugins/types.js";
 import type {
   ChannelMessageActionContext as SharedChannelMessageActionContext,
-  OpenClawPluginApi as SharedOpenClawPluginApi,
+  XClawPluginApi as SharedXClawPluginApi,
   PluginRuntime as SharedPluginRuntime,
 } from "./channel-plugin-common.js";
 import { pluginSdkSubpaths } from "./entrypoints.js";
@@ -564,10 +564,10 @@ describe("plugin-sdk subpath exports", () => {
     expectTypeOf<ContractChannelStatusIssue>().toMatchTypeOf<ChannelStatusIssue>();
     expectTypeOf<ContractChannelThreadingContext>().toMatchTypeOf<ChannelThreadingContext>();
     expectTypeOf<ContractChannelThreadingToolContext>().toMatchTypeOf<ChannelThreadingToolContext>();
-    expectTypeOf<CoreOpenClawPluginApi>().toMatchTypeOf<OpenClawPluginApi>();
+    expectTypeOf<CoreXClawPluginApi>().toMatchTypeOf<XClawPluginApi>();
     expectTypeOf<CorePluginRuntime>().toMatchTypeOf<PluginRuntime>();
     expectTypeOf<CoreChannelMessageActionContext>().toMatchTypeOf<ChannelMessageActionContext>();
-    expectTypeOf<CoreOpenClawPluginApi>().toMatchTypeOf<SharedOpenClawPluginApi>();
+    expectTypeOf<CoreXClawPluginApi>().toMatchTypeOf<SharedXClawPluginApi>();
     expectTypeOf<CorePluginRuntime>().toMatchTypeOf<SharedPluginRuntime>();
     expectTypeOf<CoreChannelMessageActionContext>().toMatchTypeOf<SharedChannelMessageActionContext>();
   });
@@ -582,14 +582,14 @@ describe("plugin-sdk subpath exports", () => {
       channelReplyPipelineSdk,
       ...representativeModules
     ] = await Promise.all([
-      importResolvedPluginSdkSubpath("openclaw/plugin-sdk/core"),
-      importResolvedPluginSdkSubpath("openclaw/plugin-sdk/text-runtime"),
-      importResolvedPluginSdkSubpath("openclaw/plugin-sdk/plugin-entry"),
-      importResolvedPluginSdkSubpath("openclaw/plugin-sdk/channel-lifecycle"),
-      importResolvedPluginSdkSubpath("openclaw/plugin-sdk/channel-pairing"),
-      importResolvedPluginSdkSubpath("openclaw/plugin-sdk/channel-reply-pipeline"),
+      importResolvedPluginSdkSubpath("xclaw/plugin-sdk/core"),
+      importResolvedPluginSdkSubpath("xclaw/plugin-sdk/text-runtime"),
+      importResolvedPluginSdkSubpath("xclaw/plugin-sdk/plugin-entry"),
+      importResolvedPluginSdkSubpath("xclaw/plugin-sdk/channel-lifecycle"),
+      importResolvedPluginSdkSubpath("xclaw/plugin-sdk/channel-pairing"),
+      importResolvedPluginSdkSubpath("xclaw/plugin-sdk/channel-reply-pipeline"),
       ...representativeRuntimeSmokeSubpaths.map((id) =>
-        importResolvedPluginSdkSubpath(`openclaw/plugin-sdk/${id}`),
+        importResolvedPluginSdkSubpath(`xclaw/plugin-sdk/${id}`),
       ),
     ]);
 

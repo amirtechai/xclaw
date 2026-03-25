@@ -22,23 +22,23 @@ describe("buildUserAgent", () => {
     vi.restoreAllMocks();
   });
 
-  it("returns teams.ts[apps]/<sdk> OpenClaw/<version> format", () => {
+  it("returns teams.ts[apps]/<sdk> XClaw/<version> format", () => {
     const ua = buildUserAgent();
-    expect(ua).toMatch(/^teams\.ts\[apps\]\/.+ OpenClaw\/2026\.3\.19$/);
+    expect(ua).toMatch(/^teams\.ts\[apps\]\/.+ XClaw\/2026\.3\.19$/);
   });
 
   it("reflects the runtime version", () => {
     vi.mocked(getMSTeamsRuntime).mockReturnValue({ version: "1.2.3" } as never);
     const ua = buildUserAgent();
-    expect(ua).toMatch(/OpenClaw\/1\.2\.3$/);
+    expect(ua).toMatch(/XClaw\/1\.2\.3$/);
   });
 
-  it("returns OpenClaw/unknown when runtime is not initialized", () => {
+  it("returns XClaw/unknown when runtime is not initialized", () => {
     vi.mocked(getMSTeamsRuntime).mockImplementation(() => {
       throw new Error("MSTeams runtime not initialized");
     });
     const ua = buildUserAgent();
-    expect(ua).toMatch(/OpenClaw\/unknown$/);
+    expect(ua).toMatch(/XClaw\/unknown$/);
     // SDK version should still be present
     expect(ua).toMatch(/^teams\.ts\[apps\]\//);
   });

@@ -2,12 +2,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createEmptyPluginRegistry } from "../plugins/registry.js";
 import { resetPluginRuntimeStateForTest, setActivePluginRegistry } from "../plugins/runtime.js";
 
-const { loadOpenClawPluginsMock } = vi.hoisted(() => ({
-  loadOpenClawPluginsMock: vi.fn(() => createEmptyPluginRegistry()),
+const { loadXClawPluginsMock } = vi.hoisted(() => ({
+  loadXClawPluginsMock: vi.fn(() => createEmptyPluginRegistry()),
 }));
 
 vi.mock("../plugins/loader.js", () => ({
-  loadOpenClawPlugins: loadOpenClawPluginsMock,
+  loadXClawPlugins: loadXClawPluginsMock,
 }));
 
 let getImageGenerationProvider: typeof import("./provider-registry.js").getImageGenerationProvider;
@@ -15,8 +15,8 @@ let listImageGenerationProviders: typeof import("./provider-registry.js").listIm
 
 describe("image-generation provider registry", () => {
   afterEach(() => {
-    loadOpenClawPluginsMock.mockReset();
-    loadOpenClawPluginsMock.mockReturnValue(createEmptyPluginRegistry());
+    loadXClawPluginsMock.mockReset();
+    loadXClawPluginsMock.mockReturnValue(createEmptyPluginRegistry());
     resetPluginRuntimeStateForTest();
   });
 
@@ -28,7 +28,7 @@ describe("image-generation provider registry", () => {
 
   it("does not load plugins when listing without config", () => {
     expect(listImageGenerationProviders()).toEqual([]);
-    expect(loadOpenClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadXClawPluginsMock).not.toHaveBeenCalled();
   });
 
   it("uses active plugin providers without loading from disk", () => {
@@ -54,7 +54,7 @@ describe("image-generation provider registry", () => {
     const provider = getImageGenerationProvider("custom-image");
 
     expect(provider?.id).toBe("custom-image");
-    expect(loadOpenClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadXClawPluginsMock).not.toHaveBeenCalled();
   });
 
   it("ignores prototype-like provider ids and aliases", () => {

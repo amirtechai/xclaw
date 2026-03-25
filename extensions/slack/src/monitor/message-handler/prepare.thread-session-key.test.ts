@@ -1,6 +1,6 @@
 import type { App } from "@slack/bolt";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../../../../src/config/config.js";
+import type { XClawConfig } from "../../../../../src/config/config.js";
 import type { SlackMessageEvent } from "../../types.js";
 
 type PrepareSlackMessage = typeof import("./prepare.js").prepareSlackMessage;
@@ -29,7 +29,7 @@ function buildCtx(overrides?: { replyToMode?: "all" | "first" | "off" }) {
       channels: {
         slack: { enabled: true, replyToMode },
       },
-    } as OpenClawConfig,
+    } as XClawConfig,
     appClient: {} as App["client"],
     defaultRequireMention: false,
     replyToMode,

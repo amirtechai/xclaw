@@ -12,7 +12,7 @@ import {
   getPackageManifestMetadata,
   type PluginManifest,
   resolvePackageExtensionEntries,
-  type OpenClawPackageManifest,
+  type XClawPackageManifest,
   type PackageManifest,
 } from "./manifest.js";
 import { formatPosixMode, isPathInside, safeRealpathSync, safeStatSync } from "./path-safety.js";
@@ -42,7 +42,7 @@ export type PluginCandidate = {
   packageVersion?: string;
   packageDescription?: string;
   packageDir?: string;
-  packageManifest?: OpenClawPackageManifest;
+  packageManifest?: XClawPackageManifest;
   bundledManifest?: PluginManifest;
   bundledManifestPath?: string;
 };
@@ -62,7 +62,7 @@ export function clearPluginDiscoveryCache(): void {
 }
 
 function resolveDiscoveryCacheMs(env: NodeJS.ProcessEnv): number {
-  const raw = env.OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS?.trim();
+  const raw = env.XCLAW_PLUGIN_DISCOVERY_CACHE_MS?.trim();
   if (raw === "" || raw === "0") {
     return 0;
   }
@@ -77,7 +77,7 @@ function resolveDiscoveryCacheMs(env: NodeJS.ProcessEnv): number {
 }
 
 function shouldUseDiscoveryCache(env: NodeJS.ProcessEnv): boolean {
-  const disabled = env.OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE?.trim();
+  const disabled = env.XCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE?.trim();
   if (disabled) {
     return false;
   }
@@ -348,7 +348,7 @@ function deriveIdHint(params: {
   }
 
   // Prefer the unscoped name so config keys stay stable even when the npm
-  // package is scoped (example: @openclaw/voice-call -> voice-call).
+  // package is scoped (example: @xclaw/voice-call -> voice-call).
   const unscoped = rawPackageName.includes("/")
     ? (rawPackageName.split("/").pop() ?? rawPackageName)
     : rawPackageName;
@@ -406,7 +406,7 @@ function addCandidate(params: {
     setupSource: params.setupSource,
     rootDir: resolvedRoot,
     origin: params.origin,
-    format: params.format ?? "openclaw",
+    format: params.format ?? "xclaw",
     bundleFormat: params.bundleFormat,
     workspaceDir: params.workspaceDir,
     packageName: manifest?.name?.trim() || undefined,
@@ -825,20 +825,20 @@ function discoverBundledMetadataInDirectory(params: {
         ...(!packageManifest?.description && entry.packageDescription
           ? { description: entry.packageDescription }
           : {}),
-        ...(!packageManifest?.openclaw && entry.packageManifest
-          ? { openclaw: entry.packageManifest }
+        ...(!packageManifest?.xclaw && entry.packageManifest
+          ? { xclaw: entry.packageManifest }
           : {}),
       },
       packageDir: rootDir,
       bundledManifest: entry.manifest,
-      bundledManifestPath: path.join(rootDir, "openclaw.plugin.json"),
+      bundledManifestPath: path.join(rootDir, "xclaw.plugin.json"),
     });
   }
 
   return coveredDirectories;
 }
 
-export function discoverOpenClawPlugins(params: {
+export function discoverXClawPlugins(params: {
   workspaceDir?: string;
   extraPaths?: string[];
   ownershipUid?: number | null;

@@ -1,4 +1,4 @@
-import { installCommonResolveTargetErrorCases } from "openclaw/plugin-sdk/testing";
+import { installCommonResolveTargetErrorCases } from "xclaw/plugin-sdk/testing";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("./runtime-api.js", async () => {

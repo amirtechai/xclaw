@@ -1,18 +1,18 @@
 import { readConfigFileSnapshot, writeConfigFile } from "./io.js";
-import type { OpenClawConfig } from "./types.openclaw.js";
+import type { XClawConfig } from "./types.xclaw.js";
 import { validateConfigObjectWithPlugins } from "./validation.js";
 
 export type ConfigMcpServers = Record<string, Record<string, unknown>>;
 
 type ConfigMcpReadResult =
-  | { ok: true; path: string; config: OpenClawConfig; mcpServers: ConfigMcpServers }
+  | { ok: true; path: string; config: XClawConfig; mcpServers: ConfigMcpServers }
   | { ok: false; path: string; error: string };
 
 type ConfigMcpWriteResult =
   | {
       ok: true;
       path: string;
-      config: OpenClawConfig;
+      config: XClawConfig;
       mcpServers: ConfigMcpServers;
       removed?: boolean;
     }

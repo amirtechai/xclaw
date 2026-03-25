@@ -14,15 +14,15 @@ describe("browser config", () => {
     expect(resolved.cdpHost).toBe("127.0.0.1");
     expect(resolved.cdpProtocol).toBe("http");
     const profile = resolveProfile(resolved, resolved.defaultProfile);
-    expect(profile?.name).toBe("openclaw");
-    expect(profile?.driver).toBe("openclaw");
+    expect(profile?.name).toBe("xclaw");
+    expect(profile?.driver).toBe("xclaw");
     expect(profile?.cdpPort).toBe(18800);
     expect(profile?.cdpUrl).toBe("http://127.0.0.1:18800");
 
-    const openclaw = resolveProfile(resolved, "openclaw");
-    expect(openclaw?.driver).toBe("openclaw");
-    expect(openclaw?.cdpPort).toBe(18800);
-    expect(openclaw?.cdpUrl).toBe("http://127.0.0.1:18800");
+    const xclaw = resolveProfile(resolved, "xclaw");
+    expect(xclaw?.driver).toBe("xclaw");
+    expect(xclaw?.cdpPort).toBe(18800);
+    expect(xclaw?.cdpUrl).toBe("http://127.0.0.1:18800");
     const user = resolveProfile(resolved, "user");
     expect(user?.driver).toBe("existing-session");
     expect(user?.cdpPort).toBe(0);
@@ -34,27 +34,27 @@ describe("browser config", () => {
     expect(resolved.remoteCdpHandshakeTimeoutMs).toBe(3000);
   });
 
-  it("derives default ports from OPENCLAW_GATEWAY_PORT when unset", () => {
-    withEnv({ OPENCLAW_GATEWAY_PORT: "19001" }, () => {
+  it("derives default ports from XCLAW_GATEWAY_PORT when unset", () => {
+    withEnv({ XCLAW_GATEWAY_PORT: "19001" }, () => {
       const resolved = resolveBrowserConfig(undefined);
       expect(resolved.controlPort).toBe(19003);
       expect(resolveProfile(resolved, "chrome-relay")).toBe(null);
 
-      const openclaw = resolveProfile(resolved, "openclaw");
-      expect(openclaw?.cdpPort).toBe(19012);
-      expect(openclaw?.cdpUrl).toBe("http://127.0.0.1:19012");
+      const xclaw = resolveProfile(resolved, "xclaw");
+      expect(xclaw?.cdpPort).toBe(19012);
+      expect(xclaw?.cdpUrl).toBe("http://127.0.0.1:19012");
     });
   });
 
   it("derives default ports from gateway.port when env is unset", () => {
-    withEnv({ OPENCLAW_GATEWAY_PORT: undefined }, () => {
+    withEnv({ XCLAW_GATEWAY_PORT: undefined }, () => {
       const resolved = resolveBrowserConfig(undefined, { gateway: { port: 19011 } });
       expect(resolved.controlPort).toBe(19013);
       expect(resolveProfile(resolved, "chrome-relay")).toBe(null);
 
-      const openclaw = resolveProfile(resolved, "openclaw");
-      expect(openclaw?.cdpPort).toBe(19022);
-      expect(openclaw?.cdpUrl).toBe("http://127.0.0.1:19022");
+      const xclaw = resolveProfile(resolved, "xclaw");
+      expect(xclaw?.cdpPort).toBe(19022);
+      expect(xclaw?.cdpUrl).toBe("http://127.0.0.1:19022");
     });
   });
 
@@ -62,10 +62,10 @@ describe("browser config", () => {
     const resolved = resolveBrowserConfig({
       cdpPortRangeStart: 19000,
     });
-    const openclaw = resolveProfile(resolved, "openclaw");
+    const xclaw = resolveProfile(resolved, "xclaw");
     expect(resolved.cdpPortRangeStart).toBe(19000);
-    expect(openclaw?.cdpPort).toBe(19000);
-    expect(openclaw?.cdpUrl).toBe("http://127.0.0.1:19000");
+    expect(xclaw?.cdpPort).toBe(19000);
+    expect(xclaw?.cdpUrl).toBe("http://127.0.0.1:19000");
   });
 
   it("rejects cdpPortRangeStart values that overflow the CDP range window", () => {
@@ -101,7 +101,7 @@ describe("browser config", () => {
     const resolved = resolveBrowserConfig({
       cdpUrl: "http://example.com:9222",
     });
-    const profile = resolveProfile(resolved, "openclaw");
+    const profile = resolveProfile(resolved, "xclaw");
     expect(profile?.cdpIsLoopback).toBe(false);
   });
 
@@ -109,7 +109,7 @@ describe("browser config", () => {
     const resolved = resolveBrowserConfig({
       cdpUrl: "http://example.com:9222",
     });
-    const profile = resolveProfile(resolved, "openclaw");
+    const profile = resolveProfile(resolved, "xclaw");
     expect(profile?.cdpPort).toBe(9222);
     expect(profile?.cdpUrl).toBe("http://example.com:9222");
     expect(profile?.cdpIsLoopback).toBe(false);
@@ -168,7 +168,7 @@ describe("browser config", () => {
     const resolved = resolveBrowserConfig({
       cdpUrl: "wss://connect.browserbase.com?apiKey=test-key",
     });
-    const profile = resolveProfile(resolved, "openclaw");
+    const profile = resolveProfile(resolved, "xclaw");
     expect(profile?.cdpUrl).toBe("wss://connect.browserbase.com/?apiKey=test-key");
     expect(profile?.cdpHost).toBe("connect.browserbase.com");
     expect(profile?.cdpPort).toBe(443);
@@ -311,7 +311,7 @@ describe("browser config", () => {
     const existingSession = resolveProfile(resolved, "chrome-live")!;
     expect(getBrowserProfileCapabilities(existingSession).usesChromeMcp).toBe(true);
 
-    const managed = resolveProfile(resolved, "openclaw")!;
+    const managed = resolveProfile(resolved, "xclaw")!;
     expect(getBrowserProfileCapabilities(managed).usesChromeMcp).toBe(false);
 
     const work = resolveProfile(resolved, "work")!;
@@ -319,34 +319,34 @@ describe("browser config", () => {
   });
 
   describe("default profile preference", () => {
-    it("defaults to openclaw profile when defaultProfile is not configured", () => {
+    it("defaults to xclaw profile when defaultProfile is not configured", () => {
       const resolved = resolveBrowserConfig({
         headless: false,
         noSandbox: false,
       });
-      expect(resolved.defaultProfile).toBe("openclaw");
+      expect(resolved.defaultProfile).toBe("xclaw");
     });
 
-    it("keeps openclaw default when headless=true", () => {
+    it("keeps xclaw default when headless=true", () => {
       const resolved = resolveBrowserConfig({
         headless: true,
       });
-      expect(resolved.defaultProfile).toBe("openclaw");
+      expect(resolved.defaultProfile).toBe("xclaw");
     });
 
-    it("keeps openclaw default when noSandbox=true", () => {
+    it("keeps xclaw default when noSandbox=true", () => {
       const resolved = resolveBrowserConfig({
         noSandbox: true,
       });
-      expect(resolved.defaultProfile).toBe("openclaw");
+      expect(resolved.defaultProfile).toBe("xclaw");
     });
 
-    it("keeps openclaw default when both headless and noSandbox are true", () => {
+    it("keeps xclaw default when both headless and noSandbox are true", () => {
       const resolved = resolveBrowserConfig({
         headless: true,
         noSandbox: true,
       });
-      expect(resolved.defaultProfile).toBe("openclaw");
+      expect(resolved.defaultProfile).toBe("xclaw");
     });
 
     it("explicit defaultProfile config overrides defaults in headless mode", () => {

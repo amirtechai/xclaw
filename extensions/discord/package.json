@@ -1,7 +1,7 @@
 {
-  "name": "@openclaw/discord",
+  "name": "@xclaw/discord",
   "version": "2026.3.22",
-  "description": "OpenClaw Discord channel plugin",
+  "description": "XClaw Discord channel plugin",
   "type": "module",
   "dependencies": {
     "@buape/carbon": "0.0.0-beta-20260317045421",
@@ -11,17 +11,17 @@
     "opusscript": "^0.1.1"
   },
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "xclaw": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.22"
+    "xclaw": ">=2026.3.22"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "xclaw": {
       "optional": true
     }
   },
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ],
@@ -37,7 +37,7 @@
       "systemImage": "bubble.left.and.bubble.right"
     },
     "install": {
-      "npmSpec": "@openclaw/discord",
+      "npmSpec": "@xclaw/discord",
       "localPath": "extensions/discord",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.3.22"

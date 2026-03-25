@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/exa-plugin",
+  "name": "@xclaw/exa-plugin",
   "version": "2026.3.22",
   "private": true,
-  "description": "OpenClaw Exa plugin",
+  "description": "XClaw Exa plugin",
   "type": "module",
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

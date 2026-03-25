@@ -2,11 +2,11 @@ import {
   resolveChannelGroupRequireMention,
   resolveChannelGroupToolsPolicy,
   type GroupToolPolicyConfig,
-} from "openclaw/plugin-sdk/channel-policy";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/core";
+} from "xclaw/plugin-sdk/channel-policy";
+import type { XClawConfig } from "xclaw/plugin-sdk/core";
 
 type IMessageGroupContext = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId?: string | null;
   groupId?: string | null;
   senderId?: string | null;

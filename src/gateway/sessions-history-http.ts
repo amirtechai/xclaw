@@ -15,7 +15,7 @@ import {
 } from "./http-common.js";
 import { getHeader } from "./http-utils.js";
 import {
-  attachOpenClawTranscriptMeta,
+  attachXClawTranscriptMeta,
   readSessionMessages,
   resolveGatewaySessionStoreTarget,
   resolveSessionTranscriptCandidates,
@@ -83,7 +83,7 @@ function resolveMessageSeq(message: unknown): number | undefined {
   if (!message || typeof message !== "object" || Array.isArray(message)) {
     return undefined;
   }
-  const meta = (message as { __openclaw?: unknown }).__openclaw;
+  const meta = (message as { __xclaw?: unknown }).__xclaw;
   if (!meta || typeof meta !== "object" || Array.isArray(meta)) {
     return undefined;
   }
@@ -234,7 +234,7 @@ export async function handleSessionHistoryHttpRequest(
     }
     if (update.message !== undefined) {
       const previousSeq = resolveMessageSeq(sentHistory.items.at(-1));
-      const nextMessage = attachOpenClawTranscriptMeta(update.message, {
+      const nextMessage = attachXClawTranscriptMeta(update.message, {
         ...(typeof update.messageId === "string" ? { id: update.messageId } : {}),
         seq:
           typeof previousSeq === "number"

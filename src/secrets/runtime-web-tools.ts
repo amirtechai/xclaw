@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import { resolveSecretInputRef } from "../config/types.secrets.js";
 import { listBundledWebSearchPluginIds } from "../plugins/bundled-web-search-ids.js";
 import { resolveBundledWebSearchPluginId } from "../plugins/bundled-web-search-provider-ids.js";
@@ -36,7 +36,7 @@ export type {
   RuntimeWebToolsMetadata,
 };
 
-type FetchConfig = NonNullable<OpenClawConfig["tools"]>["web"] extends infer Web
+type FetchConfig = NonNullable<XClawConfig["tools"]>["web"] extends infer Web
   ? Web extends { fetch?: infer Fetch }
     ? Fetch
     : undefined
@@ -69,7 +69,7 @@ function normalizeProvider(
   return undefined;
 }
 
-function hasCustomWebSearchPluginRisk(config: OpenClawConfig): boolean {
+function hasCustomWebSearchPluginRisk(config: XClawConfig): boolean {
   const plugins = config.plugins;
   if (!plugins) {
     return false;
@@ -124,7 +124,7 @@ function buildUnresolvedReason(params: {
 }
 
 async function resolveSecretInputWithEnvFallback(params: {
-  sourceConfig: OpenClawConfig;
+  sourceConfig: XClawConfig;
   context: ResolverContext;
   defaults: SecretDefaults | undefined;
   value: unknown;
@@ -238,7 +238,7 @@ function ensureObject(target: Record<string, unknown>, key: string): Record<stri
 }
 
 function setResolvedWebSearchApiKey(params: {
-  resolvedConfig: OpenClawConfig;
+  resolvedConfig: XClawConfig;
   provider: PluginWebSearchProviderEntry;
   value: string;
 }): void {
@@ -252,7 +252,7 @@ function setResolvedWebSearchApiKey(params: {
 }
 
 function setResolvedFirecrawlApiKey(params: {
-  resolvedConfig: OpenClawConfig;
+  resolvedConfig: XClawConfig;
   value: string;
 }): void {
   const tools = ensureObject(params.resolvedConfig as Record<string, unknown>, "tools");
@@ -285,8 +285,8 @@ function hasConfiguredSecretRef(value: unknown, defaults: SecretDefaults | undef
 }
 
 export async function resolveRuntimeWebTools(params: {
-  sourceConfig: OpenClawConfig;
-  resolvedConfig: OpenClawConfig;
+  sourceConfig: XClawConfig;
+  resolvedConfig: XClawConfig;
   context: ResolverContext;
 }): Promise<RuntimeWebToolsMetadata> {
   const defaults = params.sourceConfig.secrets?.defaults;

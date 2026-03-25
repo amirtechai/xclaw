@@ -1,9 +1,9 @@
 import { DisconnectReason } from "@whiskeysockets/baileys";
-import { formatCliCommand } from "openclaw/plugin-sdk/cli-runtime";
-import { loadConfig } from "openclaw/plugin-sdk/config-runtime";
-import { danger, info, success } from "openclaw/plugin-sdk/runtime-env";
-import { defaultRuntime, type RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { logInfo } from "openclaw/plugin-sdk/text-runtime";
+import { formatCliCommand } from "xclaw/plugin-sdk/cli-runtime";
+import { loadConfig } from "xclaw/plugin-sdk/config-runtime";
+import { danger, info, success } from "xclaw/plugin-sdk/runtime-env";
+import { defaultRuntime, type RuntimeEnv } from "xclaw/plugin-sdk/runtime-env";
+import { logInfo } from "xclaw/plugin-sdk/text-runtime";
 import { resolveWhatsAppAccount } from "./accounts.js";
 import {
   createWaSocket,
@@ -63,7 +63,7 @@ export async function loginWeb(
       });
       console.error(
         danger(
-          `WhatsApp reported the session is logged out. Cleared cached web session; please rerun ${formatCliCommand("openclaw channels login")} and scan the QR again.`,
+          `WhatsApp reported the session is logged out. Cleared cached web session; please rerun ${formatCliCommand("xclaw channels login")} and scan the QR again.`,
         ),
       );
       throw new Error("Session logged out; cache cleared. Re-run login.", { cause: err });

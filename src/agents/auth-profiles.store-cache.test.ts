@@ -34,11 +34,11 @@ describe("auth profile store cache", () => {
   });
 
   it("reuses the synced auth store while auth-profiles.json is unchanged", () => {
-    const agentDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-auth-store-cache-"));
-    const previousAgentDir = process.env.OPENCLAW_AGENT_DIR;
+    const agentDir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-auth-store-cache-"));
+    const previousAgentDir = process.env.XCLAW_AGENT_DIR;
     const previousPiAgentDir = process.env.PI_CODING_AGENT_DIR;
     try {
-      process.env.OPENCLAW_AGENT_DIR = agentDir;
+      process.env.XCLAW_AGENT_DIR = agentDir;
       process.env.PI_CODING_AGENT_DIR = agentDir;
       fs.writeFileSync(
         path.join(agentDir, "auth-profiles.json"),
@@ -65,9 +65,9 @@ describe("auth profile store cache", () => {
       expect(mocks.syncExternalCliCredentials).toHaveBeenCalledTimes(1);
     } finally {
       if (previousAgentDir === undefined) {
-        delete process.env.OPENCLAW_AGENT_DIR;
+        delete process.env.XCLAW_AGENT_DIR;
       } else {
-        process.env.OPENCLAW_AGENT_DIR = previousAgentDir;
+        process.env.XCLAW_AGENT_DIR = previousAgentDir;
       }
       if (previousPiAgentDir === undefined) {
         delete process.env.PI_CODING_AGENT_DIR;
@@ -79,11 +79,11 @@ describe("auth profile store cache", () => {
   });
 
   it("refreshes the cached auth store after auth-profiles.json changes", async () => {
-    const agentDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-auth-store-refresh-"));
-    const previousAgentDir = process.env.OPENCLAW_AGENT_DIR;
+    const agentDir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-auth-store-refresh-"));
+    const previousAgentDir = process.env.XCLAW_AGENT_DIR;
     const previousPiAgentDir = process.env.PI_CODING_AGENT_DIR;
     try {
-      process.env.OPENCLAW_AGENT_DIR = agentDir;
+      process.env.XCLAW_AGENT_DIR = agentDir;
       process.env.PI_CODING_AGENT_DIR = agentDir;
       const authPath = path.join(agentDir, "auth-profiles.json");
       fs.writeFileSync(
@@ -136,9 +136,9 @@ describe("auth profile store cache", () => {
       });
     } finally {
       if (previousAgentDir === undefined) {
-        delete process.env.OPENCLAW_AGENT_DIR;
+        delete process.env.XCLAW_AGENT_DIR;
       } else {
-        process.env.OPENCLAW_AGENT_DIR = previousAgentDir;
+        process.env.XCLAW_AGENT_DIR = previousAgentDir;
       }
       if (previousPiAgentDir === undefined) {
         delete process.env.PI_CODING_AGENT_DIR;
@@ -150,8 +150,8 @@ describe("auth profile store cache", () => {
   });
 
   it("re-syncs external CLI credentials after the cache ttl when auth-profiles.json is absent", () => {
-    const agentDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-auth-store-missing-"));
-    const previousAgentDir = process.env.OPENCLAW_AGENT_DIR;
+    const agentDir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-auth-store-missing-"));
+    const previousAgentDir = process.env.XCLAW_AGENT_DIR;
     const previousPiAgentDir = process.env.PI_CODING_AGENT_DIR;
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-03-21T15:00:00.000Z"));
@@ -168,7 +168,7 @@ describe("auth profile store cache", () => {
       return true;
     });
     try {
-      process.env.OPENCLAW_AGENT_DIR = agentDir;
+      process.env.XCLAW_AGENT_DIR = agentDir;
       process.env.PI_CODING_AGENT_DIR = agentDir;
 
       const first = ensureAuthProfileStore(agentDir);
@@ -186,9 +186,9 @@ describe("auth profile store cache", () => {
       expect(third.profiles["openai-codex:default"]).toMatchObject({ access: "access-2" });
     } finally {
       if (previousAgentDir === undefined) {
-        delete process.env.OPENCLAW_AGENT_DIR;
+        delete process.env.XCLAW_AGENT_DIR;
       } else {
-        process.env.OPENCLAW_AGENT_DIR = previousAgentDir;
+        process.env.XCLAW_AGENT_DIR = previousAgentDir;
       }
       if (previousPiAgentDir === undefined) {
         delete process.env.PI_CODING_AGENT_DIR;

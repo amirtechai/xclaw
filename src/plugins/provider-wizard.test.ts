@@ -261,7 +261,7 @@ describe("provider wizard boundaries", () => {
       },
     });
     const config = {};
-    const env = { OPENCLAW_HOME: "/tmp/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { XCLAW_HOME: "/tmp/xclaw-home" } as NodeJS.ProcessEnv;
     resolvePluginProviders.mockReturnValue([provider]);
 
     expect(
@@ -290,7 +290,7 @@ describe("provider wizard boundaries", () => {
   it("invalidates the wizard cache when config or env contents change in place", () => {
     const provider = createSglangSetupProvider();
     const config = createSglangConfig();
-    const env = { OPENCLAW_HOME: "/tmp/openclaw-home-a" } as NodeJS.ProcessEnv;
+    const env = { XCLAW_HOME: "/tmp/xclaw-home-a" } as NodeJS.ProcessEnv;
     resolvePluginProviders.mockReturnValue([provider]);
 
     expect(
@@ -302,7 +302,7 @@ describe("provider wizard boundaries", () => {
     ).toHaveLength(1);
 
     config.plugins.allow = ["vllm"];
-    env.OPENCLAW_HOME = "/tmp/openclaw-home-b";
+    env.XCLAW_HOME = "/tmp/xclaw-home-b";
 
     expect(
       resolveProviderWizardOptions({
@@ -319,8 +319,8 @@ describe("provider wizard boundaries", () => {
     const provider = createSglangSetupProvider();
     const config = createSglangConfig();
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+      XCLAW_HOME: "/tmp/xclaw-home",
+      XCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
     } as NodeJS.ProcessEnv;
     resolvePluginProviders.mockReturnValue([provider]);
 
@@ -333,8 +333,8 @@ describe("provider wizard boundaries", () => {
     const provider = createSglangSetupProvider();
     const config = createSglangConfig();
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "0",
+      XCLAW_HOME: "/tmp/xclaw-home",
+      XCLAW_PLUGIN_DISCOVERY_CACHE_MS: "0",
     } as NodeJS.ProcessEnv;
     resolvePluginProviders.mockReturnValue([provider]);
 
@@ -348,9 +348,9 @@ describe("provider wizard boundaries", () => {
     const provider = createSglangSetupProvider();
     const config = {};
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "5",
-      OPENCLAW_PLUGIN_MANIFEST_CACHE_MS: "20",
+      XCLAW_HOME: "/tmp/xclaw-home",
+      XCLAW_PLUGIN_DISCOVERY_CACHE_MS: "5",
+      XCLAW_PLUGIN_MANIFEST_CACHE_MS: "20",
     } as NodeJS.ProcessEnv;
     resolvePluginProviders.mockReturnValue([provider]);
 
@@ -379,8 +379,8 @@ describe("provider wizard boundaries", () => {
     const provider = createSglangSetupProvider();
     const config = {};
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "1000",
+      XCLAW_HOME: "/tmp/xclaw-home",
+      XCLAW_PLUGIN_DISCOVERY_CACHE_MS: "1000",
     } as NodeJS.ProcessEnv;
     resolvePluginProviders.mockReturnValue([provider]);
 
@@ -390,7 +390,7 @@ describe("provider wizard boundaries", () => {
       env,
     });
 
-    env.OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS = "5";
+    env.XCLAW_PLUGIN_DISCOVERY_CACHE_MS = "5";
 
     resolveProviderWizardOptions({
       config,
@@ -417,7 +417,7 @@ describe("provider wizard boundaries", () => {
       }),
     ]);
 
-    const env = { OPENCLAW_HOME: "/tmp/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { XCLAW_HOME: "/tmp/xclaw-home" } as NodeJS.ProcessEnv;
     await runProviderModelSelectedHook({
       config: {},
       model: "vllm/qwen3-coder",

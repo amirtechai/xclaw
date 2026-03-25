@@ -76,9 +76,9 @@ describe("entry root version fast path", () => {
     vi.resetModules();
     vi.clearAllMocks();
     originalArgv = [...process.argv];
-    originalGatewayToken = process.env.OPENCLAW_GATEWAY_TOKEN;
-    delete process.env.OPENCLAW_GATEWAY_TOKEN;
-    process.argv = ["node", "openclaw", "--version"];
+    originalGatewayToken = process.env.XCLAW_GATEWAY_TOKEN;
+    delete process.env.XCLAW_GATEWAY_TOKEN;
+    process.argv = ["node", "xclaw", "--version"];
     exitSpy = vi
       .spyOn(process, "exit")
       .mockImplementation(((_code?: number) => undefined) as typeof process.exit);
@@ -87,9 +87,9 @@ describe("entry root version fast path", () => {
   afterEach(() => {
     process.argv = originalArgv;
     if (originalGatewayToken === undefined) {
-      delete process.env.OPENCLAW_GATEWAY_TOKEN;
+      delete process.env.XCLAW_GATEWAY_TOKEN;
     } else {
-      process.env.OPENCLAW_GATEWAY_TOKEN = originalGatewayToken;
+      process.env.XCLAW_GATEWAY_TOKEN = originalGatewayToken;
     }
     exitSpy.mockRestore();
   });
@@ -100,7 +100,7 @@ describe("entry root version fast path", () => {
     await import("./entry.js");
 
     await vi.waitFor(() => {
-      expect(logSpy).toHaveBeenCalledWith("OpenClaw 9.9.9-test (abc1234)");
+      expect(logSpy).toHaveBeenCalledWith("XClaw 9.9.9-test (abc1234)");
       expect(exitSpy).toHaveBeenCalledWith(0);
     });
 
@@ -114,7 +114,7 @@ describe("entry root version fast path", () => {
     await import("./entry.js");
 
     await vi.waitFor(() => {
-      expect(logSpy).toHaveBeenCalledWith("OpenClaw 9.9.9-test");
+      expect(logSpy).toHaveBeenCalledWith("XClaw 9.9.9-test");
       expect(exitSpy).toHaveBeenCalledWith(0);
     });
 
@@ -128,7 +128,7 @@ describe("entry root version fast path", () => {
     await import("./entry.js");
 
     await vi.waitFor(() => {
-      expect(runCliMock).toHaveBeenCalledWith(["node", "openclaw", "--version"]);
+      expect(runCliMock).toHaveBeenCalledWith(["node", "xclaw", "--version"]);
     });
     expect(logSpy).not.toHaveBeenCalled();
     expect(exitSpy).not.toHaveBeenCalled();
@@ -138,14 +138,14 @@ describe("entry root version fast path", () => {
 
   it("rejects container mode for root version when gateway override env vars are set", async () => {
     resolveCliContainerTargetMock.mockReturnValue("demo");
-    process.env.OPENCLAW_GATEWAY_TOKEN = "demo-token";
+    process.env.XCLAW_GATEWAY_TOKEN = "demo-token";
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     await import("./entry.js");
 
     await vi.waitFor(() => {
       expect(errorSpy).toHaveBeenCalledWith(
-        "[openclaw] --container cannot be combined with --profile/--dev or gateway override env vars",
+        "[xclaw] --container cannot be combined with --profile/--dev or gateway override env vars",
       );
       expect(exitSpy).toHaveBeenCalledWith(2);
     });

@@ -3,11 +3,11 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT_DIR/scripts/lib/live-docker-auth.sh"
-IMAGE_NAME="${OPENCLAW_IMAGE:-openclaw:local}"
-LIVE_IMAGE_NAME="${OPENCLAW_LIVE_IMAGE:-${IMAGE_NAME}-live}"
-CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-$HOME/.openclaw}"
-WORKSPACE_DIR="${OPENCLAW_WORKSPACE_DIR:-$HOME/.openclaw/workspace}"
-PROFILE_FILE="${OPENCLAW_PROFILE_FILE:-$HOME/.profile}"
+IMAGE_NAME="${XCLAW_IMAGE:-xclaw:local}"
+LIVE_IMAGE_NAME="${XCLAW_LIVE_IMAGE:-${IMAGE_NAME}-live}"
+CONFIG_DIR="${XCLAW_CONFIG_DIR:-$HOME/.xclaw}"
+WORKSPACE_DIR="${XCLAW_WORKSPACE_DIR:-$HOME/.xclaw/workspace}"
+PROFILE_FILE="${XCLAW_PROFILE_FILE:-$HOME/.profile}"
 
 PROFILE_MOUNT=()
 if [[ -f "$PROFILE_FILE" ]]; then
@@ -15,23 +15,23 @@ if [[ -f "$PROFILE_FILE" ]]; then
 fi
 
 AUTH_DIRS=()
-if [[ -n "${OPENCLAW_DOCKER_AUTH_DIRS:-}" ]]; then
+if [[ -n "${XCLAW_DOCKER_AUTH_DIRS:-}" ]]; then
   while IFS= read -r auth_dir; do
     [[ -n "$auth_dir" ]] || continue
     AUTH_DIRS+=("$auth_dir")
-  done < <(openclaw_live_collect_auth_dirs)
-elif [[ -n "${OPENCLAW_LIVE_GATEWAY_PROVIDERS:-}" ]]; then
+  done < <(xclaw_live_collect_auth_dirs)
+elif [[ -n "${XCLAW_LIVE_GATEWAY_PROVIDERS:-}" ]]; then
   while IFS= read -r auth_dir; do
     [[ -n "$auth_dir" ]] || continue
     AUTH_DIRS+=("$auth_dir")
-  done < <(openclaw_live_collect_auth_dirs_from_csv "${OPENCLAW_LIVE_GATEWAY_PROVIDERS:-}")
+  done < <(xclaw_live_collect_auth_dirs_from_csv "${XCLAW_LIVE_GATEWAY_PROVIDERS:-}")
 else
   while IFS= read -r auth_dir; do
     [[ -n "$auth_dir" ]] || continue
     AUTH_DIRS+=("$auth_dir")
-  done < <(openclaw_live_collect_auth_dirs)
+  done < <(xclaw_live_collect_auth_dirs)
 fi
-AUTH_DIRS_CSV="$(openclaw_live_join_csv "${AUTH_DIRS[@]}")"
+AUTH_DIRS_CSV="$(xclaw_live_join_csv "${AUTH_DIRS[@]}")"
 
 EXTERNAL_AUTH_MOUNTS=()
 for auth_dir in "${AUTH_DIRS[@]}"; do
@@ -44,7 +44,7 @@ done
 read -r -d '' LIVE_TEST_CMD <<'EOF' || true
 set -euo pipefail
 [ -f "$HOME/.profile" ] && source "$HOME/.profile" || true
-IFS=',' read -r -a auth_dirs <<<"${OPENCLAW_DOCKER_AUTH_DIRS_RESOLVED:-}"
+IFS=',' read -r -a auth_dirs <<<"${XCLAW_DOCKER_AUTH_DIRS_RESOLVED:-}"
 for auth_dir in "${auth_dirs[@]}"; do
   [ -n "$auth_dir" ] || continue
   if [ -d "/host-auth/$auth_dir" ]; then
@@ -68,9 +68,9 @@ tar -C /src \
 ln -s /app/node_modules "$tmp_dir/node_modules"
 ln -s /app/dist "$tmp_dir/dist"
 if [ -d /app/dist-runtime/extensions ]; then
-  export OPENCLAW_BUNDLED_PLUGINS_DIR=/app/dist-runtime/extensions
+  export XCLAW_BUNDLED_PLUGINS_DIR=/app/dist-runtime/extensions
 elif [ -d /app/dist/extensions ]; then
-  export OPENCLAW_BUNDLED_PLUGINS_DIR=/app/dist/extensions
+  export XCLAW_BUNDLED_PLUGINS_DIR=/app/dist/extensions
 fi
 cd "$tmp_dir"
 pnpm test:live
@@ -86,16 +86,16 @@ docker run --rm -t \
   -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
   -e HOME=/home/node \
   -e NODE_OPTIONS=--disable-warning=ExperimentalWarning \
-  -e OPENCLAW_SKIP_CHANNELS=1 \
-  -e OPENCLAW_DOCKER_AUTH_DIRS_RESOLVED="$AUTH_DIRS_CSV" \
-  -e OPENCLAW_LIVE_TEST=1 \
-  -e OPENCLAW_LIVE_GATEWAY_MODELS="${OPENCLAW_LIVE_GATEWAY_MODELS:-modern}" \
-  -e OPENCLAW_LIVE_GATEWAY_PROVIDERS="${OPENCLAW_LIVE_GATEWAY_PROVIDERS:-}" \
-  -e OPENCLAW_LIVE_GATEWAY_MAX_MODELS="${OPENCLAW_LIVE_GATEWAY_MAX_MODELS:-24}" \
-  -e OPENCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS="${OPENCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS:-}" \
+  -e XCLAW_SKIP_CHANNELS=1 \
+  -e XCLAW_DOCKER_AUTH_DIRS_RESOLVED="$AUTH_DIRS_CSV" \
+  -e XCLAW_LIVE_TEST=1 \
+  -e XCLAW_LIVE_GATEWAY_MODELS="${XCLAW_LIVE_GATEWAY_MODELS:-modern}" \
+  -e XCLAW_LIVE_GATEWAY_PROVIDERS="${XCLAW_LIVE_GATEWAY_PROVIDERS:-}" \
+  -e XCLAW_LIVE_GATEWAY_MAX_MODELS="${XCLAW_LIVE_GATEWAY_MAX_MODELS:-24}" \
+  -e XCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS="${XCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS:-}" \
   -v "$ROOT_DIR":/src:ro \
-  -v "$CONFIG_DIR":/home/node/.openclaw \
-  -v "$WORKSPACE_DIR":/home/node/.openclaw/workspace \
+  -v "$CONFIG_DIR":/home/node/.xclaw \
+  -v "$WORKSPACE_DIR":/home/node/.xclaw/workspace \
   "${EXTERNAL_AUTH_MOUNTS[@]}" \
   "${PROFILE_MOUNT[@]}" \
   "$LIVE_IMAGE_NAME" \

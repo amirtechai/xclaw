@@ -2,12 +2,12 @@ import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   normalizeOptionalAccountId,
-} from "openclaw/plugin-sdk/account-id";
+} from "xclaw/plugin-sdk/account-id";
 import {
   listCombinedAccountIds,
   resolveListedDefaultAccountId,
-} from "openclaw/plugin-sdk/account-resolution";
-import type { OpenClawConfig } from "../api.js";
+} from "xclaw/plugin-sdk/account-resolution";
+import type { XClawConfig } from "../api.js";
 import type { NostrProfile } from "./config-schema.js";
 import { DEFAULT_RELAYS } from "./default-relays.js";
 import { getPublicKeyFromPrivate } from "./nostr-bus.js";
@@ -35,7 +35,7 @@ export interface ResolvedNostrAccount {
   config: NostrAccountConfig;
 }
 
-function resolveConfiguredDefaultNostrAccountId(cfg: OpenClawConfig): string | undefined {
+function resolveConfiguredDefaultNostrAccountId(cfg: XClawConfig): string | undefined {
   const nostrCfg = (cfg.channels as Record<string, unknown> | undefined)?.nostr as
     | NostrAccountConfig
     | undefined;
@@ -45,7 +45,7 @@ function resolveConfiguredDefaultNostrAccountId(cfg: OpenClawConfig): string | u
 /**
  * List all configured Nostr account IDs
  */
-export function listNostrAccountIds(cfg: OpenClawConfig): string[] {
+export function listNostrAccountIds(cfg: XClawConfig): string[] {
   const nostrCfg = (cfg.channels as Record<string, unknown> | undefined)?.nostr as
     | NostrAccountConfig
     | undefined;
@@ -60,7 +60,7 @@ export function listNostrAccountIds(cfg: OpenClawConfig): string[] {
 /**
  * Get the default account ID
  */
-export function resolveDefaultNostrAccountId(cfg: OpenClawConfig): string {
+export function resolveDefaultNostrAccountId(cfg: XClawConfig): string {
   return resolveListedDefaultAccountId({
     accountIds: listNostrAccountIds(cfg),
     configuredDefaultAccountId: resolveConfiguredDefaultNostrAccountId(cfg),
@@ -71,7 +71,7 @@ export function resolveDefaultNostrAccountId(cfg: OpenClawConfig): string {
  * Resolve a Nostr account from config
  */
 export function resolveNostrAccount(opts: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId?: string | null;
 }): ResolvedNostrAccount {
   const accountId = normalizeAccountId(opts.accountId ?? resolveDefaultNostrAccountId(opts.cfg));

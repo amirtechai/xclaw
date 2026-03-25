@@ -7,7 +7,7 @@ export type { ChatChannelId } from "./ids.js";
 
 export type ChatChannelMeta = ChannelMeta;
 
-const WEBSITE_URL = "https://openclaw.ai";
+const WEBSITE_URL = "https://xclaw.ai";
 
 type RegisteredChannelPluginEntry = {
   plugin: {

@@ -1,15 +1,15 @@
 import { Command } from "commander";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 
 const mocks = vi.hoisted(() => ({
   memoryRegister: vi.fn(),
   otherRegister: vi.fn(),
-  loadOpenClawPlugins: vi.fn(),
+  loadXClawPlugins: vi.fn(),
 }));
 
 vi.mock("./loader.js", () => ({
-  loadOpenClawPlugins: (...args: unknown[]) => mocks.loadOpenClawPlugins(...args),
+  loadXClawPlugins: (...args: unknown[]) => mocks.loadXClawPlugins(...args),
 }));
 
 import { registerPluginCliCommands } from "./cli.js";
@@ -18,8 +18,8 @@ describe("registerPluginCliCommands", () => {
   beforeEach(() => {
     mocks.memoryRegister.mockClear();
     mocks.otherRegister.mockClear();
-    mocks.loadOpenClawPlugins.mockReset();
-    mocks.loadOpenClawPlugins.mockReturnValue({
+    mocks.loadXClawPlugins.mockReset();
+    mocks.loadXClawPlugins.mockReturnValue({
       cliRegistrars: [
         {
           pluginId: "memory-core",
@@ -50,11 +50,11 @@ describe("registerPluginCliCommands", () => {
 
   it("forwards an explicit env to plugin loading", () => {
     const program = new Command();
-    const env = { OPENCLAW_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { XCLAW_HOME: "/srv/xclaw-home" } as NodeJS.ProcessEnv;
 
-    registerPluginCliCommands(program, {} as OpenClawConfig, env);
+    registerPluginCliCommands(program, {} as XClawConfig, env);
 
-    expect(mocks.loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(mocks.loadXClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         env,
       }),

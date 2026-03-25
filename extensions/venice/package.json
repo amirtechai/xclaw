@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/venice-provider",
+  "name": "@xclaw/venice-provider",
   "version": "2026.3.22",
   "private": true,
-  "description": "OpenClaw Venice provider plugin",
+  "description": "XClaw Venice provider plugin",
   "type": "module",
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

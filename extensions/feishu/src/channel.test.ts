@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { XClawConfig } from "../runtime-api.js";
 
 const probeFeishuMock = vi.hoisted(() => vi.fn());
 const createFeishuClientMock = vi.hoisted(() => vi.fn());
@@ -55,7 +55,7 @@ vi.mock("./channel.runtime.js", () => ({
 
 import { feishuPlugin } from "./channel.js";
 
-function getDescribedActions(cfg: OpenClawConfig): string[] {
+function getDescribedActions(cfg: XClawConfig): string[] {
   return [...(feishuPlugin.actions?.describeMessageTool?.({ cfg })?.actions ?? [])];
 }
 
@@ -74,7 +74,7 @@ describe("feishuPlugin.status.probeAccount", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
 
     const account = feishuPlugin.config.resolveAccount(cfg, "main");
     probeFeishuMock.mockResolvedValueOnce({ ok: true, appId: "cli_main" });
@@ -109,7 +109,7 @@ describe("feishuPlugin actions", () => {
         },
       },
     },
-  } as OpenClawConfig;
+  } as XClawConfig;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -145,7 +145,7 @@ describe("feishuPlugin actions", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
 
     expect(getDescribedActions(disabledCfg)).toEqual([
       "send",

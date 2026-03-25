@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const hoisted = vi.hoisted(() => ({
-  loadOpenClawPlugins: vi.fn(),
+  loadXClawPlugins: vi.fn(),
   getActivePluginRegistryKey: vi.fn<() => string | null>(),
 }));
 
 vi.mock("../plugins/loader.js", () => ({
-  loadOpenClawPlugins: hoisted.loadOpenClawPlugins,
+  loadXClawPlugins: hoisted.loadXClawPlugins,
 }));
 
 vi.mock("../plugins/runtime.js", () => ({
@@ -15,7 +15,7 @@ vi.mock("../plugins/runtime.js", () => ({
 
 describe("ensureRuntimePluginsLoaded", () => {
   beforeEach(() => {
-    hoisted.loadOpenClawPlugins.mockReset();
+    hoisted.loadXClawPlugins.mockReset();
     hoisted.getActivePluginRegistryKey.mockReset();
     hoisted.getActivePluginRegistryKey.mockReturnValue(null);
     vi.resetModules();
@@ -31,7 +31,7 @@ describe("ensureRuntimePluginsLoaded", () => {
       allowGatewaySubagentBinding: true,
     });
 
-    expect(hoisted.loadOpenClawPlugins).not.toHaveBeenCalled();
+    expect(hoisted.loadXClawPlugins).not.toHaveBeenCalled();
   });
 
   it("loads runtime plugins when no active registry exists", async () => {
@@ -43,7 +43,7 @@ describe("ensureRuntimePluginsLoaded", () => {
       allowGatewaySubagentBinding: true,
     });
 
-    expect(hoisted.loadOpenClawPlugins).toHaveBeenCalledWith({
+    expect(hoisted.loadXClawPlugins).toHaveBeenCalledWith({
       config: {} as never,
       workspaceDir: "/tmp/workspace",
       runtimeOptions: {

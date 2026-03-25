@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { isRecord } from "../utils.js";
 import {
@@ -6,7 +6,7 @@ import {
   resolvePluginSnapshotCacheTtlMs,
   shouldUsePluginSnapshotCache,
 } from "./cache-controls.js";
-import { loadOpenClawPlugins } from "./loader.js";
+import { loadXClawPlugins } from "./loader.js";
 import type { PluginLoadOptions } from "./loader.js";
 import { createPluginLoaderLogger } from "./logger.js";
 import { loadPluginManifestRegistry, type PluginManifestRecord } from "./manifest-registry.js";
@@ -23,13 +23,13 @@ type WebSearchProviderSnapshotCacheEntry = {
   providers: PluginWebSearchProviderEntry[];
 };
 let webSearchProviderSnapshotCache = new WeakMap<
-  OpenClawConfig,
+  XClawConfig,
   WeakMap<NodeJS.ProcessEnv, Map<string, WebSearchProviderSnapshotCacheEntry>>
 >();
 
 function resetWebSearchProviderSnapshotCacheForTests() {
   webSearchProviderSnapshotCache = new WeakMap<
-    OpenClawConfig,
+    XClawConfig,
     WeakMap<NodeJS.ProcessEnv, Map<string, WebSearchProviderSnapshotCacheEntry>>
   >();
 }
@@ -38,7 +38,7 @@ export const __testing = {
   resetWebSearchProviderSnapshotCacheForTests,
 } as const;
 function buildWebSearchSnapshotCacheKey(params: {
-  config?: OpenClawConfig;
+  config?: XClawConfig;
   workspaceDir?: string;
   bundledAllowlistCompat?: boolean;
   env: NodeJS.ProcessEnv;
@@ -118,7 +118,7 @@ export function resolvePluginWebSearchProviders(params: {
     workspaceDir: params.workspaceDir,
     env,
   });
-  const registry = loadOpenClawPlugins({
+  const registry = loadXClawPlugins({
     config,
     workspaceDir: params.workspaceDir,
     env,

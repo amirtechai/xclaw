@@ -1,7 +1,7 @@
 import { DEFAULT_PROVIDER } from "../agents/defaults.js";
 import { parseModelRef } from "../agents/model-selection.js";
 import { normalizeProviderId } from "../agents/model-selection.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
 import {
   buildPluginSnapshotCacheEnvKey,
@@ -22,12 +22,12 @@ type ProviderWizardCacheEntry = {
   providers: ProviderPlugin[];
 };
 const providerWizardCache = new WeakMap<
-  OpenClawConfig,
+  XClawConfig,
   WeakMap<NodeJS.ProcessEnv, Map<string, ProviderWizardCacheEntry>>
 >();
 
 function buildProviderWizardCacheKey(params: {
-  config: OpenClawConfig;
+  config: XClawConfig;
   workspaceDir?: string;
   env: NodeJS.ProcessEnv;
 }): string {
@@ -123,7 +123,7 @@ export function buildProviderPluginMethodChoice(providerId: string, methodId: st
 }
 
 function resolveProviderWizardProviders(params: {
-  config?: OpenClawConfig;
+  config?: XClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): ProviderPlugin[] {
@@ -173,7 +173,7 @@ function resolveProviderWizardProviders(params: {
 }
 
 export function resolveProviderWizardOptions(params: {
-  config?: OpenClawConfig;
+  config?: XClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): ProviderWizardOption[] {
@@ -242,7 +242,7 @@ function resolveModelPickerChoiceValue(
 }
 
 export function resolveProviderModelPickerEntries(params: {
-  config?: OpenClawConfig;
+  config?: XClawConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): ProviderModelPickerEntry[] {
@@ -322,7 +322,7 @@ export function resolveProviderPluginChoice(params: {
 }
 
 export async function runProviderModelSelectedHook(params: {
-  config: OpenClawConfig;
+  config: XClawConfig;
   model: string;
   prompter: WizardPrompter;
   agentDir?: string;

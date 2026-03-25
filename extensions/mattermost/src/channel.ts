@@ -1,25 +1,25 @@
 import { Type } from "@sinclair/typebox";
-import { describeAccountSnapshot } from "openclaw/plugin-sdk/account-helpers";
-import { formatNormalizedAllowFromEntries } from "openclaw/plugin-sdk/allow-from";
-import { createMessageToolButtonsSchema } from "openclaw/plugin-sdk/channel-actions";
+import { describeAccountSnapshot } from "xclaw/plugin-sdk/account-helpers";
+import { formatNormalizedAllowFromEntries } from "xclaw/plugin-sdk/allow-from";
+import { createMessageToolButtonsSchema } from "xclaw/plugin-sdk/channel-actions";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
-} from "openclaw/plugin-sdk/channel-config-helpers";
+} from "xclaw/plugin-sdk/channel-config-helpers";
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageActionName,
   ChannelMessageToolDiscovery,
-} from "openclaw/plugin-sdk/channel-contract";
-import { createLoggedPairingApprovalNotifier } from "openclaw/plugin-sdk/channel-pairing";
-import { createRestrictSendersChannelSecurity } from "openclaw/plugin-sdk/channel-policy";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/core";
-import { createChannelDirectoryAdapter } from "openclaw/plugin-sdk/directory-runtime";
-import { buildPassiveProbedChannelStatusSummary } from "openclaw/plugin-sdk/extension-shared";
+} from "xclaw/plugin-sdk/channel-contract";
+import { createLoggedPairingApprovalNotifier } from "xclaw/plugin-sdk/channel-pairing";
+import { createRestrictSendersChannelSecurity } from "xclaw/plugin-sdk/channel-policy";
+import { createChatChannelPlugin } from "xclaw/plugin-sdk/core";
+import { createChannelDirectoryAdapter } from "xclaw/plugin-sdk/directory-runtime";
+import { buildPassiveProbedChannelStatusSummary } from "xclaw/plugin-sdk/extension-shared";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "xclaw/plugin-sdk/status-helpers";
 import { MattermostConfigSchema } from "./config-schema.js";
 import { resolveMattermostGroupRequireMention } from "./group-mentions.js";
 import {
@@ -411,7 +411,7 @@ export const mattermostPlugin: ChannelPlugin<ResolvedMattermostAccount> = create
   pairing: {
     text: {
       idLabel: "mattermostUserId",
-      message: "OpenClaw: your access has been approved.",
+      message: "XClaw: your access has been approved.",
       normalizeAllowEntry: (entry) => normalizeAllowEntry(entry),
       notify: createLoggedPairingApprovalNotifier(
         ({ id }) => `[mattermost] User ${id} approved for pairing`,

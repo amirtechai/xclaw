@@ -14,7 +14,7 @@ export {
   IMessageConfigSchema,
   type ChannelPlugin,
   type IMessageAccountConfig,
-} from "openclaw/plugin-sdk/imessage";
+} from "xclaw/plugin-sdk/imessage";
 export {
   resolveIMessageGroupRequireMention,
   resolveIMessageGroupToolPolicy,

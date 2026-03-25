@@ -2,8 +2,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import {
   definePluginEntry,
-  type OpenClawPluginApi,
-  type OpenClawPluginService,
+  type XClawPluginApi,
+  type XClawPluginService,
 } from "./runtime-api.js";
 
 type ArmGroup = "camera" | "screen" | "writes" | "all";
@@ -159,18 +159,18 @@ async function writeArmState(statePath: string, state: ArmStateFile | null): Pro
   await fs.writeFile(statePath, `${JSON.stringify(state, null, 2)}\n`, "utf8");
 }
 
-function normalizeDenyList(cfg: OpenClawPluginApi["config"]): string[] {
+function normalizeDenyList(cfg: XClawPluginApi["config"]): string[] {
   return uniqSorted([...(cfg.gateway?.nodes?.denyCommands ?? [])]);
 }
 
-function normalizeAllowList(cfg: OpenClawPluginApi["config"]): string[] {
+function normalizeAllowList(cfg: XClawPluginApi["config"]): string[] {
   return uniqSorted([...(cfg.gateway?.nodes?.allowCommands ?? [])]);
 }
 
 function patchConfigNodeLists(
-  cfg: OpenClawPluginApi["config"],
+  cfg: XClawPluginApi["config"],
   next: { allowCommands: string[]; denyCommands: string[] },
-): OpenClawPluginApi["config"] {
+): XClawPluginApi["config"] {
   return {
     ...cfg,
     gateway: {
@@ -185,7 +185,7 @@ function patchConfigNodeLists(
 }
 
 async function disarmNow(params: {
-  api: OpenClawPluginApi;
+  api: XClawPluginApi;
   stateDir: string;
   statePath: string;
   reason: string;
@@ -291,10 +291,10 @@ export default definePluginEntry({
   id: "phone-control",
   name: "Phone Control",
   description: "Temporary allowlist control for phone automation commands",
-  register(api: OpenClawPluginApi) {
+  register(api: XClawPluginApi) {
     let expiryInterval: ReturnType<typeof setInterval> | null = null;
 
-    const timerService: OpenClawPluginService = {
+    const timerService: XClawPluginService = {
       id: "phone-control-expiry",
       start: async (ctx) => {
         const statePath = resolveStatePath(ctx.stateDir);

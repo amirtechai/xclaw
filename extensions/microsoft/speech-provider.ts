@@ -5,10 +5,10 @@ import {
   TRUSTED_CLIENT_TOKEN,
   generateSecMsGecToken,
 } from "node-edge-tts/dist/drm.js";
-import type { SpeechProviderPlugin } from "openclaw/plugin-sdk/core";
-import { resolvePreferredOpenClawTmpDir } from "openclaw/plugin-sdk/llm-task";
-import { isVoiceCompatibleAudio } from "openclaw/plugin-sdk/media-runtime";
-import { edgeTTS, inferEdgeExtension, type SpeechVoiceOption } from "openclaw/plugin-sdk/speech";
+import type { SpeechProviderPlugin } from "xclaw/plugin-sdk/core";
+import { resolvePreferredXClawTmpDir } from "xclaw/plugin-sdk/llm-task";
+import { isVoiceCompatibleAudio } from "xclaw/plugin-sdk/media-runtime";
+import { edgeTTS, inferEdgeExtension, type SpeechVoiceOption } from "xclaw/plugin-sdk/speech";
 
 const DEFAULT_EDGE_OUTPUT_FORMAT = "audio-24khz-48kbitrate-mono-mp3";
 
@@ -79,7 +79,7 @@ export function buildMicrosoftSpeechProvider(): SpeechProviderPlugin {
     listVoices: async () => await listMicrosoftVoices(),
     isConfigured: ({ config }) => config.edge.enabled,
     synthesize: async (req) => {
-      const tempRoot = resolvePreferredOpenClawTmpDir();
+      const tempRoot = resolvePreferredXClawTmpDir();
       mkdirSync(tempRoot, { recursive: true, mode: 0o700 });
       const tempDir = mkdtempSync(path.join(tempRoot, "tts-microsoft-"));
       let outputFormat = req.overrides?.microsoft?.outputFormat ?? req.config.edge.outputFormat;

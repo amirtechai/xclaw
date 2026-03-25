@@ -1,25 +1,25 @@
 import {
   definePluginEntry,
-  type OpenClawPluginApi,
+  type XClawPluginApi,
   type ProviderAuthContext,
   type ProviderAuthMethodNonInteractiveContext,
   type ProviderAuthResult,
   type ProviderDiscoveryContext,
-} from "openclaw/plugin-sdk/plugin-entry";
-import { OLLAMA_DEFAULT_BASE_URL, resolveOllamaApiBase } from "openclaw/plugin-sdk/provider-models";
+} from "xclaw/plugin-sdk/plugin-entry";
+import { OLLAMA_DEFAULT_BASE_URL, resolveOllamaApiBase } from "xclaw/plugin-sdk/provider-models";
 
 const PROVIDER_ID = "ollama";
 const DEFAULT_API_KEY = "ollama-local";
 
 async function loadProviderSetup() {
-  return await import("openclaw/plugin-sdk/ollama-setup");
+  return await import("xclaw/plugin-sdk/ollama-setup");
 }
 
 export default definePluginEntry({
   id: "ollama",
   name: "Ollama Provider",
   description: "Bundled Ollama provider plugin",
-  register(api: OpenClawPluginApi) {
+  register(api: XClawPluginApi) {
     api.registerProvider({
       id: PROVIDER_ID,
       label: "Ollama",

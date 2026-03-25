@@ -1,4 +1,4 @@
-import type { ChannelPlugin } from "openclaw/plugin-sdk/core";
+import type { ChannelPlugin } from "xclaw/plugin-sdk/core";
 import {
   resolveWhatsAppGroupIntroHint,
   resolveWhatsAppGroupRequireMention,

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { resolveHeartbeatPrompt } from "../../../auto-reply/heartbeat.js";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { XClawConfig } from "../../../config/config.js";
 import { appendBootstrapPromptWarning } from "../../bootstrap-budget.js";
 import { resolveOllamaBaseUrlForRun } from "../../ollama-stream.js";
 import { buildAgentSystemPrompt } from "../../system-prompt.js";
@@ -33,7 +33,7 @@ type FakeWrappedStream = {
   [Symbol.asyncIterator]: () => AsyncIterator<unknown>;
 };
 
-function createOllamaProviderConfig(injectNumCtxForOpenAICompat: boolean): OpenClawConfig {
+function createOllamaProviderConfig(injectNumCtxForOpenAICompat: boolean): XClawConfig {
   return {
     models: {
       providers: {
@@ -166,7 +166,7 @@ describe("sessions_yield helpers", () => {
     expect(steer).toHaveBeenCalledWith(
       expect.objectContaining({
         role: "custom",
-        customType: "openclaw.sessions_yield_interrupt",
+        customType: "xclaw.sessions_yield_interrupt",
         display: false,
         details: { source: "sessions_yield" },
       }),
@@ -183,7 +183,7 @@ describe("sessions_yield helpers", () => {
     );
     expect(sendCustomMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        customType: "openclaw.sessions_yield",
+        customType: "xclaw.sessions_yield",
         display: false,
         details: { source: "sessions_yield", message: "Waiting for subagent" },
         content: expect.stringContaining("Waiting for subagent"),
@@ -198,7 +198,7 @@ describe("sessions_yield helpers", () => {
     const activeSession = {
       messages: [
         { role: "user", content: [{ type: "text", text: "hi" }] },
-        { role: "custom", customType: "openclaw.sessions_yield_interrupt" },
+        { role: "custom", customType: "xclaw.sessions_yield_interrupt" },
         { role: "assistant", stopReason: "aborted" },
       ],
       agent: { replaceMessages },
@@ -209,7 +209,7 @@ describe("sessions_yield helpers", () => {
             type: "custom_message",
             id: "interrupt",
             parentId: "session-root",
-            customType: "openclaw.sessions_yield_interrupt",
+            customType: "xclaw.sessions_yield_interrupt",
           },
           {
             type: "message",
@@ -268,7 +268,7 @@ describe("composeSystemPromptWithHookContext", () => {
 
   it("keeps hook-composed system prompt stable when bootstrap warnings only change the user prompt", () => {
     const baseSystemPrompt = buildAgentSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/xclaw",
       contextFiles: [{ path: "AGENTS.md", content: "Follow AGENTS guidance." }],
       toolNames: ["read"],
     });
@@ -359,7 +359,7 @@ describe("shouldInjectHeartbeatPrompt", () => {
       : undefined;
 
     const prompt = buildEmbeddedSystemPrompt({
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/xclaw",
       defaultThinkLevel: "off",
       reasoningLevel: "off",
       reasoningTagHint: false,
@@ -387,7 +387,7 @@ describe("shouldInjectHeartbeatPrompt", () => {
 
 describe("resolveAttemptFsWorkspaceOnly", () => {
   it("uses global tools.fs.workspaceOnly when agent has no override", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: XClawConfig = {
       tools: {
         fs: { workspaceOnly: true },
       },
@@ -402,7 +402,7 @@ describe("resolveAttemptFsWorkspaceOnly", () => {
   });
 
   it("prefers agent-specific tools.fs.workspaceOnly override", () => {
-    const cfg: OpenClawConfig = {
+    const cfg: XClawConfig = {
       tools: {
         fs: { workspaceOnly: true },
       },
@@ -1874,7 +1874,7 @@ describe("buildAfterTurnRuntimeContext", () => {
         messageProvider: "slack",
         agentAccountId: "acct-1",
         authProfileId: "openai:p1",
-        config: {} as OpenClawConfig,
+        config: {} as XClawConfig,
         skillsSnapshot: undefined,
         senderIsOwner: true,
         provider: "openai-codex",
@@ -1910,7 +1910,7 @@ describe("buildAfterTurnRuntimeContext", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as XClawConfig,
         skillsSnapshot: undefined,
         senderIsOwner: true,
         provider: "openai-codex",
@@ -1939,7 +1939,7 @@ describe("buildAfterTurnRuntimeContext", () => {
         messageProvider: "slack",
         agentAccountId: "acct-1",
         authProfileId: "openai:p1",
-        config: { plugins: { slots: { contextEngine: "lossless-claw" } } } as OpenClawConfig,
+        config: { plugins: { slots: { contextEngine: "lossless-claw" } } } as XClawConfig,
         skillsSnapshot: undefined,
         senderIsOwner: true,
         provider: "openai-codex",
@@ -1973,7 +1973,7 @@ describe("buildAfterTurnRuntimeContext", () => {
         currentThreadTs: "thread-9",
         currentMessageId: "msg-42",
         authProfileId: "openai:p1",
-        config: {} as OpenClawConfig,
+        config: {} as XClawConfig,
         skillsSnapshot: undefined,
         senderIsOwner: true,
         senderId: "user-123",

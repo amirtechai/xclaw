@@ -1,17 +1,17 @@
-import { resolveAckReaction } from "openclaw/plugin-sdk/agent-runtime";
+import { resolveAckReaction } from "xclaw/plugin-sdk/agent-runtime";
 import {
   createStatusReactionController,
   shouldAckReaction as shouldAckReactionGate,
   type StatusReactionController,
-} from "openclaw/plugin-sdk/channel-feedback";
-import { logInboundDrop } from "openclaw/plugin-sdk/channel-inbound";
-import { loadConfig } from "openclaw/plugin-sdk/config-runtime";
-import type { TelegramDirectConfig, TelegramGroupConfig } from "openclaw/plugin-sdk/config-runtime";
-import { ensureConfiguredBindingRouteReady } from "openclaw/plugin-sdk/conversation-runtime";
-import { recordChannelActivity } from "openclaw/plugin-sdk/infra-runtime";
-import { deriveLastRoutePolicy } from "openclaw/plugin-sdk/routing";
-import { DEFAULT_ACCOUNT_ID, resolveThreadSessionKeys } from "openclaw/plugin-sdk/routing";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+} from "xclaw/plugin-sdk/channel-feedback";
+import { logInboundDrop } from "xclaw/plugin-sdk/channel-inbound";
+import { loadConfig } from "xclaw/plugin-sdk/config-runtime";
+import type { TelegramDirectConfig, TelegramGroupConfig } from "xclaw/plugin-sdk/config-runtime";
+import { ensureConfiguredBindingRouteReady } from "xclaw/plugin-sdk/conversation-runtime";
+import { recordChannelActivity } from "xclaw/plugin-sdk/infra-runtime";
+import { deriveLastRoutePolicy } from "xclaw/plugin-sdk/routing";
+import { DEFAULT_ACCOUNT_ID, resolveThreadSessionKeys } from "xclaw/plugin-sdk/routing";
+import { logVerbose } from "xclaw/plugin-sdk/runtime-env";
 import { withTelegramApiErrorLogging } from "./api-logging.js";
 import { firstDefined, normalizeAllowFrom, normalizeDmAllowFromWithStore } from "./bot-access.js";
 import { resolveTelegramInboundBody } from "./bot-message-context.body.js";

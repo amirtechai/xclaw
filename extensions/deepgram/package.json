@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/deepgram-provider",
+  "name": "@xclaw/deepgram-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Deepgram media-understanding provider",
+  "description": "XClaw Deepgram media-understanding provider",
   "type": "module",
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

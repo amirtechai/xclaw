@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 
 const mocks = vi.hoisted(() => ({
   clackIntro: vi.fn(),
@@ -35,7 +35,7 @@ vi.mock("@clack/prompts", () => ({
 }));
 
 vi.mock("../config/config.js", () => ({
-  CONFIG_PATH: "~/.openclaw/openclaw.json",
+  CONFIG_PATH: "~/.xclaw/xclaw.json",
   readConfigFileSnapshot: mocks.readConfigFileSnapshot,
   writeConfigFile: mocks.writeConfigFile,
   resolveGatewayPort: mocks.resolveGatewayPort,
@@ -54,8 +54,8 @@ vi.mock("../terminal/note.js", () => ({
 }));
 
 vi.mock("./onboard-helpers.js", () => ({
-  DEFAULT_WORKSPACE: "~/.openclaw/workspace",
-  applyWizardMetadata: (cfg: OpenClawConfig) => cfg,
+  DEFAULT_WORKSPACE: "~/.xclaw/workspace",
+  applyWizardMetadata: (cfg: XClawConfig) => cfg,
   ensureWorkspaceAndSessions: vi.fn(),
   guardCancel: <T>(value: T) => value,
   printWizardHeader: mocks.printWizardHeader,
@@ -145,7 +145,7 @@ function createSearchProviderOption(overrides: Record<string, unknown>) {
 }
 
 function createEnabledWebSearchConfig(provider: string, pluginEntry: Record<string, unknown>) {
-  return (cfg: OpenClawConfig) => ({
+  return (cfg: XClawConfig) => ({
     ...cfg,
     tools: {
       ...cfg.tools,
@@ -211,7 +211,7 @@ describe("runConfigureWizard", () => {
     ]);
     mocks.applySearchKey.mockReset();
     mocks.applySearchProviderSelection.mockReset();
-    mocks.applySearchProviderSelection.mockImplementation((cfg: OpenClawConfig) => cfg);
+    mocks.applySearchProviderSelection.mockImplementation((cfg: XClawConfig) => cfg);
   });
 
   it("persists gateway.mode=local when only the run mode is selected", async () => {
@@ -245,7 +245,7 @@ describe("runConfigureWizard", () => {
     mocks.resolveExistingKey.mockReturnValue(undefined);
     mocks.hasExistingKey.mockReturnValue(false);
     mocks.hasKeyInEnv.mockReturnValue(false);
-    mocks.applySearchKey.mockImplementation((cfg: OpenClawConfig, provider: string, key: string) =>
+    mocks.applySearchKey.mockImplementation((cfg: XClawConfig, provider: string, key: string) =>
       createEnabledWebSearchConfig(provider, {
         enabled: true,
         config: { webSearch: { apiKey: key } },
@@ -293,7 +293,7 @@ describe("runConfigureWizard", () => {
     mocks.resolveExistingKey.mockReturnValue(undefined);
     mocks.hasExistingKey.mockReturnValue(true);
     mocks.hasKeyInEnv.mockReturnValue(false);
-    mocks.applySearchProviderSelection.mockImplementation((cfg: OpenClawConfig, provider: string) =>
+    mocks.applySearchProviderSelection.mockImplementation((cfg: XClawConfig, provider: string) =>
       createEnabledWebSearchConfig(provider, {
         enabled: true,
       })(cfg),
@@ -411,11 +411,11 @@ describe("runConfigureWizard", () => {
         envVars: [],
         placeholder: "(no key needed)",
         signupUrl: "https://duckduckgo.com/",
-        docsUrl: "https://docs.openclaw.ai/tools/web",
+        docsUrl: "https://docs.xclaw.ai/tools/web",
         credentialPath: "",
       }),
     ]);
-    mocks.applySearchProviderSelection.mockImplementation((cfg: OpenClawConfig, provider: string) =>
+    mocks.applySearchProviderSelection.mockImplementation((cfg: XClawConfig, provider: string) =>
       createEnabledWebSearchConfig(provider, {
         enabled: true,
       })(cfg),

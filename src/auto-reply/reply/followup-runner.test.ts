@@ -17,7 +17,7 @@ let enqueueFollowupRun: typeof import("./queue.js").enqueueFollowupRun;
 let sessionRunAccounting: typeof import("./session-run-accounting.js");
 let createMockFollowupRun: typeof import("./test-helpers.js").createMockFollowupRun;
 let createMockTypingController: typeof import("./test-helpers.js").createMockTypingController;
-const FOLLOWUP_DEBUG = process.env.OPENCLAW_DEBUG_FOLLOWUP_RUNNER_TEST === "1";
+const FOLLOWUP_DEBUG = process.env.XCLAW_DEBUG_FOLLOWUP_RUNNER_TEST === "1";
 const FOLLOWUP_TEST_QUEUES = new Map<
   string,
   {
@@ -314,7 +314,7 @@ function createAsyncReplySpy() {
 describe("createFollowupRunner compaction", () => {
   it("adds verbose auto-compaction notice and tracks count", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-")),
+      await fs.mkdtemp(path.join(tmpdir(), "xclaw-compaction-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -358,7 +358,7 @@ describe("createFollowupRunner compaction", () => {
 
   it("tracks auto-compaction from embedded result metadata even when no compaction event is emitted", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-meta-")),
+      await fs.mkdtemp(path.join(tmpdir(), "xclaw-compaction-meta-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -413,7 +413,7 @@ describe("createFollowupRunner compaction", () => {
 
   it("refreshes queued followup runs to the rotated transcript", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-queue-")),
+      await fs.mkdtemp(path.join(tmpdir(), "xclaw-compaction-queue-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -475,7 +475,7 @@ describe("createFollowupRunner compaction", () => {
 
   it("does not count failed compaction end events in followup runs", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-failed-")),
+      await fs.mkdtemp(path.join(tmpdir(), "xclaw-compaction-failed-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -743,7 +743,7 @@ describe("createFollowupRunner messaging tool dedupe", () => {
 
   it("persists usage even when replies are suppressed", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-followup-usage-")),
+      await fs.mkdtemp(path.join(tmpdir(), "xclaw-followup-usage-")),
       "sessions.json",
     );
     const sessionKey = "main";
@@ -785,7 +785,7 @@ describe("createFollowupRunner messaging tool dedupe", () => {
 
   it("passes queued config into usage persistence during drained followups", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-followup-usage-cfg-")),
+      await fs.mkdtemp(path.join(tmpdir(), "xclaw-followup-usage-cfg-")),
       "sessions.json",
     );
     const sessionKey = "main";

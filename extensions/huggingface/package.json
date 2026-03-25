@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/huggingface-provider",
+  "name": "@xclaw/huggingface-provider",
   "version": "2026.3.22",
   "private": true,
-  "description": "OpenClaw Hugging Face provider plugin",
+  "description": "XClaw Hugging Face provider plugin",
   "type": "module",
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

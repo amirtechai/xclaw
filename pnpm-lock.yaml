@@ -255,7 +255,7 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -339,7 +339,7 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -366,7 +366,7 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -382,7 +382,7 @@ importers:
         specifier: ^10.6.2
         version: 10.6.2
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -404,7 +404,7 @@ importers:
 
   extensions/line:
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -444,7 +444,7 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -460,13 +460,13 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
   extensions/memory-core:
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -508,7 +508,7 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -518,7 +518,7 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -531,7 +531,7 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -608,7 +608,7 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -650,7 +650,7 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -665,7 +665,7 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -684,7 +684,7 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
@@ -700,19 +700,19 @@ importers:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
   packages/clawdbot:
     dependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 
   packages/moltbot:
     dependencies:
-      openclaw:
+      xclaw:
         specifier: workspace:*
         version: link:../..
 

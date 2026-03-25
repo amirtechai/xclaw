@@ -16,7 +16,7 @@ export const resolvePluginConversationBindingApprovalMock =
 export const buildPluginBindingResolvedTextMock = runtimeMocks.buildPluginBindingResolvedTextMock;
 
 async function createConversationRuntimeMock(
-  importOriginal: () => Promise<typeof import("openclaw/plugin-sdk/conversation-runtime")>,
+  importOriginal: () => Promise<typeof import("xclaw/plugin-sdk/conversation-runtime")>,
 ) {
   const actual = await importOriginal();
   return {
@@ -30,8 +30,8 @@ async function createConversationRuntimeMock(
   };
 }
 
-vi.mock("openclaw/plugin-sdk/security-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/security-runtime")>();
+vi.mock("xclaw/plugin-sdk/security-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/security-runtime")>();
   return {
     ...actual,
     readStoreAllowFromForDmPolicy: async (params: {
@@ -48,8 +48,8 @@ vi.mock("openclaw/plugin-sdk/security-runtime", async (importOriginal) => {
   };
 });
 
-vi.mock("openclaw/plugin-sdk/conversation-runtime", createConversationRuntimeMock);
-vi.mock("openclaw/plugin-sdk/conversation-runtime.js", createConversationRuntimeMock);
+vi.mock("xclaw/plugin-sdk/conversation-runtime", createConversationRuntimeMock);
+vi.mock("xclaw/plugin-sdk/conversation-runtime.js", createConversationRuntimeMock);
 
 export function resetDiscordComponentRuntimeMocks() {
   readAllowFromStoreMock.mockClear().mockResolvedValue([]);
@@ -59,8 +59,8 @@ export function resetDiscordComponentRuntimeMocks() {
     status: "approved",
     binding: {
       bindingId: "binding-1",
-      pluginId: "openclaw-codex-app-server",
-      pluginName: "OpenClaw App Server",
+      pluginId: "xclaw-codex-app-server",
+      pluginName: "XClaw App Server",
       pluginRoot: "/plugins/codex",
       channel: "discord",
       accountId: "default",
@@ -69,8 +69,8 @@ export function resetDiscordComponentRuntimeMocks() {
     },
     request: {
       id: "approval-1",
-      pluginId: "openclaw-codex-app-server",
-      pluginName: "OpenClaw App Server",
+      pluginId: "xclaw-codex-app-server",
+      pluginName: "XClaw App Server",
       pluginRoot: "/plugins/codex",
       requestedAt: Date.now(),
       conversation: {

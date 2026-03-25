@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../runtime-api.js";
+import type { XClawConfig } from "../runtime-api.js";
 
 const mocks = vi.hoisted(() => ({
   sendMessageMatrix: vi.fn(),
@@ -38,7 +38,7 @@ describe("matrixOutbound cfg threading", () => {
           accessToken: "resolved-token",
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
 
     await matrixOutbound.sendText!({
       cfg,
@@ -68,14 +68,14 @@ describe("matrixOutbound cfg threading", () => {
           accessToken: "resolved-token",
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
 
     await matrixOutbound.sendMedia!({
       cfg,
       to: "room:!room:example",
       text: "caption",
       mediaUrl: "file:///tmp/cat.png",
-      mediaLocalRoots: ["/tmp/openclaw"],
+      mediaLocalRoots: ["/tmp/xclaw"],
       accountId: "default",
       audioAsVoice: true,
     });
@@ -86,7 +86,7 @@ describe("matrixOutbound cfg threading", () => {
       expect.objectContaining({
         cfg,
         mediaUrl: "file:///tmp/cat.png",
-        mediaLocalRoots: ["/tmp/openclaw"],
+        mediaLocalRoots: ["/tmp/xclaw"],
         audioAsVoice: true,
       }),
     );
@@ -99,7 +99,7 @@ describe("matrixOutbound cfg threading", () => {
           accessToken: "resolved-token",
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     const matrix = vi.fn(async () => ({
       messageId: "evt-injected",
       roomId: "!room:example",
@@ -134,7 +134,7 @@ describe("matrixOutbound cfg threading", () => {
           accessToken: "resolved-token",
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
 
     await matrixOutbound.sendPoll!({
       cfg,

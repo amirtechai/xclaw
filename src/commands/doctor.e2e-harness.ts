@@ -43,7 +43,7 @@ function createCommandWithTimeoutResult() {
 
 function createLegacyConfigSnapshot() {
   return {
-    path: "/tmp/openclaw.json",
+    path: "/tmp/xclaw.json",
     exists: false,
     raw: null,
     parsed: {},
@@ -59,7 +59,7 @@ export const confirm = vi.fn().mockResolvedValue(true) as unknown as MockFn;
 export const select = vi.fn().mockResolvedValue("node") as unknown as MockFn;
 export const note = vi.fn() as unknown as MockFn;
 export const writeConfigFile = vi.fn().mockResolvedValue(undefined) as unknown as MockFn;
-export const resolveOpenClawPackageRoot = vi.fn().mockResolvedValue(null) as unknown as MockFn;
+export const resolveXClawPackageRoot = vi.fn().mockResolvedValue(null) as unknown as MockFn;
 export const runGatewayUpdate = vi
   .fn()
   .mockResolvedValue(createGatewayUpdateResult()) as unknown as MockFn;
@@ -173,7 +173,7 @@ export const runLegacyStateMigrations = vi.fn().mockResolvedValue({
 }) as unknown as MockFn;
 
 const DEFAULT_CONFIG_SNAPSHOT = {
-  path: "/tmp/openclaw.json",
+  path: "/tmp/xclaw.json",
   exists: true,
   raw: "{}",
   parsed: {},
@@ -196,14 +196,14 @@ vi.mock("../agents/skills-status.js", () => ({
 }));
 
 vi.mock("../plugins/loader.js", () => ({
-  loadOpenClawPlugins: () => createEmptyPluginRegistry(),
+  loadXClawPlugins: () => createEmptyPluginRegistry(),
 }));
 
 vi.mock("../config/config.js", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../config/config.js")>();
   return {
     ...actual,
-    CONFIG_PATH: "/tmp/openclaw.json",
+    CONFIG_PATH: "/tmp/xclaw.json",
     createConfigIO,
     readConfigFileSnapshot,
     writeConfigFile,
@@ -230,9 +230,9 @@ vi.mock("../daemon/service-audit.js", () => ({
       environmentValueSources?: Record<string, "inline" | "file">;
     } | null,
   ) =>
-    command?.environmentValueSources?.OPENCLAW_GATEWAY_TOKEN === "file"
+    command?.environmentValueSources?.XCLAW_GATEWAY_TOKEN === "file"
       ? undefined
-      : command?.environment?.OPENCLAW_GATEWAY_TOKEN?.trim() || undefined,
+      : command?.environment?.XCLAW_GATEWAY_TOKEN?.trim() || undefined,
   SERVICE_AUDIT_CODES: {
     gatewayEntrypointMismatch: "gateway-entrypoint-mismatch",
     gatewayTokenMismatch: "gateway-token-mismatch",
@@ -265,8 +265,8 @@ vi.mock("../process/exec.js", () => ({
   runCommandWithTimeout,
 }));
 
-vi.mock("../infra/openclaw-root.js", () => ({
-  resolveOpenClawPackageRoot,
+vi.mock("../infra/xclaw-root.js", () => ({
+  resolveXClawPackageRoot,
 }));
 
 vi.mock("../infra/update-runner.js", () => ({
@@ -414,7 +414,7 @@ beforeEach(() => {
 
   readConfigFileSnapshot.mockReset();
   writeConfigFile.mockReset().mockResolvedValue(undefined);
-  resolveOpenClawPackageRoot.mockReset().mockResolvedValue(null);
+  resolveXClawPackageRoot.mockReset().mockResolvedValue(null);
   runGatewayUpdate.mockReset().mockResolvedValue(createGatewayUpdateResult());
   legacyReadConfigFileSnapshot.mockReset().mockResolvedValue(createLegacyConfigSnapshot());
   createConfigIO.mockReset().mockImplementation(() => ({
@@ -452,11 +452,11 @@ beforeEach(() => {
 
   originalIsTTY = process.stdin.isTTY;
   setStdinTty(true);
-  originalStateDir = process.env.OPENCLAW_STATE_DIR;
-  originalUpdateInProgress = process.env.OPENCLAW_UPDATE_IN_PROGRESS;
-  process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
-  tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-doctor-state-"));
-  process.env.OPENCLAW_STATE_DIR = tempStateDir;
+  originalStateDir = process.env.XCLAW_STATE_DIR;
+  originalUpdateInProgress = process.env.XCLAW_UPDATE_IN_PROGRESS;
+  process.env.XCLAW_UPDATE_IN_PROGRESS = "1";
+  tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-doctor-state-"));
+  process.env.XCLAW_STATE_DIR = tempStateDir;
   fs.mkdirSync(path.join(tempStateDir, "agents", "main", "sessions"), {
     recursive: true,
   });
@@ -466,14 +466,14 @@ beforeEach(() => {
 afterEach(() => {
   setStdinTty(originalIsTTY);
   if (originalStateDir === undefined) {
-    delete process.env.OPENCLAW_STATE_DIR;
+    delete process.env.XCLAW_STATE_DIR;
   } else {
-    process.env.OPENCLAW_STATE_DIR = originalStateDir;
+    process.env.XCLAW_STATE_DIR = originalStateDir;
   }
   if (originalUpdateInProgress === undefined) {
-    delete process.env.OPENCLAW_UPDATE_IN_PROGRESS;
+    delete process.env.XCLAW_UPDATE_IN_PROGRESS;
   } else {
-    process.env.OPENCLAW_UPDATE_IN_PROGRESS = originalUpdateInProgress;
+    process.env.XCLAW_UPDATE_IN_PROGRESS = originalUpdateInProgress;
   }
   if (tempStateDir) {
     fs.rmSync(tempStateDir, { recursive: true, force: true });

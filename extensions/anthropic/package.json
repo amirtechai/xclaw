@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/anthropic-provider",
+  "name": "@xclaw/anthropic-provider",
   "version": "2026.3.22",
   "private": true,
-  "description": "OpenClaw Anthropic provider plugin",
+  "description": "XClaw Anthropic provider plugin",
   "type": "module",
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ]

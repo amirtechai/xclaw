@@ -1,11 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 import { MANIFEST_KEY } from "../../compat/legacy-names.js";
-import { resolveOpenClawPackageRootSync } from "../../infra/openclaw-root.js";
+import { resolveXClawPackageRootSync } from "../../infra/xclaw-root.js";
 import { resolveBundledPluginsDir } from "../../plugins/bundled-dir.js";
-import { discoverOpenClawPlugins } from "../../plugins/discovery.js";
+import { discoverXClawPlugins } from "../../plugins/discovery.js";
 import { loadPluginManifest } from "../../plugins/manifest.js";
-import type { OpenClawPackageManifest } from "../../plugins/manifest.js";
+import type { XClawPackageManifest } from "../../plugins/manifest.js";
 import type { PackageManifest as PluginPackageManifest } from "../../plugins/manifest.js";
 import type { PluginOrigin } from "../../plugins/types.js";
 import { isRecord, resolveConfigDir, resolveUserPath } from "../../utils.js";
@@ -59,9 +59,9 @@ type ExternalCatalogEntry = {
   name?: string;
   version?: string;
   description?: string;
-} & Partial<Record<ManifestKey, OpenClawPackageManifest>>;
+} & Partial<Record<ManifestKey, XClawPackageManifest>>;
 
-const ENV_CATALOG_PATHS = ["OPENCLAW_PLUGIN_CATALOG_PATHS", "OPENCLAW_MPM_CATALOG_PATHS"];
+const ENV_CATALOG_PATHS = ["XCLAW_PLUGIN_CATALOG_PATHS", "XCLAW_MPM_CATALOG_PATHS"];
 const OFFICIAL_CHANNEL_CATALOG_RELATIVE_PATH = path.join("dist", "channel-catalog.json");
 
 type ManifestKey = typeof MANIFEST_KEY;
@@ -144,8 +144,8 @@ function resolveOfficialCatalogPaths(options: CatalogOptions): string[] {
   }
 
   const packageRoots = [
-    resolveOpenClawPackageRootSync({ cwd: process.cwd() }),
-    resolveOpenClawPackageRootSync({ moduleUrl: import.meta.url }),
+    resolveXClawPackageRootSync({ cwd: process.cwd() }),
+    resolveXClawPackageRootSync({ moduleUrl: import.meta.url }),
   ].filter((entry, index, all): entry is string => Boolean(entry) && all.indexOf(entry) === index);
 
   const candidates = packageRoots.map((packageRoot) =>
@@ -168,7 +168,7 @@ function loadOfficialCatalogEntries(options: CatalogOptions): ChannelPluginCatal
 }
 
 function toChannelMeta(params: {
-  channel: NonNullable<OpenClawPackageManifest["channel"]>;
+  channel: NonNullable<XClawPackageManifest["channel"]>;
   id: string;
 }): ChannelMeta | null {
   const label = params.channel.label?.trim();
@@ -218,7 +218,7 @@ function toChannelMeta(params: {
 }
 
 function resolveInstallInfo(params: {
-  manifest: OpenClawPackageManifest;
+  manifest: XClawPackageManifest;
   packageName?: string;
   packageDir?: string;
   workspaceDir?: string;
@@ -260,7 +260,7 @@ function buildCatalogEntry(candidate: {
   rootDir?: string;
   origin?: PluginOrigin;
   workspaceDir?: string;
-  packageManifest?: OpenClawPackageManifest;
+  packageManifest?: XClawPackageManifest;
 }): ChannelPluginCatalogEntry | null {
   const manifest = candidate.packageManifest;
   if (!manifest?.channel) {
@@ -334,7 +334,7 @@ function loadBundledMetadataCatalogEntries(options: CatalogOptions): ChannelPlug
       rootDir: pluginDir,
       origin: "bundled",
       workspaceDir: options.workspaceDir,
-      packageManifest: packageJson.openclaw,
+      packageManifest: packageJson.xclaw,
     });
     if (entry) {
       entries.push(entry);
@@ -375,7 +375,7 @@ export function buildChannelUiCatalog(
 export function listChannelPluginCatalogEntries(
   options: CatalogOptions = {},
 ): ChannelPluginCatalogEntry[] {
-  const discovery = discoverOpenClawPlugins({
+  const discovery = discoverXClawPlugins({
     workspaceDir: options.workspaceDir,
     env: options.env,
   });

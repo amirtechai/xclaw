@@ -7,10 +7,10 @@ import {
   runPluginCommandWithTimeout,
   shellEscape,
   type SshSandboxSession,
-} from "openclaw/plugin-sdk/sandbox";
+} from "xclaw/plugin-sdk/sandbox";
 import type { ResolvedOpenShellPluginConfig } from "./config.js";
 
-export { buildExecRemoteCommand, shellEscape } from "openclaw/plugin-sdk/sandbox";
+export { buildExecRemoteCommand, shellEscape } from "xclaw/plugin-sdk/sandbox";
 
 const require = createRequire(import.meta.url);
 

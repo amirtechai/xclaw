@@ -1,25 +1,25 @@
 /**
- * Synology Chat Channel Plugin for OpenClaw.
+ * Synology Chat Channel Plugin for XClaw.
  *
  * Implements the ChannelPlugin interface following the LINE pattern.
  */
 
-import type { OpenClawConfig } from "openclaw/plugin-sdk/account-resolution";
+import type { XClawConfig } from "xclaw/plugin-sdk/account-resolution";
 import {
   createHybridChannelConfigAdapter,
   createScopedDmSecurityResolver,
-} from "openclaw/plugin-sdk/channel-config-helpers";
-import { waitUntilAbort } from "openclaw/plugin-sdk/channel-lifecycle";
+} from "xclaw/plugin-sdk/channel-config-helpers";
+import { waitUntilAbort } from "xclaw/plugin-sdk/channel-lifecycle";
 import {
   composeWarningCollectors,
   createConditionalWarningCollector,
   projectAccountConfigWarningCollector,
   projectAccountWarningCollector,
-} from "openclaw/plugin-sdk/channel-policy";
-import { attachChannelToResult } from "openclaw/plugin-sdk/channel-send-result";
-import { createChatChannelPlugin, type ChannelPlugin } from "openclaw/plugin-sdk/core";
-import { createEmptyChannelDirectoryAdapter } from "openclaw/plugin-sdk/directory-runtime";
-import { DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk/setup";
+} from "xclaw/plugin-sdk/channel-policy";
+import { attachChannelToResult } from "xclaw/plugin-sdk/channel-send-result";
+import { createChatChannelPlugin, type ChannelPlugin } from "xclaw/plugin-sdk/core";
+import { createEmptyChannelDirectoryAdapter } from "xclaw/plugin-sdk/directory-runtime";
+import { DEFAULT_ACCOUNT_ID } from "xclaw/plugin-sdk/setup";
 import { listAccountIds, resolveAccount } from "./accounts.js";
 import { sendMessage, sendFileUrl } from "./client.js";
 import { SynologyChatChannelConfigSchema } from "./config-schema.js";
@@ -39,12 +39,12 @@ const resolveSynologyChatDmPolicy = createScopedDmSecurityResolver<ResolvedSynol
   resolveAllowFrom: (account) => account.allowedUserIds,
   policyPathSuffix: "dmPolicy",
   defaultPolicy: "allowlist",
-  approveHint: "openclaw pairing approve synology-chat <code>",
+  approveHint: "xclaw pairing approve synology-chat <code>",
   normalizeEntry: (raw) => raw.toLowerCase().trim(),
 });
 
 type SynologyChannelGatewayContext = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId: string;
   abortSignal: AbortSignal;
   log?: {
@@ -54,7 +54,7 @@ type SynologyChannelGatewayContext = {
   };
 };
 type SynologyChannelOutboundContext = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   to: string;
   text?: string;
   mediaUrl?: string;
@@ -63,7 +63,7 @@ type SynologyChannelOutboundContext = {
 type SynologyChannelSendTextContext = SynologyChannelOutboundContext & { text: string };
 type SynologyChannelSendMediaContext = SynologyChannelOutboundContext & { mediaUrl: string };
 type SynologySecurityWarningContext = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   account: ResolvedSynologyChatAccount;
 };
 
@@ -130,16 +130,16 @@ type SynologyChatPlugin = Omit<
   pairing: {
     idLabel: string;
     normalizeAllowEntry?: (entry: string) => string;
-    notifyApproval: (params: { cfg: OpenClawConfig; id: string }) => Promise<void>;
+    notifyApproval: (params: { cfg: XClawConfig; id: string }) => Promise<void>;
   };
   security: {
-    resolveDmPolicy: (params: { cfg: OpenClawConfig; account: ResolvedSynologyChatAccount }) => {
+    resolveDmPolicy: (params: { cfg: XClawConfig; account: ResolvedSynologyChatAccount }) => {
       policy: string | null | undefined;
       allowFrom?: Array<string | number>;
       normalizeEntry?: (raw: string) => string;
     } | null;
     collectWarnings: (params: {
-      cfg: OpenClawConfig;
+      cfg: XClawConfig;
       account: ResolvedSynologyChatAccount;
     }) => string[];
   };
@@ -172,7 +172,7 @@ type SynologyChatPlugin = Omit<
 
 const collectSynologyChatRoutingWarnings = projectAccountConfigWarningCollector<
   ResolvedSynologyChatAccount,
-  OpenClawConfig,
+  XClawConfig,
   SynologySecurityWarningContext
 >(
   (cfg) => cfg,
@@ -180,7 +180,7 @@ const collectSynologyChatRoutingWarnings = projectAccountConfigWarningCollector<
 );
 
 function resolveOutboundAccount(
-  cfg: OpenClawConfig,
+  cfg: XClawConfig,
   accountId?: string | null,
 ): ResolvedSynologyChatAccount {
   return resolveAccount(cfg ?? {}, accountId);
@@ -203,7 +203,7 @@ export function createSynologyChatPlugin(): SynologyChatPlugin {
         selectionLabel: "Synology Chat (Webhook)",
         detailLabel: "Synology Chat (Webhook)",
         docsPath: "/channels/synology-chat",
-        blurb: "Connect your Synology NAS Chat to OpenClaw",
+        blurb: "Connect your Synology NAS Chat to XClaw",
         order: 90,
       },
       capabilities: {
@@ -299,7 +299,7 @@ export function createSynologyChatPlugin(): SynologyChatPlugin {
     pairing: {
       text: {
         idLabel: "synologyChatUserId",
-        message: "OpenClaw: your access has been approved.",
+        message: "XClaw: your access has been approved.",
         normalizeAllowEntry: (entry: string) => entry.toLowerCase().trim(),
         notify: async ({ cfg, id, message }) => {
           const account = resolveAccount(cfg);

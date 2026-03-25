@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { XClawConfig } from "../../config/config.js";
 import { normalizeAccountId } from "../../routing/session-key.js";
 import {
   createAccountListHelpers,
@@ -13,16 +13,16 @@ import {
 const { listConfiguredAccountIds, listAccountIds, resolveDefaultAccountId } =
   createAccountListHelpers("testchannel");
 
-function cfg(accounts?: Record<string, unknown> | null, defaultAccount?: string): OpenClawConfig {
+function cfg(accounts?: Record<string, unknown> | null, defaultAccount?: string): XClawConfig {
   if (accounts === null) {
     return {
       channels: {
         testchannel: defaultAccount ? { defaultAccount } : {},
       },
-    } as unknown as OpenClawConfig;
+    } as unknown as XClawConfig;
   }
   if (accounts === undefined && !defaultAccount) {
-    return {} as unknown as OpenClawConfig;
+    return {} as unknown as XClawConfig;
   }
   return {
     channels: {
@@ -31,13 +31,13 @@ function cfg(accounts?: Record<string, unknown> | null, defaultAccount?: string)
         ...(defaultAccount ? { defaultAccount } : {}),
       },
     },
-  } as unknown as OpenClawConfig;
+  } as unknown as XClawConfig;
 }
 
 describe("createAccountListHelpers", () => {
   describe("listConfiguredAccountIds", () => {
     it("returns empty for missing config", () => {
-      expect(listConfiguredAccountIds({} as OpenClawConfig)).toEqual([]);
+      expect(listConfiguredAccountIds({} as XClawConfig)).toEqual([]);
     });
 
     it("returns empty when no accounts key", () => {
@@ -78,7 +78,7 @@ describe("createAccountListHelpers", () => {
 
   describe("listAccountIds", () => {
     it('returns ["default"] for empty config', () => {
-      expect(listAccountIds({} as OpenClawConfig)).toEqual(["default"]);
+      expect(listAccountIds({} as XClawConfig)).toEqual(["default"]);
     });
 
     it('returns ["default"] for empty accounts', () => {
@@ -112,7 +112,7 @@ describe("createAccountListHelpers", () => {
     });
 
     it('returns "default" for empty config', () => {
-      expect(resolveDefaultAccountId({} as OpenClawConfig)).toBe("default");
+      expect(resolveDefaultAccountId({} as XClawConfig)).toBe("default");
     });
 
     it("can preserve configured defaults that are not present in accounts", () => {

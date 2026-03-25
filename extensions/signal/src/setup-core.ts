@@ -9,16 +9,16 @@ import {
   setAccountAllowFromForChannel,
   setChannelDmPolicyWithAllowFrom,
   setSetupChannelEnabled,
-  type OpenClawConfig,
+  type XClawConfig,
   type WizardPrompter,
-} from "openclaw/plugin-sdk/setup";
+} from "xclaw/plugin-sdk/setup";
 import type {
   ChannelSetupAdapter,
   ChannelSetupDmPolicy,
   ChannelSetupWizard,
   ChannelSetupWizardTextInput,
-} from "openclaw/plugin-sdk/setup";
-import { formatCliCommand, formatDocsLink } from "openclaw/plugin-sdk/setup-tools";
+} from "xclaw/plugin-sdk/setup";
+import { formatCliCommand, formatDocsLink } from "xclaw/plugin-sdk/setup-tools";
 import {
   listSignalAccountIds,
   resolveDefaultSignalAccountId,
@@ -89,10 +89,10 @@ function buildSignalSetupPatch(input: {
 }
 
 export async function promptSignalAllowFrom(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   prompter: WizardPrompter;
   accountId?: string;
-}): Promise<OpenClawConfig> {
+}): Promise<XClawConfig> {
   return promptParsedAllowFromForAccount({
     cfg: params.cfg,
     accountId: params.accountId,
@@ -127,8 +127,8 @@ export const signalDmPolicy: ChannelSetupDmPolicy = {
   channel,
   policyKey: "channels.signal.dmPolicy",
   allowFromKey: "channels.signal.allowFrom",
-  getCurrent: (cfg: OpenClawConfig) => cfg.channels?.signal?.dmPolicy ?? "pairing",
-  setPolicy: (cfg: OpenClawConfig, policy) =>
+  getCurrent: (cfg: XClawConfig) => cfg.channels?.signal?.dmPolicy ?? "pairing",
+  setPolicy: (cfg: XClawConfig, policy) =>
     setChannelDmPolicyWithAllowFrom({
       cfg,
       channel,
@@ -138,7 +138,7 @@ export const signalDmPolicy: ChannelSetupDmPolicy = {
 };
 
 function resolveSignalCliPath(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId: string;
   credentialValues: Record<string, unknown>;
 }) {
@@ -182,9 +182,9 @@ export const signalNumberTextInput: ChannelSetupWizardTextInput = {
 export const signalCompletionNote = {
   title: "Signal next steps",
   lines: [
-    'Link device with: signal-cli link -n "OpenClaw"',
+    'Link device with: signal-cli link -n "XClaw"',
     "Scan QR in Signal -> Linked Devices",
-    `Then run: ${formatCliCommand("openclaw gateway call channels.status --params '{\"probe\":true}'")}`,
+    `Then run: ${formatCliCommand("xclaw gateway call channels.status --params '{\"probe\":true}'")}`,
     `Docs: ${formatDocsLink("/signal", "signal")}`,
   ],
 };
@@ -231,6 +231,6 @@ export function createSignalSetupWizardProxy(loadWizard: () => Promise<ChannelSe
     ],
     completionNote: signalCompletionNote,
     dmPolicy: signalDmPolicy,
-    disable: (cfg: OpenClawConfig) => setSetupChannelEnabled(cfg, channel, false),
+    disable: (cfg: XClawConfig) => setSetupChannelEnabled(cfg, channel, false),
   });
 }

@@ -4,8 +4,8 @@ import { formatBackupCreateSummary, type BackupCreateResult } from "./backup-cre
 function makeResult(overrides: Partial<BackupCreateResult> = {}): BackupCreateResult {
   return {
     createdAt: "2026-01-01T00:00:00.000Z",
-    archiveRoot: "openclaw-backup-2026-01-01",
-    archivePath: "/tmp/openclaw-backup.tar.gz",
+    archiveRoot: "xclaw-backup-2026-01-01",
+    archivePath: "/tmp/xclaw-backup.tar.gz",
     dryRun: false,
     includeWorkspace: true,
     onlyConfig: false,
@@ -26,28 +26,28 @@ describe("formatBackupCreateSummary", () => {
             kind: "state",
             sourcePath: "/state",
             archivePath: "archive/state",
-            displayPath: "~/.openclaw",
+            displayPath: "~/.xclaw",
           },
         ],
         skipped: [
           {
             kind: "workspace",
             sourcePath: "/workspace",
-            displayPath: "~/Projects/openclaw",
+            displayPath: "~/Projects/xclaw",
             reason: "covered",
-            coveredBy: "~/.openclaw",
+            coveredBy: "~/.xclaw",
           },
         ],
       }),
     );
 
     expect(lines).toEqual([
-      "Backup archive: /tmp/openclaw-backup.tar.gz",
+      "Backup archive: /tmp/xclaw-backup.tar.gz",
       "Included 1 path:",
-      "- state: ~/.openclaw",
+      "- state: ~/.xclaw",
       "Skipped 1 path:",
-      "- workspace: ~/Projects/openclaw (covered by ~/.openclaw)",
-      "Created /tmp/openclaw-backup.tar.gz",
+      "- workspace: ~/Projects/xclaw (covered by ~/.xclaw)",
+      "Created /tmp/xclaw-backup.tar.gz",
       "Archive verification: passed",
     ]);
   });
@@ -61,23 +61,23 @@ describe("formatBackupCreateSummary", () => {
             kind: "config",
             sourcePath: "/config",
             archivePath: "archive/config",
-            displayPath: "~/.openclaw/config.json",
+            displayPath: "~/.xclaw/config.json",
           },
           {
             kind: "credentials",
             sourcePath: "/oauth",
             archivePath: "archive/oauth",
-            displayPath: "~/.openclaw/oauth",
+            displayPath: "~/.xclaw/oauth",
           },
         ],
       }),
     );
 
     expect(lines).toEqual([
-      "Backup archive: /tmp/openclaw-backup.tar.gz",
+      "Backup archive: /tmp/xclaw-backup.tar.gz",
       "Included 2 paths:",
-      "- config: ~/.openclaw/config.json",
-      "- credentials: ~/.openclaw/oauth",
+      "- config: ~/.xclaw/config.json",
+      "- credentials: ~/.xclaw/oauth",
       "Dry run only; archive was not written.",
     ]);
   });

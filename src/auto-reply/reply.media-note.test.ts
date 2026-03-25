@@ -1,7 +1,7 @@
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { withTempHome as withTempHomeBase } from "../../test/helpers/temp-home.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import {
   createReplyRuntimeMocks,
   installReplyRuntimeMocks,
@@ -22,9 +22,9 @@ async function withTempHome<T>(fn: (home: string) => Promise<T>): Promise<T> {
     },
     {
       env: {
-        OPENCLAW_BUNDLED_SKILLS_DIR: (home) => path.join(home, "bundled-skills"),
+        XCLAW_BUNDLED_SKILLS_DIR: (home) => path.join(home, "bundled-skills"),
       },
-      prefix: "openclaw-media-note-",
+      prefix: "xclaw-media-note-",
     },
   );
 }
@@ -34,12 +34,12 @@ function makeCfg(home: string) {
     agents: {
       defaults: {
         model: "anthropic/claude-opus-4-5",
-        workspace: path.join(home, "openclaw"),
+        workspace: path.join(home, "xclaw"),
       },
     },
     channels: { whatsapp: { allowFrom: ["*"] } },
     session: { store: path.join(home, "sessions.json") },
-  } as unknown as OpenClawConfig;
+  } as unknown as XClawConfig;
 }
 
 describe("getReplyFromConfig media note plumbing", () => {

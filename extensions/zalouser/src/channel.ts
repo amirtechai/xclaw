@@ -1,24 +1,24 @@
-import { createScopedDmSecurityResolver } from "openclaw/plugin-sdk/channel-config-helpers";
-import { createAccountStatusSink } from "openclaw/plugin-sdk/channel-lifecycle";
-import { createPairingPrefixStripper } from "openclaw/plugin-sdk/channel-pairing";
+import { createScopedDmSecurityResolver } from "xclaw/plugin-sdk/channel-config-helpers";
+import { createAccountStatusSink } from "xclaw/plugin-sdk/channel-lifecycle";
+import { createPairingPrefixStripper } from "xclaw/plugin-sdk/channel-pairing";
 import {
   createEmptyChannelResult,
   createRawChannelSendResultAdapter,
-} from "openclaw/plugin-sdk/channel-send-result";
-import { createStaticReplyToModeResolver } from "openclaw/plugin-sdk/conversation-runtime";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/core";
-import { buildPassiveProbedChannelStatusSummary } from "openclaw/plugin-sdk/extension-shared";
+} from "xclaw/plugin-sdk/channel-send-result";
+import { createStaticReplyToModeResolver } from "xclaw/plugin-sdk/conversation-runtime";
+import { createChatChannelPlugin } from "xclaw/plugin-sdk/core";
+import { buildPassiveProbedChannelStatusSummary } from "xclaw/plugin-sdk/extension-shared";
 import {
   createAsyncComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "xclaw/plugin-sdk/status-helpers";
 import type {
   ChannelAccountSnapshot,
   ChannelDirectoryEntry,
   ChannelGroupContext,
   ChannelMessageActionAdapter,
   ChannelPlugin,
-  OpenClawConfig,
+  XClawConfig,
   GroupToolPolicyConfig,
 } from "../runtime-api.js";
 import {
@@ -99,11 +99,11 @@ function resolveZalouserQrProfile(accountId?: string | null): string {
   return normalized;
 }
 
-function resolveZalouserOutboundChunkMode(cfg: OpenClawConfig, accountId?: string) {
+function resolveZalouserOutboundChunkMode(cfg: XClawConfig, accountId?: string) {
   return getZalouserRuntime().channel.text.resolveChunkMode(cfg, "zalouser", accountId);
 }
 
-function resolveZalouserOutboundTextChunkLimit(cfg: OpenClawConfig, accountId?: string) {
+function resolveZalouserOutboundTextChunkLimit(cfg: XClawConfig, accountId?: string) {
   return getZalouserRuntime().channel.text.resolveTextChunkLimit(cfg, "zalouser", accountId, {
     fallbackLimit: ZALOUSER_TEXT_CHUNK_LIMIT,
   });

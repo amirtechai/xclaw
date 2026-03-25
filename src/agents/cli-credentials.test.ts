@@ -156,7 +156,7 @@ describe("cli credentials", () => {
   });
 
   it("falls back to the file store when the keychain update fails", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-"));
     const credPath = path.join(tempDir, ".claude", ".credentials.json");
 
     fs.mkdirSync(path.dirname(credPath), { recursive: true, mode: 0o700 });
@@ -253,7 +253,7 @@ describe("cli credentials", () => {
   });
 
   it("reads Codex credentials from keychain when available", async () => {
-    const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-codex-"));
+    const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-codex-"));
     process.env.CODEX_HOME = tempHome;
     const expSeconds = Math.floor(Date.parse("2026-03-23T00:48:49Z") / 1000);
 
@@ -283,7 +283,7 @@ describe("cli credentials", () => {
   });
 
   it("falls back to Codex auth.json when keychain is unavailable", async () => {
-    const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-codex-"));
+    const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-codex-"));
     process.env.CODEX_HOME = tempHome;
     const expSeconds = Math.floor(Date.parse("2026-03-24T12:34:56Z") / 1000);
     execSyncMock.mockImplementation(() => {
@@ -314,7 +314,7 @@ describe("cli credentials", () => {
   });
 
   it("invalidates cached Codex credentials when auth.json changes within the TTL window", () => {
-    const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-codex-cache-"));
+    const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-codex-cache-"));
     process.env.CODEX_HOME = tempHome;
     const authPath = path.join(tempHome, "auth.json");
     const firstExpiry = Math.floor(Date.parse("2026-03-24T12:34:56Z") / 1000);
@@ -374,7 +374,7 @@ describe("cli credentials", () => {
   });
 
   it("invalidates cached Qwen credentials when oauth_creds.json changes within the TTL window", () => {
-    const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-qwen-cache-"));
+    const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "xclaw-qwen-cache-"));
     const credPath = path.join(tempHome, ".qwen", "oauth_creds.json");
     try {
       writePortalCliCredentialFile(credPath, {

@@ -2,7 +2,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vite
 import type { PluginRuntime } from "../../../src/plugins/runtime/types.js";
 import { createStartAccountContext } from "../../../test/helpers/extensions/start-account-context.js";
 import type { ResolvedDiscordAccount } from "./accounts.js";
-import type { OpenClawConfig } from "./runtime-api.js";
+import type { XClawConfig } from "./runtime-api.js";
 let discordPlugin: typeof import("./channel.js").discordPlugin;
 let setDiscordRuntime: typeof import("./runtime.js").setDiscordRuntime;
 
@@ -34,7 +34,7 @@ vi.mock("./audit.js", async (importOriginal) => {
   };
 });
 
-function createCfg(): OpenClawConfig {
+function createCfg(): XClawConfig {
   return {
     channels: {
       discord: {
@@ -42,14 +42,14 @@ function createCfg(): OpenClawConfig {
         token: "discord-token",
       },
     },
-  } as OpenClawConfig;
+  } as XClawConfig;
 }
 
-function resolveAccount(cfg: OpenClawConfig): ResolvedDiscordAccount {
+function resolveAccount(cfg: XClawConfig): ResolvedDiscordAccount {
   return discordPlugin.config.resolveAccount(cfg, "default") as ResolvedDiscordAccount;
 }
 
-function startDiscordAccount(cfg: OpenClawConfig) {
+function startDiscordAccount(cfg: XClawConfig) {
   return discordPlugin.gateway!.startAccount!(
     createStartAccountContext({
       account: resolveAccount(cfg),
@@ -94,7 +94,7 @@ describe("discordPlugin outbound", () => {
     });
 
     const result = await discordPlugin.outbound!.sendMedia!({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as XClawConfig,
       to: "channel:123",
       text: "hi",
       mediaUrl: "/tmp/image.png",
@@ -204,7 +204,7 @@ describe("discordPlugin security", () => {
           dm: { policy: "allowlist", allowFrom: ["  discord:<@!123456789>  "] },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
 
     const result = resolveDmPolicy({
       cfg,
@@ -241,7 +241,7 @@ describe("discordPlugin groups", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
 
     expect(
       discordPlugin.groups?.resolveRequireMention?.({

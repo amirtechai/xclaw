@@ -10,19 +10,19 @@ import {
 } from "@buape/carbon";
 import type { APIStringSelectComponent } from "discord-api-types/v10";
 import { ChannelType } from "discord-api-types/v10";
-import { createChannelPairingChallengeIssuer } from "openclaw/plugin-sdk/channel-pairing";
-import { resolveCommandAuthorizedFromAuthorizers } from "openclaw/plugin-sdk/command-auth";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
-import type { DiscordAccountConfig } from "openclaw/plugin-sdk/config-runtime";
-import { isDangerousNameMatchingEnabled } from "openclaw/plugin-sdk/config-runtime";
-import { upsertChannelPairingRequest } from "openclaw/plugin-sdk/conversation-runtime";
-import { resolveAgentRoute } from "openclaw/plugin-sdk/routing";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+import { createChannelPairingChallengeIssuer } from "xclaw/plugin-sdk/channel-pairing";
+import { resolveCommandAuthorizedFromAuthorizers } from "xclaw/plugin-sdk/command-auth";
+import type { XClawConfig } from "xclaw/plugin-sdk/config-runtime";
+import type { DiscordAccountConfig } from "xclaw/plugin-sdk/config-runtime";
+import { isDangerousNameMatchingEnabled } from "xclaw/plugin-sdk/config-runtime";
+import { upsertChannelPairingRequest } from "xclaw/plugin-sdk/conversation-runtime";
+import { resolveAgentRoute } from "xclaw/plugin-sdk/routing";
+import { logVerbose } from "xclaw/plugin-sdk/runtime-env";
 import {
   readStoreAllowFromForDmPolicy,
   resolvePinnedMainDmOwnerFromAllowlist,
-} from "openclaw/plugin-sdk/security-runtime";
-import { logError } from "openclaw/plugin-sdk/text-runtime";
+} from "xclaw/plugin-sdk/security-runtime";
+import { logError } from "xclaw/plugin-sdk/text-runtime";
 import {
   createDiscordFormModal,
   parseDiscordComponentCustomId,
@@ -68,10 +68,10 @@ export type DiscordChannelContext = {
 };
 
 export type AgentComponentContext = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId: string;
   discordConfig?: DiscordAccountConfig;
-  runtime?: import("openclaw/plugin-sdk/runtime-env").RuntimeEnv;
+  runtime?: import("xclaw/plugin-sdk/runtime-env").RuntimeEnv;
   token?: string;
   guildEntries?: Record<string, DiscordGuildEntryResolved>;
   allowFrom?: string[];

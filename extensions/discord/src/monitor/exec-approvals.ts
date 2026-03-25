@@ -10,27 +10,27 @@ import {
   type TopLevelComponents,
 } from "@buape/carbon";
 import { ButtonStyle, Routes } from "discord-api-types/v10";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
-import { loadSessionStore, resolveStorePath } from "openclaw/plugin-sdk/config-runtime";
-import type { DiscordExecApprovalConfig } from "openclaw/plugin-sdk/config-runtime";
-import { GatewayClient } from "openclaw/plugin-sdk/gateway-runtime";
-import { createOperatorApprovalsGatewayClient } from "openclaw/plugin-sdk/gateway-runtime";
-import type { EventFrame } from "openclaw/plugin-sdk/gateway-runtime";
-import { resolveExecApprovalCommandDisplay } from "openclaw/plugin-sdk/infra-runtime";
-import { getExecApprovalApproverDmNoticeText } from "openclaw/plugin-sdk/infra-runtime";
+import type { XClawConfig } from "xclaw/plugin-sdk/config-runtime";
+import { loadSessionStore, resolveStorePath } from "xclaw/plugin-sdk/config-runtime";
+import type { DiscordExecApprovalConfig } from "xclaw/plugin-sdk/config-runtime";
+import { GatewayClient } from "xclaw/plugin-sdk/gateway-runtime";
+import { createOperatorApprovalsGatewayClient } from "xclaw/plugin-sdk/gateway-runtime";
+import type { EventFrame } from "xclaw/plugin-sdk/gateway-runtime";
+import { resolveExecApprovalCommandDisplay } from "xclaw/plugin-sdk/infra-runtime";
+import { getExecApprovalApproverDmNoticeText } from "xclaw/plugin-sdk/infra-runtime";
 import type {
   ExecApprovalDecision,
   ExecApprovalRequest,
   ExecApprovalResolved,
-} from "openclaw/plugin-sdk/infra-runtime";
+} from "xclaw/plugin-sdk/infra-runtime";
 import {
   normalizeAccountId,
   normalizeMessageChannel,
   resolveAgentIdFromSessionKey,
-} from "openclaw/plugin-sdk/routing";
-import type { RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { compileSafeRegex, testRegexWithBoundedInput } from "openclaw/plugin-sdk/security-runtime";
-import { logDebug, logError } from "openclaw/plugin-sdk/text-runtime";
+} from "xclaw/plugin-sdk/routing";
+import type { RuntimeEnv } from "xclaw/plugin-sdk/runtime-env";
+import { compileSafeRegex, testRegexWithBoundedInput } from "xclaw/plugin-sdk/security-runtime";
+import { logDebug, logError } from "xclaw/plugin-sdk/text-runtime";
 import { createDiscordClient, stripUndefinedFields } from "../send.shared.js";
 import { DiscordUiContainer } from "../ui.js";
 
@@ -104,7 +104,7 @@ export function parseExecApprovalData(
 }
 
 type ExecApprovalContainerParams = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId: string;
   title: string;
   description?: string;
@@ -194,7 +194,7 @@ class ExecApprovalActionRow extends Row<Button> {
 }
 
 function resolveExecApprovalAccountId(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   request: ExecApprovalRequest;
 }): string | null {
   const sessionKey = params.request.request.sessionKey?.trim();
@@ -270,7 +270,7 @@ function resolveExecApprovalPreviews(
 
 function createExecApprovalRequestContainer(params: {
   request: ExecApprovalRequest;
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId: string;
   actionRow?: Row<Button>;
 }): ExecApprovalContainer {
@@ -299,7 +299,7 @@ function createResolvedContainer(params: {
   request: ExecApprovalRequest;
   decision: ExecApprovalDecision;
   resolvedBy?: string | null;
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId: string;
 }): ExecApprovalContainer {
   const { commandPreview, commandSecondaryPreview } = resolveExecApprovalPreviews(
@@ -336,7 +336,7 @@ function createResolvedContainer(params: {
 
 function createExpiredContainer(params: {
   request: ExecApprovalRequest;
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId: string;
 }): ExecApprovalContainer {
   const { commandPreview, commandSecondaryPreview } = resolveExecApprovalPreviews(
@@ -362,7 +362,7 @@ export type DiscordExecApprovalHandlerOpts = {
   accountId: string;
   config: DiscordExecApprovalConfig;
   gatewayUrl?: string;
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   runtime?: RuntimeEnv;
   onResolve?: (id: string, decision: ExecApprovalDecision) => Promise<void>;
 };

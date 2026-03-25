@@ -13,7 +13,7 @@ A **node** is a companion device (macOS/iOS/Android/headless) that connects to t
 
 Legacy transport: [Bridge protocol](/gateway/bridge-protocol) (TCP JSONL; deprecated/removed for current nodes).
 
-macOS can also run in **node mode**: the menubar app connects to the Gateway’s WS server and exposes its local canvas/camera commands as a node (so `openclaw nodes …` works against this Mac).
+macOS can also run in **node mode**: the menubar app connects to the Gateway’s WS server and exposes its local canvas/camera commands as a node (so `xclaw nodes …` works against this Mac).
 
 Notes:
 
@@ -29,21 +29,21 @@ creates a device pairing request for `role: node`. Approve via the devices CLI (
 Quick CLI:
 
 ```bash
-openclaw devices list
-openclaw devices approve <requestId>
-openclaw devices reject <requestId>
-openclaw nodes status
-openclaw nodes describe --node <idOrNameOrIp>
+xclaw devices list
+xclaw devices approve <requestId>
+xclaw devices reject <requestId>
+xclaw nodes status
+xclaw nodes describe --node <idOrNameOrIp>
 ```
 
 If a node retries with changed auth details (role/scopes/public key), the prior
 pending request is superseded and a new `requestId` is created. Re-run
-`openclaw devices list` before approving.
+`xclaw devices list` before approving.
 
 Notes:
 
 - `nodes status` marks a node as **paired** when its device pairing role includes `node`.
-- `node.pair.*` (CLI: `openclaw nodes pending/approve/reject`) is a separate gateway-owned
+- `node.pair.*` (CLI: `xclaw nodes pending/approve/reject`) is a separate gateway-owned
   node pairing store; it does **not** gate the WS `connect` handshake.
 
 ## Remote node host (system.run)
@@ -56,14 +56,14 @@ forwards `exec` calls to the **node host** when `host=node` is selected.
 
 - **Gateway host**: receives messages, runs the model, routes tool calls.
 - **Node host**: executes `system.run`/`system.which` on the node machine.
-- **Approvals**: enforced on the node host via `~/.openclaw/exec-approvals.json`.
+- **Approvals**: enforced on the node host via `~/.xclaw/exec-approvals.json`.
 
 Approval note:
 
 - Approval-backed node runs bind exact request context.
-- For direct shell/runtime file executions, OpenClaw also best-effort binds one concrete local
+- For direct shell/runtime file executions, XClaw also best-effort binds one concrete local
   file operand and denies the run if that file changes before execution.
-- If OpenClaw cannot identify exactly one concrete local file for an interpreter/runtime command,
+- If XClaw cannot identify exactly one concrete local file for an interpreter/runtime command,
   approval-backed execution is denied instead of pretending full runtime coverage. Use sandboxing,
   separate hosts, or an explicit trusted allowlist/full workflow for broader interpreter semantics.
 
@@ -72,7 +72,7 @@ Approval note:
 On the node machine:
 
 ```bash
-openclaw node run --host <gateway-host> --port 18789 --display-name "Build Node"
+xclaw node run --host <gateway-host> --port 18789 --display-name "Build Node"
 ```
 
 ### Remote gateway via SSH tunnel (loopback bind)
@@ -88,25 +88,25 @@ Example (node host -> gateway host):
 ssh -N -L 18790:127.0.0.1:18789 user@gateway-host
 
 # Terminal B: export the gateway token and connect through the tunnel
-export OPENCLAW_GATEWAY_TOKEN="<gateway-token>"
-openclaw node run --host 127.0.0.1 --port 18790 --display-name "Build Node"
+export XCLAW_GATEWAY_TOKEN="<gateway-token>"
+xclaw node run --host 127.0.0.1 --port 18790 --display-name "Build Node"
 ```
 
 Notes:
 
-- `openclaw node run` supports token or password auth.
-- Env vars are preferred: `OPENCLAW_GATEWAY_TOKEN` / `OPENCLAW_GATEWAY_PASSWORD`.
+- `xclaw node run` supports token or password auth.
+- Env vars are preferred: `XCLAW_GATEWAY_TOKEN` / `XCLAW_GATEWAY_PASSWORD`.
 - Config fallback is `gateway.auth.token` / `gateway.auth.password`.
 - In local mode, node host intentionally ignores `gateway.remote.token` / `gateway.remote.password`.
 - In remote mode, `gateway.remote.token` / `gateway.remote.password` are eligible per remote precedence rules.
 - If active local `gateway.auth.*` SecretRefs are configured but unresolved, node-host auth fails closed.
-- Node-host auth resolution only honors `OPENCLAW_GATEWAY_*` env vars.
+- Node-host auth resolution only honors `XCLAW_GATEWAY_*` env vars.
 
 ### Start a node host (service)
 
 ```bash
-openclaw node install --host <gateway-host> --port 18789 --display-name "Build Node"
-openclaw node restart
+xclaw node install --host <gateway-host> --port 18789 --display-name "Build Node"
+xclaw node restart
 ```
 
 ### Pair + name
@@ -114,38 +114,38 @@ openclaw node restart
 On the gateway host:
 
 ```bash
-openclaw devices list
-openclaw devices approve <requestId>
-openclaw nodes status
+xclaw devices list
+xclaw devices approve <requestId>
+xclaw nodes status
 ```
 
-If the node retries with changed auth details, re-run `openclaw devices list`
+If the node retries with changed auth details, re-run `xclaw devices list`
 and approve the current `requestId`.
 
 Naming options:
 
-- `--display-name` on `openclaw node run` / `openclaw node install` (persists in `~/.openclaw/node.json` on the node).
-- `openclaw nodes rename --node <id|name|ip> --name "Build Node"` (gateway override).
+- `--display-name` on `xclaw node run` / `xclaw node install` (persists in `~/.xclaw/node.json` on the node).
+- `xclaw nodes rename --node <id|name|ip> --name "Build Node"` (gateway override).
 
 ### Allowlist the commands
 
 Exec approvals are **per node host**. Add allowlist entries from the gateway:
 
 ```bash
-openclaw approvals allowlist add --node <id|name|ip> "/usr/bin/uname"
-openclaw approvals allowlist add --node <id|name|ip> "/usr/bin/sw_vers"
+xclaw approvals allowlist add --node <id|name|ip> "/usr/bin/uname"
+xclaw approvals allowlist add --node <id|name|ip> "/usr/bin/sw_vers"
 ```
 
-Approvals live on the node host at `~/.openclaw/exec-approvals.json`.
+Approvals live on the node host at `~/.xclaw/exec-approvals.json`.
 
 ### Point exec at the node
 
 Configure defaults (gateway config):
 
 ```bash
-openclaw config set tools.exec.host node
-openclaw config set tools.exec.security allowlist
-openclaw config set tools.exec.node "<id-or-name>"
+xclaw config set tools.exec.host node
+xclaw config set tools.exec.security allowlist
+xclaw config set tools.exec.node "<id-or-name>"
 ```
 
 Or per session:
@@ -168,7 +168,7 @@ Related:
 Low-level (raw RPC):
 
 ```bash
-openclaw nodes invoke --node <idOrNameOrIp> --command canvas.eval --params '{"javaScript":"location.href"}'
+xclaw nodes invoke --node <idOrNameOrIp> --command canvas.eval --params '{"javaScript":"location.href"}'
 ```
 
 Higher-level helpers exist for the common “give the agent a MEDIA attachment” workflows.
@@ -180,17 +180,17 @@ If the node is showing the Canvas (WebView), `canvas.snapshot` returns `{ format
 CLI helper (writes to a temp file and prints `MEDIA:<path>`):
 
 ```bash
-openclaw nodes canvas snapshot --node <idOrNameOrIp> --format png
-openclaw nodes canvas snapshot --node <idOrNameOrIp> --format jpg --max-width 1200 --quality 0.9
+xclaw nodes canvas snapshot --node <idOrNameOrIp> --format png
+xclaw nodes canvas snapshot --node <idOrNameOrIp> --format jpg --max-width 1200 --quality 0.9
 ```
 
 ### Canvas controls
 
 ```bash
-openclaw nodes canvas present --node <idOrNameOrIp> --target https://example.com
-openclaw nodes canvas hide --node <idOrNameOrIp>
-openclaw nodes canvas navigate https://example.com --node <idOrNameOrIp>
-openclaw nodes canvas eval --node <idOrNameOrIp> --js "document.title"
+xclaw nodes canvas present --node <idOrNameOrIp> --target https://example.com
+xclaw nodes canvas hide --node <idOrNameOrIp>
+xclaw nodes canvas navigate https://example.com --node <idOrNameOrIp>
+xclaw nodes canvas eval --node <idOrNameOrIp> --js "document.title"
 ```
 
 Notes:
@@ -201,9 +201,9 @@ Notes:
 ### A2UI (Canvas)
 
 ```bash
-openclaw nodes canvas a2ui push --node <idOrNameOrIp> --text "Hello"
-openclaw nodes canvas a2ui push --node <idOrNameOrIp> --jsonl ./payload.jsonl
-openclaw nodes canvas a2ui reset --node <idOrNameOrIp>
+xclaw nodes canvas a2ui push --node <idOrNameOrIp> --text "Hello"
+xclaw nodes canvas a2ui push --node <idOrNameOrIp> --jsonl ./payload.jsonl
+xclaw nodes canvas a2ui reset --node <idOrNameOrIp>
 ```
 
 Notes:
@@ -215,16 +215,16 @@ Notes:
 Photos (`jpg`):
 
 ```bash
-openclaw nodes camera list --node <idOrNameOrIp>
-openclaw nodes camera snap --node <idOrNameOrIp>            # default: both facings (2 MEDIA lines)
-openclaw nodes camera snap --node <idOrNameOrIp> --facing front
+xclaw nodes camera list --node <idOrNameOrIp>
+xclaw nodes camera snap --node <idOrNameOrIp>            # default: both facings (2 MEDIA lines)
+xclaw nodes camera snap --node <idOrNameOrIp> --facing front
 ```
 
 Video clips (`mp4`):
 
 ```bash
-openclaw nodes camera clip --node <idOrNameOrIp> --duration 10s
-openclaw nodes camera clip --node <idOrNameOrIp> --duration 3000 --no-audio
+xclaw nodes camera clip --node <idOrNameOrIp> --duration 10s
+xclaw nodes camera clip --node <idOrNameOrIp> --duration 3000 --no-audio
 ```
 
 Notes:
@@ -238,8 +238,8 @@ Notes:
 Supported nodes expose `screen.record` (mp4). Example:
 
 ```bash
-openclaw nodes screen record --node <idOrNameOrIp> --duration 10s --fps 10
-openclaw nodes screen record --node <idOrNameOrIp> --duration 10s --fps 10 --no-audio
+xclaw nodes screen record --node <idOrNameOrIp> --duration 10s --fps 10
+xclaw nodes screen record --node <idOrNameOrIp> --duration 10s --fps 10 --no-audio
 ```
 
 Notes:
@@ -256,8 +256,8 @@ Nodes expose `location.get` when Location is enabled in settings.
 CLI helper:
 
 ```bash
-openclaw nodes location get --node <idOrNameOrIp>
-openclaw nodes location get --node <idOrNameOrIp> --accuracy precise --max-age 15000 --location-timeout 10000
+xclaw nodes location get --node <idOrNameOrIp>
+xclaw nodes location get --node <idOrNameOrIp> --accuracy precise --max-age 15000 --location-timeout 10000
 ```
 
 Notes:
@@ -273,7 +273,7 @@ Android nodes can expose `sms.send` when the user grants **SMS** permission and 
 Low-level invoke:
 
 ```bash
-openclaw nodes invoke --node <idOrNameOrIp> --command sms.send --params '{"to":"+15555550123","message":"Hello from OpenClaw"}'
+xclaw nodes invoke --node <idOrNameOrIp> --command sms.send --params '{"to":"+15555550123","message":"Hello from XClaw"}'
 ```
 
 Notes:
@@ -299,9 +299,9 @@ Available families:
 Example invokes:
 
 ```bash
-openclaw nodes invoke --node <idOrNameOrIp> --command device.status --params '{}'
-openclaw nodes invoke --node <idOrNameOrIp> --command notifications.list --params '{}'
-openclaw nodes invoke --node <idOrNameOrIp> --command photos.latest --params '{"limit":1}'
+xclaw nodes invoke --node <idOrNameOrIp> --command device.status --params '{}'
+xclaw nodes invoke --node <idOrNameOrIp> --command notifications.list --params '{}'
+xclaw nodes invoke --node <idOrNameOrIp> --command photos.latest --params '{"limit":1}'
 ```
 
 Notes:
@@ -316,8 +316,8 @@ The headless node host exposes `system.run`, `system.which`, and `system.execApp
 Examples:
 
 ```bash
-openclaw nodes run --node <idOrNameOrIp> -- echo "Hello from mac node"
-openclaw nodes notify --node <idOrNameOrIp> --title "Ping" --body "Gateway ready"
+xclaw nodes run --node <idOrNameOrIp> -- echo "Hello from mac node"
+xclaw nodes notify --node <idOrNameOrIp> --title "Ping" --body "Gateway ready"
 ```
 
 Notes:
@@ -333,7 +333,7 @@ Notes:
 - Node hosts ignore `PATH` overrides and strip dangerous startup/shell keys (`DYLD_*`, `LD_*`, `NODE_OPTIONS`, `PYTHON*`, `PERL*`, `RUBYOPT`, `SHELLOPTS`, `PS4`). If you need extra PATH entries, configure the node host service environment (or install tools in standard locations) instead of passing `PATH` via `--env`.
 - On macOS node mode, `system.run` is gated by exec approvals in the macOS app (Settings → Exec approvals).
   Ask/allowlist/full behave the same as the headless node host; denied prompts return `SYSTEM_RUN_DENIED`.
-- On headless node host, `system.run` is gated by exec approvals (`~/.openclaw/exec-approvals.json`).
+- On headless node host, `system.run` is gated by exec approvals (`~/.xclaw/exec-approvals.json`).
 
 ## Exec node binding
 
@@ -343,21 +343,21 @@ This sets the default node for `exec host=node` (and can be overridden per agent
 Global default:
 
 ```bash
-openclaw config set tools.exec.node "node-id-or-name"
+xclaw config set tools.exec.node "node-id-or-name"
 ```
 
 Per-agent override:
 
 ```bash
-openclaw config get agents.list
-openclaw config set agents.list[0].tools.exec.node "node-id-or-name"
+xclaw config get agents.list
+xclaw config set agents.list[0].tools.exec.node "node-id-or-name"
 ```
 
 Unset to allow any node:
 
 ```bash
-openclaw config unset tools.exec.node
-openclaw config unset agents.list[0].tools.exec.node
+xclaw config unset tools.exec.node
+xclaw config unset agents.list[0].tools.exec.node
 ```
 
 ## Permissions map
@@ -366,28 +366,28 @@ Nodes may include a `permissions` map in `node.list` / `node.describe`, keyed by
 
 ## Headless node host (cross-platform)
 
-OpenClaw can run a **headless node host** (no UI) that connects to the Gateway
+XClaw can run a **headless node host** (no UI) that connects to the Gateway
 WebSocket and exposes `system.run` / `system.which`. This is useful on Linux/Windows
 or for running a minimal node alongside a server.
 
 Start it:
 
 ```bash
-openclaw node run --host <gateway-host> --port 18789
+xclaw node run --host <gateway-host> --port 18789
 ```
 
 Notes:
 
 - Pairing is still required (the Gateway will show a device pairing prompt).
-- The node host stores its node id, token, display name, and gateway connection info in `~/.openclaw/node.json`.
-- Exec approvals are enforced locally via `~/.openclaw/exec-approvals.json`
+- The node host stores its node id, token, display name, and gateway connection info in `~/.xclaw/node.json`.
+- Exec approvals are enforced locally via `~/.xclaw/exec-approvals.json`
   (see [Exec approvals](/tools/exec-approvals)).
 - On macOS, the headless node host executes `system.run` locally by default. Set
-  `OPENCLAW_NODE_EXEC_HOST=app` to route `system.run` through the companion app exec host; add
-  `OPENCLAW_NODE_EXEC_FALLBACK=0` to require the app host and fail closed if it is unavailable.
+  `XCLAW_NODE_EXEC_HOST=app` to route `system.run` through the companion app exec host; add
+  `XCLAW_NODE_EXEC_FALLBACK=0` to require the app host and fail closed if it is unavailable.
 - Add `--tls` / `--tls-fingerprint` when the Gateway WS uses TLS.
 
 ## Mac node mode
 
-- The macOS menubar app connects to the Gateway WS server as a node (so `openclaw nodes …` works against this Mac).
+- The macOS menubar app connects to the Gateway WS server as a node (so `xclaw nodes …` works against this Mac).
 - In remote mode, the app opens an SSH tunnel for the Gateway port and connects to `localhost`.

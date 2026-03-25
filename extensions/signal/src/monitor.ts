@@ -1,28 +1,28 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
-import type { SignalReactionNotificationMode } from "openclaw/plugin-sdk/config-runtime";
-import { loadConfig } from "openclaw/plugin-sdk/config-runtime";
+import type { XClawConfig } from "xclaw/plugin-sdk/config-runtime";
+import type { SignalReactionNotificationMode } from "xclaw/plugin-sdk/config-runtime";
+import { loadConfig } from "xclaw/plugin-sdk/config-runtime";
 import {
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "openclaw/plugin-sdk/config-runtime";
-import type { BackoffPolicy } from "openclaw/plugin-sdk/infra-runtime";
-import { waitForTransportReady } from "openclaw/plugin-sdk/infra-runtime";
-import { saveMediaBuffer } from "openclaw/plugin-sdk/media-runtime";
-import { DEFAULT_GROUP_HISTORY_LIMIT, type HistoryEntry } from "openclaw/plugin-sdk/reply-history";
+} from "xclaw/plugin-sdk/config-runtime";
+import type { BackoffPolicy } from "xclaw/plugin-sdk/infra-runtime";
+import { waitForTransportReady } from "xclaw/plugin-sdk/infra-runtime";
+import { saveMediaBuffer } from "xclaw/plugin-sdk/media-runtime";
+import { DEFAULT_GROUP_HISTORY_LIMIT, type HistoryEntry } from "xclaw/plugin-sdk/reply-history";
 import {
   deliverTextOrMediaReply,
   resolveSendableOutboundReplyParts,
-} from "openclaw/plugin-sdk/reply-payload";
-import type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
+} from "xclaw/plugin-sdk/reply-payload";
+import type { ReplyPayload } from "xclaw/plugin-sdk/reply-runtime";
 import {
   chunkTextWithMode,
   resolveChunkMode,
   resolveTextChunkLimit,
-} from "openclaw/plugin-sdk/reply-runtime";
-import { createNonExitingRuntime, type RuntimeEnv } from "openclaw/plugin-sdk/runtime-env";
-import { normalizeStringEntries } from "openclaw/plugin-sdk/text-runtime";
-import { normalizeE164 } from "openclaw/plugin-sdk/text-runtime";
+} from "xclaw/plugin-sdk/reply-runtime";
+import { createNonExitingRuntime, type RuntimeEnv } from "xclaw/plugin-sdk/runtime-env";
+import { normalizeStringEntries } from "xclaw/plugin-sdk/text-runtime";
+import { normalizeE164 } from "xclaw/plugin-sdk/text-runtime";
 import { resolveSignalAccount } from "./accounts.js";
 import { signalCheck, signalRpcRequest } from "./client.js";
 import { formatSignalDaemonExit, spawnSignalDaemon, type SignalDaemonHandle } from "./daemon.js";
@@ -41,7 +41,7 @@ export type MonitorSignalOpts = {
   abortSignal?: AbortSignal;
   account?: string;
   accountId?: string;
-  config?: OpenClawConfig;
+  config?: XClawConfig;
   baseUrl?: string;
   autoStart?: boolean;
   startupTimeoutMs?: number;

@@ -1,21 +1,21 @@
-import type { ChannelSetupAdapter, ChannelSetupInput } from "openclaw/plugin-sdk/channel-setup";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "openclaw/plugin-sdk/routing";
+import type { ChannelSetupAdapter, ChannelSetupInput } from "xclaw/plugin-sdk/channel-setup";
+import type { XClawConfig } from "xclaw/plugin-sdk/config-runtime";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "xclaw/plugin-sdk/routing";
 import {
   applyAccountNameToChannelSection,
   patchScopedAccountConfig,
-} from "openclaw/plugin-sdk/setup";
+} from "xclaw/plugin-sdk/setup";
 import {
   mergeAllowFromEntries,
   createTopLevelChannelDmPolicy,
   promptParsedAllowFromForAccount,
   resolveSetupAccountId,
   setSetupChannelEnabled,
-} from "openclaw/plugin-sdk/setup";
-import type { ChannelSetupDmPolicy } from "openclaw/plugin-sdk/setup";
-import { type ChannelSetupWizard } from "openclaw/plugin-sdk/setup";
-import { formatDocsLink } from "openclaw/plugin-sdk/setup";
-import type { WizardPrompter } from "openclaw/plugin-sdk/setup";
+} from "xclaw/plugin-sdk/setup";
+import type { ChannelSetupDmPolicy } from "xclaw/plugin-sdk/setup";
+import { type ChannelSetupWizard } from "xclaw/plugin-sdk/setup";
+import { formatDocsLink } from "xclaw/plugin-sdk/setup";
+import type { WizardPrompter } from "xclaw/plugin-sdk/setup";
 import {
   listNextcloudTalkAccountIds,
   resolveDefaultNextcloudTalkAccountId,
@@ -148,10 +148,10 @@ async function promptNextcloudTalkAllowFrom(params: {
 }
 
 async function promptNextcloudTalkAllowFromForAccount(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   prompter: WizardPrompter;
   accountId?: string;
-}): Promise<OpenClawConfig> {
+}): Promise<XClawConfig> {
   const accountId = resolveSetupAccountId({
     accountId: params.accountId,
     defaultAccountId: resolveDefaultNextcloudTalkAccountId(params.cfg as CoreConfig),

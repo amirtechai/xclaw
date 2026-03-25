@@ -5,7 +5,7 @@ import { reportGeneratedOutputCli, writeGeneratedOutput } from "./lib/generated-
 
 const GENERATED_BY = "scripts/generate-bundled-plugin-metadata.mjs";
 const DEFAULT_OUTPUT_PATH = "src/plugins/bundled-plugin-metadata.generated.ts";
-const MANIFEST_KEY = "openclaw";
+const MANIFEST_KEY = "xclaw";
 const FORMATTER_CWD = path.resolve(import.meta.dirname, "..");
 const CANONICAL_PACKAGE_ID_ALIASES = {
   "elevenlabs-speech": "elevenlabs",

@@ -1,4 +1,4 @@
-import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+import type { XClawPluginApi } from "xclaw/plugin-sdk/core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   getRequiredHookHandler,
@@ -59,7 +59,7 @@ function registerHandlersForTest(
     },
   },
 ) {
-  return registerHookHandlersForTest<OpenClawPluginApi>({
+  return registerHookHandlersForTest<XClawPluginApi>({
     config,
     register: registerDiscordSubagentHooks,
   });

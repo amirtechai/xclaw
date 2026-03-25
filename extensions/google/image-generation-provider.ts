@@ -1,16 +1,16 @@
-import type { ImageGenerationProvider } from "openclaw/plugin-sdk/image-generation";
+import type { ImageGenerationProvider } from "xclaw/plugin-sdk/image-generation";
 import {
   assertOkOrThrowHttpError,
   normalizeBaseUrl,
   postJsonRequest,
-} from "openclaw/plugin-sdk/media-understanding";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth";
+} from "xclaw/plugin-sdk/media-understanding";
+import { resolveApiKeyForProvider } from "xclaw/plugin-sdk/provider-auth";
 import {
   DEFAULT_GOOGLE_API_BASE_URL,
   normalizeGoogleApiBaseUrl,
   normalizeGoogleModelId,
   parseGeminiAuth,
-} from "openclaw/plugin-sdk/provider-google";
+} from "xclaw/plugin-sdk/provider-google";
 
 const DEFAULT_GOOGLE_IMAGE_MODEL = "gemini-3.1-flash-image-preview";
 const DEFAULT_OUTPUT_MIME = "image/png";

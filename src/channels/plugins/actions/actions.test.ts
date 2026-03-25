@@ -1,6 +1,6 @@
 import type { AgentToolResult } from "@mariozechner/pi-agent-core";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { XClawConfig } from "../../../config/config.js";
 import type { ChannelMessageActionAdapter } from "../types.js";
 
 const actionResult = (): AgentToolResult<unknown> => ({
@@ -25,13 +25,13 @@ let signalReactionModule: typeof import("../../../../extensions/signal/src/send-
 
 function getDescribedActions(params: {
   describeMessageTool?: ChannelMessageActionAdapter["describeMessageTool"];
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
 }) {
   return [...(params.describeMessageTool?.({ cfg: params.cfg })?.actions ?? [])];
 }
 
-function telegramCfg(): OpenClawConfig {
-  return { channels: { telegram: { botToken: "tok" } } } as OpenClawConfig;
+function telegramCfg(): XClawConfig {
+  return { channels: { telegram: { botToken: "tok" } } } as XClawConfig;
 }
 
 type TelegramActionInput = Parameters<NonNullable<typeof telegramMessageActions.handleAction>>[0];
@@ -39,7 +39,7 @@ type TelegramActionInput = Parameters<NonNullable<typeof telegramMessageActions.
 async function runTelegramAction(
   action: TelegramActionInput["action"],
   params: TelegramActionInput["params"],
-  options?: { cfg?: OpenClawConfig; accountId?: string },
+  options?: { cfg?: XClawConfig; accountId?: string },
 ) {
   const cfg = options?.cfg ?? telegramCfg();
   const handleAction = telegramMessageActions.handleAction;
@@ -62,13 +62,13 @@ async function runSignalAction(
   action: SignalActionInput["action"],
   params: SignalActionInput["params"],
   options?: {
-    cfg?: OpenClawConfig;
+    cfg?: XClawConfig;
     accountId?: string;
     toolContext?: SignalActionInput["toolContext"];
   },
 ) {
   const cfg =
-    options?.cfg ?? ({ channels: { signal: { account: "+15550001111" } } } as OpenClawConfig);
+    options?.cfg ?? ({ channels: { signal: { account: "+15550001111" } } } as XClawConfig);
   const handleAction = signalMessageActions.handleAction;
   if (!handleAction) {
     throw new Error("signal handleAction unavailable");
@@ -85,7 +85,7 @@ async function runSignalAction(
 }
 
 function slackHarness() {
-  const cfg = { channels: { slack: { botToken: "tok" } } } as OpenClawConfig;
+  const cfg = { channels: { slack: { botToken: "tok" } } } as XClawConfig;
   const actions = createSlackActions("slack", {
     invoke: async (action, invokeCfg, toolContext) =>
       await handleSlackAction(action, invokeCfg, toolContext),
@@ -130,7 +130,7 @@ function expectChannelCreateAction(actions: string[], expected: boolean) {
   expect(actions).not.toContain("channel-create");
 }
 
-function createSignalAccountOverrideCfg(): OpenClawConfig {
+function createSignalAccountOverrideCfg(): XClawConfig {
   return {
     channels: {
       signal: {
@@ -140,12 +140,12 @@ function createSignalAccountOverrideCfg(): OpenClawConfig {
         },
       },
     },
-  } as OpenClawConfig;
+  } as XClawConfig;
 }
 
 function createDiscordModerationOverrideCfg(params?: {
   channelsEnabled?: boolean;
-}): OpenClawConfig {
+}): XClawConfig {
   const accountActions = params?.channelsEnabled
     ? { moderation: true, channels: true }
     : { moderation: true };
@@ -158,13 +158,13 @@ function createDiscordModerationOverrideCfg(params?: {
         },
       },
     },
-  } as OpenClawConfig;
+  } as XClawConfig;
 }
 
 async function expectSignalActionRejected(
   params: Record<string, unknown>,
   error: RegExp,
-  cfg: OpenClawConfig,
+  cfg: XClawConfig,
 ) {
   const handleAction = signalMessageActions.handleAction;
   if (!handleAction) {
@@ -229,7 +229,7 @@ describe("discord message actions", () => {
     const cases = [
       {
         name: "defaults",
-        cfg: { channels: { discord: { token: "d0" } } } as OpenClawConfig,
+        cfg: { channels: { discord: { token: "d0" } } } as XClawConfig,
         expectUploads: true,
         expectChannelCreate: true,
         expectModeration: false,
@@ -238,7 +238,7 @@ describe("discord message actions", () => {
         name: "disabled channel actions",
         cfg: {
           channels: { discord: { token: "d0", actions: { channels: false } } },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expectUploads: true,
         expectChannelCreate: false,
         expectModeration: false,
@@ -253,7 +253,7 @@ describe("discord message actions", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expectUploads: true,
         expectChannelCreate: true,
         expectModeration: true,
@@ -269,7 +269,7 @@ describe("discord message actions", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expectUploads: true,
         expectChannelCreate: true,
         expectModeration: true,
@@ -285,7 +285,7 @@ describe("discord message actions", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expectUploads: true,
         expectChannelCreate: true,
         expectModeration: false,
@@ -488,7 +488,7 @@ describe("handleDiscordMessageAction", () => {
     it(testCase.name, async () => {
       await handleDiscordMessageAction({
         ...testCase.input,
-        cfg: {} as OpenClawConfig,
+        cfg: {} as XClawConfig,
       });
 
       const call = handleDiscordAction.mock.calls.at(-1);
@@ -506,7 +506,7 @@ describe("handleDiscordMessageAction", () => {
         durationMin: 5,
         senderUserId: "spoofed-admin-id",
       },
-      cfg: {} as OpenClawConfig,
+      cfg: {} as XClawConfig,
       requesterSenderId: "trusted-sender-id",
       toolContext: { currentChannelProvider: "discord" },
     });
@@ -535,7 +535,7 @@ describe("handleDiscordMessageAction", () => {
               channelId: "123",
               emoji: "ok",
             },
-            cfg: {} as OpenClawConfig,
+            cfg: {} as XClawConfig,
             toolContext: { currentMessageId: "9001" },
           });
         },
@@ -561,7 +561,7 @@ describe("handleDiscordMessageAction", () => {
                 channelId: "123",
                 emoji: "ok",
               },
-              cfg: {} as OpenClawConfig,
+              cfg: {} as XClawConfig,
             }),
           ).rejects.toThrow(/messageId required/i);
         },
@@ -597,7 +597,7 @@ describe("telegramMessageActions", () => {
               actions: { editForumTopic: true },
             },
           },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expectPoll: true,
         expectTopicEdit: true,
       },
@@ -610,7 +610,7 @@ describe("telegramMessageActions", () => {
               actions: { sendMessage: false },
             },
           },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expectPoll: false,
         expectTopicEdit: true,
       },
@@ -623,7 +623,7 @@ describe("telegramMessageActions", () => {
               actions: { poll: false },
             },
           },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expectPoll: false,
         expectTopicEdit: true,
       },
@@ -650,7 +650,7 @@ describe("telegramMessageActions", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expectPoll: false,
         expectTopicEdit: true,
       },
@@ -689,7 +689,7 @@ describe("telegramMessageActions", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expectSticker: true,
       },
       {
@@ -703,7 +703,7 @@ describe("telegramMessageActions", () => {
               },
             },
           },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expectSticker: false,
       },
     ] as const;
@@ -927,7 +927,7 @@ describe("telegramMessageActions", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     const actions = getDescribedActions({
       describeMessageTool: telegramMessageActions.describeMessageTool,
       cfg,
@@ -1027,7 +1027,7 @@ it("forwards trusted mediaLocalRoots for send actions", async () => {
         await handleDiscordMessageAction({
           action: "send",
           params: { to: "channel:123", message: "hi", media: "/tmp/file.png" },
-          cfg: {} as OpenClawConfig,
+          cfg: {} as XClawConfig,
           mediaLocalRoots: ["/tmp/agent-root"],
         });
       },
@@ -1084,14 +1084,14 @@ describe("signalMessageActions", () => {
     const cases = [
       {
         name: "no configured accounts",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as XClawConfig,
         expected: [],
       },
       {
         name: "reactions disabled",
         cfg: {
           channels: { signal: { account: "+15550001111", actions: { reactions: false } } },
-        } as OpenClawConfig,
+        } as XClawConfig,
         expected: ["send"],
       },
       {
@@ -1117,7 +1117,7 @@ describe("signalMessageActions", () => {
   it("blocks reactions when action gate is disabled", async () => {
     const cfg = {
       channels: { signal: { account: "+15550001111", actions: { reactions: false } } },
-    } as OpenClawConfig;
+    } as XClawConfig;
     await expectSignalActionRejected(
       { to: "+15550001111", messageId: "123", emoji: "✅" },
       /actions\.reactions/,
@@ -1139,7 +1139,7 @@ describe("signalMessageActions", () => {
       },
       {
         name: "normalizes uuid recipients",
-        cfg: { channels: { signal: { account: "+15550001111" } } } as OpenClawConfig,
+        cfg: { channels: { signal: { account: "+15550001111" } } } as XClawConfig,
         accountId: undefined,
         params: {
           recipient: "uuid:123e4567-e89b-12d3-a456-426614174000",
@@ -1153,7 +1153,7 @@ describe("signalMessageActions", () => {
       },
       {
         name: "passes groupId and targetAuthor for group reactions",
-        cfg: { channels: { signal: { account: "+15550001111" } } } as OpenClawConfig,
+        cfg: { channels: { signal: { account: "+15550001111" } } } as XClawConfig,
         accountId: undefined,
         params: {
           to: "signal:group:group-id",
@@ -1172,7 +1172,7 @@ describe("signalMessageActions", () => {
       },
       {
         name: "falls back to toolContext.currentMessageId when messageId is omitted",
-        cfg: { channels: { signal: { account: "+15550001111" } } } as OpenClawConfig,
+        cfg: { channels: { signal: { account: "+15550001111" } } } as XClawConfig,
         accountId: undefined,
         params: { to: "+15559999999", emoji: "🔥" },
         expectedRecipient: "+15559999999",
@@ -1205,7 +1205,7 @@ describe("signalMessageActions", () => {
   it("rejects invalid signal reaction inputs before dispatch", async () => {
     const cfg = {
       channels: { signal: { account: "+15550001111" } },
-    } as OpenClawConfig;
+    } as XClawConfig;
     for (const testCase of [
       {
         params: { to: "+15559999999", emoji: "✅" },

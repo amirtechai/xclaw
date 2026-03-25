@@ -59,10 +59,10 @@ function buildConfig(enableNoVnc: boolean): SandboxConfig {
     backend: "docker",
     scope: "session",
     workspaceAccess: "none",
-    workspaceRoot: "/tmp/openclaw-sandboxes",
+    workspaceRoot: "/tmp/xclaw-sandboxes",
     docker: {
-      image: "openclaw-sandbox:bookworm-slim",
-      containerPrefix: "openclaw-sbx-",
+      image: "xclaw-sandbox:bookworm-slim",
+      containerPrefix: "xclaw-sbx-",
       workdir: "/workspace",
       readOnlyRoot: true,
       tmpfs: ["/tmp", "/var/tmp", "/run"],
@@ -72,15 +72,15 @@ function buildConfig(enableNoVnc: boolean): SandboxConfig {
     },
     ssh: {
       command: "ssh",
-      workspaceRoot: "/tmp/openclaw-sandboxes",
+      workspaceRoot: "/tmp/xclaw-sandboxes",
       strictHostKeyChecking: true,
       updateHostKeys: true,
     },
     browser: {
       enabled: true,
-      image: "openclaw-sandbox-browser:bookworm-slim",
-      containerPrefix: "openclaw-sbx-browser-",
-      network: "openclaw-sandbox-browser",
+      image: "xclaw-sandbox-browser:bookworm-slim",
+      containerPrefix: "xclaw-sbx-browser-",
+      network: "xclaw-sandbox-browser",
       cdpPort: 9222,
       vncPort: 5900,
       noVncPort: 6080,
@@ -163,11 +163,11 @@ describe("ensureSandboxBrowser create args", () => {
     expect(createArgs).toBeDefined();
     expect(createArgs).toContain("127.0.0.1::6080");
     const envEntries = collectDockerFlagValues(createArgs ?? [], "-e");
-    expect(envEntries).toContain("OPENCLAW_BROWSER_NO_SANDBOX=1");
+    expect(envEntries).toContain("XCLAW_BROWSER_NO_SANDBOX=1");
     const passwordEntry = envEntries.find((entry) =>
-      entry.startsWith("OPENCLAW_BROWSER_NOVNC_PASSWORD="),
+      entry.startsWith("XCLAW_BROWSER_NOVNC_PASSWORD="),
     );
-    expect(passwordEntry).toMatch(/^OPENCLAW_BROWSER_NOVNC_PASSWORD=[A-Za-z0-9]{8}$/);
+    expect(passwordEntry).toMatch(/^XCLAW_BROWSER_NOVNC_PASSWORD=[A-Za-z0-9]{8}$/);
     expect(result?.noVncUrl).toMatch(/^http:\/\/127\.0\.0\.1:19000\/sandbox\/novnc\?token=/);
     expect(result?.noVncUrl).not.toContain("password=");
   });
@@ -182,7 +182,7 @@ describe("ensureSandboxBrowser create args", () => {
 
     const createArgs = findDockerArgsCall(dockerMocks.execDocker.mock.calls, "create");
     const envEntries = collectDockerFlagValues(createArgs ?? [], "-e");
-    expect(envEntries.some((entry) => entry.startsWith("OPENCLAW_BROWSER_NOVNC_PASSWORD="))).toBe(
+    expect(envEntries.some((entry) => entry.startsWith("XCLAW_BROWSER_NOVNC_PASSWORD="))).toBe(
       false,
     );
     expect(result?.noVncUrl).toBeUndefined();

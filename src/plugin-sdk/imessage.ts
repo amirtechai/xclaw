@@ -1,9 +1,9 @@
 export type { IMessageAccountConfig } from "../config/types.js";
-export type { OpenClawConfig } from "../config/config.js";
+export type { XClawConfig } from "../config/config.js";
 export type {
   ChannelMessageActionContext,
   ChannelPlugin,
-  OpenClawPluginApi,
+  XClawPluginApi,
   PluginRuntime,
 } from "./channel-plugin-common.js";
 export {

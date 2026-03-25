@@ -2,11 +2,11 @@ import { resolveWhatsAppAccount } from "./accounts.js";
 import {
   ToolAuthorizationError,
   resolveWhatsAppOutboundTarget,
-  type OpenClawConfig,
+  type XClawConfig,
 } from "./runtime-api.js";
 
 export function resolveAuthorizedWhatsAppOutboundTarget(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   chatJid: string;
   accountId?: string;
   actionLabel: string;

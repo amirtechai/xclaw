@@ -35,7 +35,7 @@ vi.mock("@mariozechner/clipboard", () => ({
 process.env.VITEST = "true";
 // Config validation walks plugin manifests; keep an aggressive cache in tests to avoid
 // repeated filesystem discovery across suites/workers.
-process.env.OPENCLAW_PLUGIN_MANIFEST_CACHE_MS ??= "60000";
+process.env.XCLAW_PLUGIN_MANIFEST_CACHE_MS ??= "60000";
 // Vitest vm forks can load transitive lockfile helpers many times per worker.
 // Raise listener budget to avoid noisy MaxListeners warnings and warning-stack overhead.
 const TEST_PROCESS_MAX_LISTENERS = 128;
@@ -55,19 +55,19 @@ import type {
   ChannelOutboundAdapter,
   ChannelPlugin,
 } from "../src/channels/plugins/types.js";
-import type { OpenClawConfig } from "../src/config/config.js";
+import type { XClawConfig } from "../src/config/config.js";
 import type { OutboundSendDeps } from "../src/infra/outbound/deliver.js";
 import { installProcessWarningFilter } from "../src/infra/warning-filter.js";
 import type { PluginRegistry } from "../src/plugins/registry.js";
 import { cleanupSessionStateForTest } from "../src/test-utils/session-state-cleanup.js";
 import { withIsolatedTestHome } from "./test-env.js";
 
-// Set HOME/state isolation before importing any runtime OpenClaw modules.
+// Set HOME/state isolation before importing any runtime XClaw modules.
 const testEnv = withIsolatedTestHome();
 
 installProcessWarningFilter();
 
-const REGISTRY_STATE = Symbol.for("openclaw.pluginRegistryState");
+const REGISTRY_STATE = Symbol.for("xclaw.pluginRegistryState");
 
 type RegistryState = {
   registry: PluginRegistry | null;
@@ -104,7 +104,7 @@ const pickSendFn = (id: ChannelId, deps?: OutboundSendDeps) => {
 };
 
 function resolveSlackStubReplyToMode(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   chatType?: string | null;
 }): "off" | "first" | "all" {
   const entry = (
@@ -174,7 +174,7 @@ const createStubPlugin = (params: {
   deliveryMode?: ChannelOutboundAdapter["deliveryMode"];
   preferSessionLookupForAnnounceTarget?: boolean;
   resolveReplyToMode?: (params: {
-    cfg: OpenClawConfig;
+    cfg: XClawConfig;
     accountId?: string | null;
     chatType?: string | null;
   }) => "off" | "first" | "all";
@@ -196,7 +196,7 @@ const createStubPlugin = (params: {
       }
     : undefined,
   config: {
-    listAccountIds: (cfg: OpenClawConfig) => {
+    listAccountIds: (cfg: XClawConfig) => {
       const channels = cfg.channels as Record<string, unknown> | undefined;
       const entry = channels?.[params.id];
       if (!entry || typeof entry !== "object") {
@@ -206,7 +206,7 @@ const createStubPlugin = (params: {
       const ids = accounts ? Object.keys(accounts).filter(Boolean) : [];
       return ids.length > 0 ? ids : ["default"];
     },
-    resolveAccount: (cfg: OpenClawConfig, accountId?: string | null) => {
+    resolveAccount: (cfg: XClawConfig, accountId?: string | null) => {
       const channels = cfg.channels as Record<string, unknown> | undefined;
       const entry = channels?.[params.id];
       if (!entry || typeof entry !== "object") {
@@ -216,7 +216,7 @@ const createStubPlugin = (params: {
       const match = accountId ? accounts?.[accountId] : undefined;
       return (match && typeof match === "object") || typeof match === "string" ? match : entry;
     },
-    isConfigured: async (_account, cfg: OpenClawConfig) => {
+    isConfigured: async (_account, cfg: XClawConfig) => {
       const channels = cfg.channels as Record<string, unknown> | undefined;
       return Boolean(channels?.[params.id]);
     },

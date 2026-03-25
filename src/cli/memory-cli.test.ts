@@ -77,7 +77,7 @@ describe("memory cli", () => {
       files: 0,
       chunks: 0,
       dirty: false,
-      workspaceDir: "/tmp/openclaw",
+      workspaceDir: "/tmp/xclaw",
       dbPath: "/tmp/memory.sqlite",
       provider: "openai",
       model: "text-embedding-3-small",
@@ -250,11 +250,11 @@ describe("memory cli", () => {
   it("documents memory help examples", () => {
     const helpText = getMemoryHelpText();
 
-    expect(helpText).toContain("openclaw memory status --deep");
+    expect(helpText).toContain("xclaw memory status --deep");
     expect(helpText).toContain("Probe embedding provider readiness.");
-    expect(helpText).toContain('openclaw memory search "meeting notes"');
+    expect(helpText).toContain('xclaw memory search "meeting notes"');
     expect(helpText).toContain("Quick search using positional query.");
-    expect(helpText).toContain('openclaw memory search --query "deployment" --max-results 20');
+    expect(helpText).toContain('xclaw memory search --query "deployment" --max-results 20');
     expect(helpText).toContain("Limit results for focused troubleshooting.");
   });
 

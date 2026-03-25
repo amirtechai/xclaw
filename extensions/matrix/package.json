@@ -1,7 +1,7 @@
 {
-  "name": "@openclaw/matrix",
+  "name": "@xclaw/matrix",
   "version": "2026.3.22",
-  "description": "OpenClaw Matrix channel plugin",
+  "description": "XClaw Matrix channel plugin",
   "type": "module",
   "dependencies": {
     "@matrix-org/matrix-sdk-crypto-nodejs": "^0.4.0",
@@ -12,17 +12,17 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "xclaw": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.22"
+    "xclaw": ">=2026.3.22"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "xclaw": {
       "optional": true
     }
   },
-  "openclaw": {
+  "xclaw": {
     "extensions": [
       "./index.ts"
     ],
@@ -38,7 +38,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@openclaw/matrix",
+      "npmSpec": "@xclaw/matrix",
       "localPath": "extensions/matrix",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.3.22"

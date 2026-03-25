@@ -1,5 +1,5 @@
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
-import { logVerbose } from "openclaw/plugin-sdk/runtime-env";
+import type { XClawConfig } from "xclaw/plugin-sdk/config-runtime";
+import { logVerbose } from "xclaw/plugin-sdk/runtime-env";
 
 type DiscordAudioAttachment = {
   content_type?: string;
@@ -23,7 +23,7 @@ export async function resolveDiscordPreflightAudioMentionContext(params: {
   isDirectMessage: boolean;
   shouldRequireMention: boolean;
   mentionRegexes: RegExp[];
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   abortSignal?: AbortSignal;
 }): Promise<{
   hasAudioAttachment: boolean;

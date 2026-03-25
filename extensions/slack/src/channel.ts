@@ -2,34 +2,34 @@ import {
   buildLegacyDmAccountAllowlistAdapter,
   createAccountScopedAllowlistNameResolver,
   createFlatAllowlistOverrideResolver,
-} from "openclaw/plugin-sdk/allowlist-config-edit";
+} from "xclaw/plugin-sdk/allowlist-config-edit";
 import {
   adaptScopedAccountAccessor,
   createScopedDmSecurityResolver,
-} from "openclaw/plugin-sdk/channel-config-helpers";
-import { createPairingPrefixStripper } from "openclaw/plugin-sdk/channel-pairing";
-import { createOpenProviderConfiguredRouteWarningCollector } from "openclaw/plugin-sdk/channel-policy";
-import { resolveTargetsWithOptionalToken } from "openclaw/plugin-sdk/channel-targets";
-import { createChatChannelPlugin } from "openclaw/plugin-sdk/core";
+} from "xclaw/plugin-sdk/channel-config-helpers";
+import { createPairingPrefixStripper } from "xclaw/plugin-sdk/channel-pairing";
+import { createOpenProviderConfiguredRouteWarningCollector } from "xclaw/plugin-sdk/channel-policy";
+import { resolveTargetsWithOptionalToken } from "xclaw/plugin-sdk/channel-targets";
+import { createChatChannelPlugin } from "xclaw/plugin-sdk/core";
 import {
   createChannelDirectoryAdapter,
   createRuntimeDirectoryLiveAdapter,
-} from "openclaw/plugin-sdk/directory-runtime";
-import { buildPassiveProbedChannelStatusSummary } from "openclaw/plugin-sdk/extension-shared";
+} from "xclaw/plugin-sdk/directory-runtime";
+import { buildPassiveProbedChannelStatusSummary } from "xclaw/plugin-sdk/extension-shared";
 import {
   createRuntimeOutboundDelegates,
   resolveOutboundSendDep,
-} from "openclaw/plugin-sdk/outbound-runtime";
+} from "xclaw/plugin-sdk/outbound-runtime";
 import {
   buildOutboundBaseSessionKey,
   normalizeOutboundThreadId,
   resolveThreadSessionKeys,
   type RoutePeer,
-} from "openclaw/plugin-sdk/routing";
+} from "xclaw/plugin-sdk/routing";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "xclaw/plugin-sdk/status-helpers";
 import {
   listEnabledSlackAccounts,
   resolveSlackAccount,
@@ -59,7 +59,7 @@ import {
   projectCredentialSnapshotFields,
   resolveConfiguredFromRequiredCredentialStatuses,
   type ChannelPlugin,
-  type OpenClawConfig,
+  type XClawConfig,
 } from "./runtime-api.js";
 import { getSlackRuntime } from "./runtime.js";
 import { fetchSlackScopes } from "./scopes.js";
@@ -168,7 +168,7 @@ function parseSlackExplicitTarget(raw: string) {
 }
 
 function buildSlackBaseSessionKey(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   agentId: string;
   accountId?: string | null;
   peer: RoutePeer;
@@ -177,7 +177,7 @@ function buildSlackBaseSessionKey(params: {
 }
 
 async function resolveSlackChannelType(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId?: string | null;
   channelId: string;
 }): Promise<"channel" | "group" | "dm" | "unknown"> {
@@ -240,7 +240,7 @@ async function resolveSlackChannelType(params: {
 }
 
 async function resolveSlackOutboundSessionRoute(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   agentId: string;
   accountId?: string | null;
   target: string;
@@ -460,7 +460,7 @@ export const slackPlugin: ChannelPlugin<ResolvedSlackAccount, SlackProbe> = crea
       invoke: async (action, cfg, toolContext) =>
         await getSlackRuntime().channel.slack.handleSlackAction(
           action,
-          cfg as OpenClawConfig,
+          cfg as XClawConfig,
           toolContext as SlackActionContext | undefined,
         ),
     }),

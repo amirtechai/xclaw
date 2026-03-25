@@ -5,7 +5,7 @@ const mocks = vi.hoisted(() => ({
   getOAuthApiKey: vi.fn(),
 }));
 
-vi.mock("openclaw/plugin-sdk/infra-runtime", () => ({
+vi.mock("xclaw/plugin-sdk/infra-runtime", () => ({
   ensureGlobalUndiciEnvProxyDispatcher: mocks.ensureGlobalUndiciEnvProxyDispatcher,
 }));
 

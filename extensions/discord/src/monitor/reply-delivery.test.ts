@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../../../../src/config/config.js";
+import type { XClawConfig } from "../../../../src/config/config.js";
 import type { RuntimeEnv } from "../../../../src/runtime.js";
 import { deliverDiscordReply } from "./reply-delivery.js";
 import {
@@ -51,8 +51,8 @@ vi.mock("../send.shared.js", () => ({
   sendDiscordText: (...args: unknown[]) => sendDiscordTextMock(...args),
 }));
 
-vi.mock("openclaw/plugin-sdk/infra-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/infra-runtime")>();
+vi.mock("xclaw/plugin-sdk/infra-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/infra-runtime")>();
   return {
     ...actual,
     retryAsync: retryAsyncMock,
@@ -63,7 +63,7 @@ describe("deliverDiscordReply", () => {
   const runtime = {} as RuntimeEnv;
   const cfg = {
     channels: { discord: { token: "test-token" } },
-  } as OpenClawConfig;
+  } as XClawConfig;
   const expectBotSendRetrySuccess = async (status: number, message: string) => {
     sendMessageDiscordMock
       .mockRejectedValueOnce(Object.assign(new Error(message), { status }))

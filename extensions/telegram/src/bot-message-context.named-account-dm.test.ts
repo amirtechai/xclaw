@@ -1,8 +1,8 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const recordInboundSessionMock = vi.fn().mockResolvedValue(undefined);
-vi.mock("openclaw/plugin-sdk/conversation-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/conversation-runtime")>();
+vi.mock("xclaw/plugin-sdk/conversation-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/conversation-runtime")>();
   return {
     ...actual,
     recordInboundSession: (...args: unknown[]) => recordInboundSessionMock(...args),
@@ -15,7 +15,7 @@ let setRuntimeConfigSnapshot: typeof import("../../../src/config/config.js").set
 
 describe("buildTelegramMessageContext named-account DM fallback", () => {
   const baseCfg = {
-    agents: { defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/openclaw" } },
+    agents: { defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/xclaw" } },
     channels: { telegram: {} },
     messages: { groupChat: { mentionPatterns: [] } },
   };

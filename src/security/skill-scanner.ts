@@ -170,6 +170,36 @@ const LINE_RULES: LineRule[] = [
     message: "WebSocket connection to non-standard port",
     pattern: /new\s+WebSocket\s*\(\s*["']wss?:\/\/[^"']*:(\d+)/,
   },
+  {
+    ruleId: "prompt-injection",
+    severity: "critical",
+    message: "Possible prompt injection: skill instructs agent to override safety rules",
+    pattern: /ignore (previous|all|your) (instructions?|rules?|guidelines?)|bypass (safety|guidelines|filters|rules)|disregard (previous|all|your)/i,
+  },
+  {
+    ruleId: "data-exfiltration-curl",
+    severity: "critical",
+    message: "curl/wget sending data to external URL — possible data exfiltration",
+    pattern: /curl[^\n]*(-d|--data|-F|--form|-X POST)[^\n]*(http|https)/i,
+  },
+  {
+    ruleId: "remote-script-download",
+    severity: "critical",
+    message: "Downloading and executing remote script",
+    pattern: /curl[^|\n]*\|\s*bash|wget[^|\n]*\|\s*sh/,
+  },
+  {
+    ruleId: "credential-theft",
+    severity: "critical",
+    message: "Accessing SSH keys or credential stores",
+    pattern: /\.ssh\/id_|aws\/credentials|\.netrc/,
+  },
+  {
+    ruleId: "reverse-shell",
+    severity: "critical",
+    message: "Reverse shell pattern detected",
+    pattern: /bash\s+-i\s+>&|\bnetcat\b.*-e|\/dev\/tcp\//i,
+  },
 ];
 
 const STANDARD_PORTS = new Set([80, 443, 8080, 8443, 3000]);
@@ -201,6 +231,13 @@ const SOURCE_RULES: SourceRule[] = [
       "Environment variable access combined with network send — possible credential harvesting",
     pattern: /process\.env/,
     requiresContext: /\bfetch\b|\bpost\b|http\.request/i,
+  },
+  {
+    ruleId: "token-exfiltration",
+    severity: "critical",
+    message: "API token combined with external HTTP — possible credential theft",
+    pattern: /XCLAW_GATEWAY_TOKEN|ANTHROPIC_API_KEY|api[_-]?key|bearer\s+token/i,
+    requiresContext: /\bfetch\b|http\.request|axios/i,
   },
 ];
 

@@ -1,8 +1,8 @@
-import { resolveChannelGroupRequireMention } from "openclaw/plugin-sdk/channel-policy";
-import { resolveExactLineGroupConfigKey, type OpenClawConfig } from "../runtime-api.js";
+import { resolveChannelGroupRequireMention } from "xclaw/plugin-sdk/channel-policy";
+import { resolveExactLineGroupConfigKey, type XClawConfig } from "../runtime-api.js";
 
 type LineGroupContext = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId?: string | null;
   groupId?: string | null;
 };

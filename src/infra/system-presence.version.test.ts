@@ -10,8 +10,8 @@ async function withPresenceModule<T>(
 ): Promise<T> {
   return withEnvAsync(
     {
-      OPENCLAW_VERSION: undefined,
-      OPENCLAW_SERVICE_VERSION: undefined,
+      XCLAW_VERSION: undefined,
+      XCLAW_SERVICE_VERSION: undefined,
       npm_package_version: undefined,
       ...env,
     },
@@ -40,32 +40,32 @@ describe("system-presence version fallback", () => {
     });
   }
 
-  it("uses runtime VERSION when OPENCLAW_VERSION is not set", async () => {
+  it("uses runtime VERSION when XCLAW_VERSION is not set", async () => {
     await expectSelfVersion(
       {
-        OPENCLAW_SERVICE_VERSION: "2.4.6-service",
+        XCLAW_SERVICE_VERSION: "2.4.6-service",
         npm_package_version: "1.0.0-package",
       },
       async () => (await import("../version.js")).VERSION,
     );
   });
 
-  it("prefers OPENCLAW_VERSION over runtime VERSION", async () => {
+  it("prefers XCLAW_VERSION over runtime VERSION", async () => {
     await expectSelfVersion(
       {
-        OPENCLAW_VERSION: "9.9.9-cli",
-        OPENCLAW_SERVICE_VERSION: "2.4.6-service",
+        XCLAW_VERSION: "9.9.9-cli",
+        XCLAW_SERVICE_VERSION: "2.4.6-service",
         npm_package_version: "1.0.0-package",
       },
       "9.9.9-cli",
     );
   });
 
-  it("still prefers runtime VERSION over OPENCLAW_SERVICE_VERSION when OPENCLAW_VERSION is blank", async () => {
+  it("still prefers runtime VERSION over XCLAW_SERVICE_VERSION when XCLAW_VERSION is blank", async () => {
     await expectSelfVersion(
       {
-        OPENCLAW_VERSION: " ",
-        OPENCLAW_SERVICE_VERSION: "2.4.6-service",
+        XCLAW_VERSION: " ",
+        XCLAW_SERVICE_VERSION: "2.4.6-service",
         npm_package_version: "1.0.0-package",
       },
       async () => (await import("../version.js")).VERSION,
@@ -75,19 +75,19 @@ describe("system-presence version fallback", () => {
   it("still prefers runtime VERSION over npm_package_version when service markers are blank", async () => {
     await expectSelfVersion(
       {
-        OPENCLAW_VERSION: " ",
-        OPENCLAW_SERVICE_VERSION: "\t",
+        XCLAW_VERSION: " ",
+        XCLAW_SERVICE_VERSION: "\t",
         npm_package_version: "1.0.0-package",
       },
       async () => (await import("../version.js")).VERSION,
     );
   });
 
-  it("uses runtime VERSION when OPENCLAW_VERSION and OPENCLAW_SERVICE_VERSION are blank", async () => {
+  it("uses runtime VERSION when XCLAW_VERSION and XCLAW_SERVICE_VERSION are blank", async () => {
     await expectSelfVersion(
       {
-        OPENCLAW_VERSION: " ",
-        OPENCLAW_SERVICE_VERSION: "\t",
+        XCLAW_VERSION: " ",
+        XCLAW_SERVICE_VERSION: "\t",
         npm_package_version: "1.0.0-package",
       },
       async () => (await import("../version.js")).VERSION,

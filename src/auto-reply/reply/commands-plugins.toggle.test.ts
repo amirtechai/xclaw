@@ -60,7 +60,7 @@ describe("handleCommands /plugins toggle", () => {
     const config = buildCfg();
     readConfigFileSnapshotMock.mockResolvedValue({
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/xclaw.json",
       resolved: config,
     });
     buildPluginStatusReportMock.mockReturnValue(
@@ -70,7 +70,7 @@ describe("handleCommands /plugins toggle", () => {
           createPluginRecord({
             id: "superpowers",
             format: "bundle",
-            source: "/tmp/workspace/.openclaw/extensions/superpowers",
+            source: "/tmp/workspace/.xclaw/extensions/superpowers",
             enabled: false,
             status: "disabled",
           }),
@@ -100,7 +100,7 @@ describe("handleCommands /plugins toggle", () => {
     const config = buildCfg();
     readConfigFileSnapshotMock.mockResolvedValue({
       valid: true,
-      path: "/tmp/openclaw.json",
+      path: "/tmp/xclaw.json",
       resolved: config,
     });
     buildPluginStatusReportMock.mockReturnValue(
@@ -110,7 +110,7 @@ describe("handleCommands /plugins toggle", () => {
           createPluginRecord({
             id: "superpowers",
             format: "bundle",
-            source: "/tmp/workspace/.openclaw/extensions/superpowers",
+            source: "/tmp/workspace/.xclaw/extensions/superpowers",
             enabled: true,
           }),
         ],

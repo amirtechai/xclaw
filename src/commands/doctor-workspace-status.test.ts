@@ -9,7 +9,7 @@ import * as noteModule from "../terminal/note.js";
 const resolveAgentWorkspaceDirMock = vi.fn();
 const resolveDefaultAgentIdMock = vi.fn();
 const buildWorkspaceSkillStatusMock = vi.fn();
-const loadOpenClawPluginsMock = vi.fn();
+const loadXClawPluginsMock = vi.fn();
 
 vi.mock("../agents/agent-scope.js", () => ({
   resolveAgentWorkspaceDir: (...args: unknown[]) => resolveAgentWorkspaceDirMock(...args),
@@ -21,7 +21,7 @@ vi.mock("../agents/skills-status.js", () => ({
 }));
 
 vi.mock("../plugins/loader.js", () => ({
-  loadOpenClawPlugins: (...args: unknown[]) => loadOpenClawPluginsMock(...args),
+  loadXClawPlugins: (...args: unknown[]) => loadXClawPluginsMock(...args),
 }));
 
 async function runNoteWorkspaceStatusForTest(
@@ -32,7 +32,7 @@ async function runNoteWorkspaceStatusForTest(
   buildWorkspaceSkillStatusMock.mockReturnValue({
     skills: [],
   });
-  loadOpenClawPluginsMock.mockReturnValue(loadResult);
+  loadXClawPluginsMock.mockReturnValue(loadResult);
 
   const noteSpy = vi.spyOn(noteModule, "note").mockImplementation(() => {});
   const { noteWorkspaceStatus } = await import("./doctor-workspace-status.js");

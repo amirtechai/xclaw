@@ -1,6 +1,6 @@
-import { loadConfig, type OpenClawConfig } from "../config/config.js";
+import { loadConfig, type XClawConfig } from "../config/config.js";
 
-type LoggingConfig = OpenClawConfig["logging"];
+type LoggingConfig = XClawConfig["logging"];
 
 export function readLoggingConfig(): LoggingConfig | undefined {
   try {

@@ -1,4 +1,4 @@
-import type { MockFn } from "openclaw/plugin-sdk/testing";
+import type { MockFn } from "xclaw/plugin-sdk/testing";
 import { beforeEach, vi } from "vitest";
 
 const { botApi, botCtorSpy } = vi.hoisted(() => ({
@@ -73,7 +73,7 @@ type TelegramSendTestMocks = {
   maybePersistResolvedTelegramTarget: MockFn;
 };
 
-vi.mock("openclaw/plugin-sdk/web-media", () => ({
+vi.mock("xclaw/plugin-sdk/web-media", () => ({
   loadWebMedia,
 }));
 
@@ -116,8 +116,8 @@ vi.mock("undici", () => ({
   setGlobalDispatcher: undiciSetGlobalDispatcher,
 }));
 
-vi.mock("openclaw/plugin-sdk/config-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("openclaw/plugin-sdk/config-runtime")>();
+vi.mock("xclaw/plugin-sdk/config-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("xclaw/plugin-sdk/config-runtime")>();
   return {
     ...actual,
     loadConfig,

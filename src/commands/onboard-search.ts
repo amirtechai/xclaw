@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import {
   DEFAULT_SECRET_PROVIDER_ALIAS,
   type SecretInput,
@@ -19,9 +19,9 @@ import type { WizardPrompter } from "../wizard/prompts.js";
 import type { SecretInputMode } from "./onboard-types.js";
 
 export type SearchProvider = NonNullable<
-  NonNullable<NonNullable<NonNullable<OpenClawConfig["tools"]>["web"]>["search"]>["provider"]
+  NonNullable<NonNullable<NonNullable<XClawConfig["tools"]>["web"]>["search"]>["provider"]
 >;
-type SearchConfig = NonNullable<NonNullable<NonNullable<OpenClawConfig["tools"]>["web"]>["search"]>;
+type SearchConfig = NonNullable<NonNullable<NonNullable<XClawConfig["tools"]>["web"]>["search"]>;
 type MutableSearchConfig = SearchConfig & Record<string, unknown>;
 
 function resolveSearchProviderCredentialLabel(
@@ -39,7 +39,7 @@ export const SEARCH_PROVIDER_OPTIONS: readonly PluginWebSearchProviderEntry[] =
   });
 
 function canRepairBundledProviderSelection(
-  config: OpenClawConfig,
+  config: XClawConfig,
   provider: Pick<PluginWebSearchProviderEntry, "id" | "pluginId">,
 ): boolean {
   const pluginId = provider.pluginId ?? resolveBundledWebSearchPluginId(provider.id);
@@ -53,7 +53,7 @@ function canRepairBundledProviderSelection(
 }
 
 export function resolveSearchProviderOptions(
-  config?: OpenClawConfig,
+  config?: XClawConfig,
 ): readonly PluginWebSearchProviderEntry[] {
   if (!config) {
     return SEARCH_PROVIDER_OPTIONS;
@@ -78,7 +78,7 @@ export function resolveSearchProviderOptions(
 }
 
 function resolveSearchProviderEntry(
-  config: OpenClawConfig,
+  config: XClawConfig,
   provider: SearchProvider,
 ): PluginWebSearchProviderEntry | undefined {
   return resolveSearchProviderOptions(config).find((entry) => entry.id === provider);
@@ -95,7 +95,7 @@ function providerNeedsCredential(
 }
 
 function providerIsReady(
-  config: OpenClawConfig,
+  config: XClawConfig,
   entry: Pick<PluginWebSearchProviderEntry, "id" | "envVars" | "requiresCredential">,
 ): boolean {
   if (!providerNeedsCredential(entry)) {
@@ -104,7 +104,7 @@ function providerIsReady(
   return hasExistingKey(config, entry.id) || hasKeyInEnv(entry);
 }
 
-function rawKeyValue(config: OpenClawConfig, provider: SearchProvider): unknown {
+function rawKeyValue(config: XClawConfig, provider: SearchProvider): unknown {
   const search = config.tools?.web?.search;
   const entry = resolveSearchProviderEntry(config, provider);
   return (
@@ -115,19 +115,19 @@ function rawKeyValue(config: OpenClawConfig, provider: SearchProvider): unknown 
 
 /** Returns the plaintext key string, or undefined for SecretRefs/missing. */
 export function resolveExistingKey(
-  config: OpenClawConfig,
+  config: XClawConfig,
   provider: SearchProvider,
 ): string | undefined {
   return normalizeSecretInputString(rawKeyValue(config, provider));
 }
 
 /** Returns true if a key is configured (plaintext string or SecretRef). */
-export function hasExistingKey(config: OpenClawConfig, provider: SearchProvider): boolean {
+export function hasExistingKey(config: XClawConfig, provider: SearchProvider): boolean {
   return hasConfiguredSecretInput(rawKeyValue(config, provider));
 }
 
 /** Build an env-backed SecretRef for a search provider. */
-function buildSearchEnvRef(config: OpenClawConfig, provider: SearchProvider): SecretRef {
+function buildSearchEnvRef(config: XClawConfig, provider: SearchProvider): SecretRef {
   const entry =
     resolveSearchProviderEntry(config, provider) ??
     SEARCH_PROVIDER_OPTIONS.find((candidate) => candidate.id === provider) ??
@@ -143,7 +143,7 @@ function buildSearchEnvRef(config: OpenClawConfig, provider: SearchProvider): Se
 
 /** Resolve a plaintext key into the appropriate SecretInput based on mode. */
 function resolveSearchSecretInput(
-  config: OpenClawConfig,
+  config: XClawConfig,
   provider: SearchProvider,
   key: string,
   secretInputMode?: SecretInputMode,
@@ -156,10 +156,10 @@ function resolveSearchSecretInput(
 }
 
 export function applySearchKey(
-  config: OpenClawConfig,
+  config: XClawConfig,
   provider: SearchProvider,
   key: SecretInput,
-): OpenClawConfig {
+): XClawConfig {
   const providerEntry = resolveSearchProviderEntry(config, provider);
   if (!providerEntry) {
     return config;
@@ -168,7 +168,7 @@ export function applySearchKey(
   if (!providerEntry.setConfiguredCredentialValue) {
     providerEntry.setCredentialValue(search, key);
   }
-  const nextBase: OpenClawConfig = {
+  const nextBase: XClawConfig = {
     ...config,
     tools: {
       ...config.tools,
@@ -181,9 +181,9 @@ export function applySearchKey(
 }
 
 function applySearchProviderSelectionConfig(
-  config: OpenClawConfig,
+  config: XClawConfig,
   providerEntry: Pick<PluginWebSearchProviderEntry, "pluginId" | "applySelectionConfig">,
-): OpenClawConfig {
+): XClawConfig {
   if (providerEntry.applySelectionConfig) {
     return providerEntry.applySelectionConfig(config);
   }
@@ -194,9 +194,9 @@ function applySearchProviderSelectionConfig(
 }
 
 export function applySearchProviderSelection(
-  config: OpenClawConfig,
+  config: XClawConfig,
   provider: SearchProvider,
-): OpenClawConfig {
+): XClawConfig {
   const providerEntry = resolveSearchProviderEntry(config, provider);
   if (!providerEntry) {
     return config;
@@ -206,7 +206,7 @@ export function applySearchProviderSelection(
     provider,
     enabled: true,
   };
-  const nextBase: OpenClawConfig = {
+  const nextBase: XClawConfig = {
     ...config,
     tools: {
       ...config.tools,
@@ -219,12 +219,12 @@ export function applySearchProviderSelection(
   return applySearchProviderSelectionConfig(nextBase, providerEntry);
 }
 
-function preserveDisabledState(original: OpenClawConfig, result: OpenClawConfig): OpenClawConfig {
+function preserveDisabledState(original: XClawConfig, result: XClawConfig): XClawConfig {
   if (original.tools?.web?.search?.enabled !== false) {
     return result;
   }
 
-  const next: OpenClawConfig = {
+  const next: XClawConfig = {
     ...result,
     tools: {
       ...result.tools,
@@ -273,7 +273,7 @@ function preserveDisabledState(original: OpenClawConfig, result: OpenClawConfig)
 
   return {
     ...next,
-    plugins: nextPlugins as OpenClawConfig["plugins"],
+    plugins: nextPlugins as XClawConfig["plugins"],
   };
 }
 
@@ -283,18 +283,18 @@ export type SetupSearchOptions = {
 };
 
 export async function setupSearch(
-  config: OpenClawConfig,
+  config: XClawConfig,
   _runtime: RuntimeEnv,
   prompter: WizardPrompter,
   opts?: SetupSearchOptions,
-): Promise<OpenClawConfig> {
+): Promise<XClawConfig> {
   const providerOptions = resolveSearchProviderOptions(config);
   if (providerOptions.length === 0) {
     await prompter.note(
       [
         "No web search providers are currently available under this plugin policy.",
         "Enable plugins or remove deny rules, then run setup again.",
-        "Docs: https://docs.openclaw.ai/tools/web",
+        "Docs: https://docs.xclaw.ai/tools/web",
       ].join("\n"),
       "Web search",
     );
@@ -305,7 +305,7 @@ export async function setupSearch(
     [
       "Web search lets your agent look things up online.",
       "Choose a provider. Some providers need an API key, and some work key-free.",
-      "Docs: https://docs.openclaw.ai/tools/web",
+      "Docs: https://docs.xclaw.ai/tools/web",
     ].join("\n"),
     "Web search",
   );
@@ -340,7 +340,7 @@ export async function setupSearch(
       {
         value: "__skip__" as const,
         label: "Skip for now",
-        hint: "Configure later with openclaw configure --section web",
+        hint: "Configure later with xclaw configure --section web",
       },
     ],
     initialValue: defaultProvider,
@@ -372,8 +372,8 @@ export async function setupSearch(
     await prompter.note(
       [
         `${entry.label} works without an API key.`,
-        "OpenClaw will enable the plugin and use it as your web_search provider.",
-        `Docs: ${entry.docsUrl ?? "https://docs.openclaw.ai/tools/web"}`,
+        "XClaw will enable the plugin and use it as your web_search provider.",
+        `Docs: ${entry.docsUrl ?? "https://docs.xclaw.ai/tools/web"}`,
       ].join("\n"),
       "Web search",
     );
@@ -388,10 +388,10 @@ export async function setupSearch(
     const ref = buildSearchEnvRef(config, choice);
     await prompter.note(
       [
-        "Secret references enabled — OpenClaw will store a reference instead of the API key.",
+        "Secret references enabled — XClaw will store a reference instead of the API key.",
         `Env var: ${ref.id}${envAvailable ? " (detected)" : ""}.`,
         ...(envAvailable ? [] : [`Set ${ref.id} in the Gateway environment.`]),
-        "Docs: https://docs.openclaw.ai/tools/web",
+        "Docs: https://docs.xclaw.ai/tools/web",
       ].join("\n"),
       "Web search",
     );
@@ -425,7 +425,7 @@ export async function setupSearch(
     [
       `No ${credentialLabel} stored — web_search won't work until a key is available.`,
       `Get your key at: ${entry.signupUrl}`,
-      "Docs: https://docs.openclaw.ai/tools/web",
+      "Docs: https://docs.xclaw.ai/tools/web",
     ].join("\n"),
     "Web search",
   );

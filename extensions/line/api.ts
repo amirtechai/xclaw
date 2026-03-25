@@ -1,18 +1,18 @@
 export type {
   ChannelPlugin,
-  OpenClawConfig,
-  OpenClawPluginApi,
+  XClawConfig,
+  XClawPluginApi,
   PluginRuntime,
-} from "openclaw/plugin-sdk/core";
-export { clearAccountEntryFields } from "openclaw/plugin-sdk/core";
-export { buildChannelConfigSchema } from "openclaw/plugin-sdk/channel-config-schema";
-export type { ReplyPayload } from "openclaw/plugin-sdk/reply-runtime";
-export type { ChannelAccountSnapshot, ChannelGatewayContext } from "openclaw/plugin-sdk/testing";
-export type { ChannelStatusIssue } from "openclaw/plugin-sdk/channel-contract";
+} from "xclaw/plugin-sdk/core";
+export { clearAccountEntryFields } from "xclaw/plugin-sdk/core";
+export { buildChannelConfigSchema } from "xclaw/plugin-sdk/channel-config-schema";
+export type { ReplyPayload } from "xclaw/plugin-sdk/reply-runtime";
+export type { ChannelAccountSnapshot, ChannelGatewayContext } from "xclaw/plugin-sdk/testing";
+export type { ChannelStatusIssue } from "xclaw/plugin-sdk/channel-contract";
 export {
   buildComputedAccountStatusSnapshot,
   buildTokenChannelStatusSummary,
-} from "openclaw/plugin-sdk/status-helpers";
+} from "xclaw/plugin-sdk/status-helpers";
 export type {
   CardAction,
   LineChannelData,

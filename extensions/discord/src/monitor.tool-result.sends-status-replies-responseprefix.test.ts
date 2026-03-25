@@ -38,13 +38,13 @@ const BASE_CFG: Config = {
   agents: {
     defaults: {
       model: { primary: "anthropic/claude-opus-4-5" },
-      workspace: "/tmp/openclaw",
+      workspace: "/tmp/xclaw",
     },
   },
   messages: {
     inbound: { debounceMs: 0 },
   },
-  session: { store: "/tmp/openclaw-sessions.json" },
+  session: { store: "/tmp/xclaw-sessions.json" },
 };
 
 const CATEGORY_GUILD_CFG = {

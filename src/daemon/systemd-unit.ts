@@ -42,7 +42,7 @@ export function buildSystemdUnit({
   environment,
 }: GatewayServiceRenderArgs): string {
   const execStart = programArguments.map(systemdEscapeArg).join(" ");
-  const descriptionValue = description?.trim() || "OpenClaw Gateway";
+  const descriptionValue = description?.trim() || "XClaw Gateway";
   assertNoSystemdLineBreaks(descriptionValue, "Systemd Description");
   const descriptionLine = `Description=${descriptionValue}`;
   const workingDirLine = workingDirectory
@@ -57,14 +57,14 @@ export function buildSystemdUnit({
     "",
     "[Service]",
     `ExecStart=${execStart}`,
-    "Restart=always",
+    "Restart=on-failure",
     "RestartSec=5",
-    "TimeoutStopSec=30",
+    "TimeoutStopSec=10",
     "TimeoutStartSec=30",
     "SuccessExitStatus=0 143",
-    // Keep service children in the same lifecycle so restarts do not leave
-    // orphan ACP/runtime workers behind.
-    "KillMode=control-group",
+    // KillMode=mixed: SIGTERM to the main process, SIGKILL to remaining group members.
+    // This ensures pkill/systemctl stop work reliably without leaving orphan processes.
+    "KillMode=mixed",
     workingDirLine,
     ...envLines,
     "",

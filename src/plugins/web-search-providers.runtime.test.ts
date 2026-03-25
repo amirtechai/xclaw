@@ -23,7 +23,7 @@ let setActivePluginRegistry: RuntimeModule["setActivePluginRegistry"];
 let resolvePluginWebSearchProviders: WebSearchProvidersRuntimeModule["resolvePluginWebSearchProviders"];
 let resolveRuntimeWebSearchProviders: WebSearchProvidersRuntimeModule["resolveRuntimeWebSearchProviders"];
 let resetWebSearchProviderSnapshotCacheForTests: WebSearchProvidersRuntimeModule["__testing"]["resetWebSearchProviderSnapshotCacheForTests"];
-let loadOpenClawPluginsMock: ReturnType<typeof vi.fn>;
+let loadXClawPluginsMock: ReturnType<typeof vi.fn>;
 let loaderModule: typeof import("./loader.js");
 let manifestRegistryModule: ManifestRegistryModule;
 
@@ -99,7 +99,7 @@ describe("resolvePluginWebSearchProviders", () => {
             origin: "bundled",
             rootDir: "/tmp/brave",
             source: "/tmp/brave/index.js",
-            manifestPath: "/tmp/brave/openclaw.plugin.json",
+            manifestPath: "/tmp/brave/xclaw.plugin.json",
             channels: [],
             providers: [],
             skills: [],
@@ -111,7 +111,7 @@ describe("resolvePluginWebSearchProviders", () => {
             origin: "bundled",
             rootDir: "/tmp/noise",
             source: "/tmp/noise/index.js",
-            manifestPath: "/tmp/noise/openclaw.plugin.json",
+            manifestPath: "/tmp/noise/xclaw.plugin.json",
             channels: [],
             providers: [],
             skills: [],
@@ -125,8 +125,8 @@ describe("resolvePluginWebSearchProviders", () => {
       ) => infer R
         ? R
         : never);
-    loadOpenClawPluginsMock = vi
-      .spyOn(loaderModule, "loadOpenClawPlugins")
+    loadXClawPluginsMock = vi
+      .spyOn(loaderModule, "loadXClawPlugins")
       .mockImplementation((params) => {
         const registry = createEmptyPluginRegistry();
         registry.webSearchProviders = buildMockedWebSearchProviders(params);
@@ -155,14 +155,14 @@ describe("resolvePluginWebSearchProviders", () => {
       "perplexity:perplexity",
       "tavily:tavily",
     ]);
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(1);
+    expect(loadXClawPluginsMock).toHaveBeenCalledTimes(1);
   });
 
   it("scopes plugin loading to manifest-declared web-search candidates", () => {
     resolvePluginWebSearchProviders({});
 
     expect(loadPluginManifestRegistryMock).toHaveBeenCalled();
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledWith(
+    expect(loadXClawPluginsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         onlyPluginIds: ["brave"],
       }),
@@ -175,7 +175,7 @@ describe("resolvePluginWebSearchProviders", () => {
         allow: ["brave"],
       },
     };
-    const env = { OPENCLAW_HOME: "/tmp/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { XCLAW_HOME: "/tmp/xclaw-home" } as NodeJS.ProcessEnv;
 
     const first = resolvePluginWebSearchProviders({
       config,
@@ -191,7 +191,7 @@ describe("resolvePluginWebSearchProviders", () => {
     });
 
     expect(second).toBe(first);
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(1);
+    expect(loadXClawPluginsMock).toHaveBeenCalledTimes(1);
   });
 
   it("invalidates the snapshot cache when config or env contents change in place", () => {
@@ -201,7 +201,7 @@ describe("resolvePluginWebSearchProviders", () => {
       },
     };
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home-a",
+      XCLAW_HOME: "/tmp/xclaw-home-a",
     } as NodeJS.ProcessEnv;
 
     resolvePluginWebSearchProviders({
@@ -211,7 +211,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
     config.plugins.allow = ["perplexity"];
-    env.OPENCLAW_HOME = "/tmp/openclaw-home-b";
+    env.XCLAW_HOME = "/tmp/xclaw-home-b";
     resolvePluginWebSearchProviders({
       config,
       env,
@@ -219,7 +219,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadXClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("skips web-search snapshot memoization when plugin cache opt-outs are set", () => {
@@ -229,8 +229,8 @@ describe("resolvePluginWebSearchProviders", () => {
       },
     };
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+      XCLAW_HOME: "/tmp/xclaw-home",
+      XCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
     } as NodeJS.ProcessEnv;
 
     resolvePluginWebSearchProviders({
@@ -246,7 +246,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadXClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("skips web-search snapshot memoization when discovery cache ttl is zero", () => {
@@ -256,8 +256,8 @@ describe("resolvePluginWebSearchProviders", () => {
       },
     };
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "0",
+      XCLAW_HOME: "/tmp/xclaw-home",
+      XCLAW_PLUGIN_DISCOVERY_CACHE_MS: "0",
     } as NodeJS.ProcessEnv;
 
     resolvePluginWebSearchProviders({
@@ -273,13 +273,13 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadXClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("invalidates the snapshot cache when global Vitest fallback changes", () => {
     const originalVitest = process.env.VITEST;
     const config = {};
-    const env = { OPENCLAW_HOME: "/tmp/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { XCLAW_HOME: "/tmp/xclaw-home" } as NodeJS.ProcessEnv;
 
     try {
       delete process.env.VITEST;
@@ -305,7 +305,7 @@ describe("resolvePluginWebSearchProviders", () => {
       }
     }
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadXClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("expires web-search snapshot memoization after the shortest plugin cache ttl", () => {
@@ -316,9 +316,9 @@ describe("resolvePluginWebSearchProviders", () => {
       },
     };
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "5",
-      OPENCLAW_PLUGIN_MANIFEST_CACHE_MS: "20",
+      XCLAW_HOME: "/tmp/xclaw-home",
+      XCLAW_PLUGIN_DISCOVERY_CACHE_MS: "5",
+      XCLAW_PLUGIN_MANIFEST_CACHE_MS: "20",
     } as NodeJS.ProcessEnv;
 
     resolvePluginWebSearchProviders({
@@ -342,7 +342,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadXClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("invalidates web-search snapshots when cache-control env values change in place", () => {
@@ -352,8 +352,8 @@ describe("resolvePluginWebSearchProviders", () => {
       },
     };
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "1000",
+      XCLAW_HOME: "/tmp/xclaw-home",
+      XCLAW_PLUGIN_DISCOVERY_CACHE_MS: "1000",
     } as NodeJS.ProcessEnv;
 
     resolvePluginWebSearchProviders({
@@ -363,7 +363,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    env.OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS = "5";
+    env.XCLAW_PLUGIN_DISCOVERY_CACHE_MS = "5";
 
     resolvePluginWebSearchProviders({
       config,
@@ -372,7 +372,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadXClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("prefers the active plugin registry for runtime resolution", () => {
@@ -406,6 +406,6 @@ describe("resolvePluginWebSearchProviders", () => {
     expect(providers.map((provider) => `${provider.pluginId}:${provider.id}`)).toEqual([
       "custom-search:custom",
     ]);
-    expect(loadOpenClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadXClawPluginsMock).not.toHaveBeenCalled();
   });
 });

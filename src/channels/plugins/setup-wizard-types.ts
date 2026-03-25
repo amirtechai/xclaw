@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/config.js";
+import type { XClawConfig } from "../../config/config.js";
 import type { DmPolicy } from "../../config/types.js";
 import type { RuntimeEnv } from "../../runtime.js";
 import type { WizardPrompter } from "../../wizard/prompts.js";
@@ -31,11 +31,11 @@ export type SetupChannelsOptions = {
 };
 
 export type PromptAccountIdParams = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   prompter: WizardPrompter;
   label: string;
   currentId?: string;
-  listAccountIds: (cfg: OpenClawConfig) => string[];
+  listAccountIds: (cfg: XClawConfig) => string[];
   defaultAccountId: string;
 };
 
@@ -50,13 +50,13 @@ export type ChannelSetupStatus = {
 };
 
 export type ChannelSetupStatusContext = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   options?: SetupChannelsOptions;
   accountOverrides: Partial<Record<ChannelId, string>>;
 };
 
 export type ChannelSetupConfigureContext = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   runtime: RuntimeEnv;
   prompter: WizardPrompter;
   options?: SetupChannelsOptions;
@@ -66,8 +66,8 @@ export type ChannelSetupConfigureContext = {
 };
 
 export type ChannelOnboardingPostWriteContext = {
-  previousCfg: OpenClawConfig;
-  cfg: OpenClawConfig;
+  previousCfg: XClawConfig;
+  cfg: XClawConfig;
   accountId: string;
   runtime: RuntimeEnv;
 };
@@ -75,11 +75,11 @@ export type ChannelOnboardingPostWriteContext = {
 export type ChannelOnboardingPostWriteHook = {
   channel: ChannelId;
   accountId: string;
-  run: (ctx: { cfg: OpenClawConfig; runtime: RuntimeEnv }) => Promise<void> | void;
+  run: (ctx: { cfg: XClawConfig; runtime: RuntimeEnv }) => Promise<void> | void;
 };
 
 export type ChannelSetupResult = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   accountId?: string;
 };
 
@@ -96,16 +96,16 @@ export type ChannelSetupDmPolicy = {
   policyKey: string;
   allowFromKey: string;
   resolveConfigKeys?: (
-    cfg: OpenClawConfig,
+    cfg: XClawConfig,
     accountId?: string,
   ) => { policyKey: string; allowFromKey: string };
-  getCurrent: (cfg: OpenClawConfig, accountId?: string) => DmPolicy;
-  setPolicy: (cfg: OpenClawConfig, policy: DmPolicy, accountId?: string) => OpenClawConfig;
+  getCurrent: (cfg: XClawConfig, accountId?: string) => DmPolicy;
+  setPolicy: (cfg: XClawConfig, policy: DmPolicy, accountId?: string) => XClawConfig;
   promptAllowFrom?: (params: {
-    cfg: OpenClawConfig;
+    cfg: XClawConfig;
     prompter: WizardPrompter;
     accountId?: string;
-  }) => Promise<OpenClawConfig>;
+  }) => Promise<XClawConfig>;
 };
 
 export type ChannelSetupWizardAdapter = {
@@ -121,5 +121,5 @@ export type ChannelSetupWizardAdapter = {
   afterConfigWritten?: (ctx: ChannelOnboardingPostWriteContext) => Promise<void> | void;
   dmPolicy?: ChannelSetupDmPolicy;
   onAccountRecorded?: (accountId: string, options?: SetupChannelsOptions) => void;
-  disable?: (cfg: OpenClawConfig) => OpenClawConfig;
+  disable?: (cfg: XClawConfig) => XClawConfig;
 };

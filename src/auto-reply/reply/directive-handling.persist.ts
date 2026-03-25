@@ -6,7 +6,7 @@ import {
 import { lookupCachedContextTokens } from "../../agents/context-cache.js";
 import { DEFAULT_CONTEXT_TOKENS } from "../../agents/defaults.js";
 import type { ModelAliasIndex } from "../../agents/model-selection.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { XClawConfig } from "../../config/config.js";
 import { updateSessionStore } from "../../config/sessions/store.js";
 import type { SessionEntry } from "../../config/sessions/types.js";
 import { enqueueSystemEvent } from "../../infra/system-events.js";
@@ -23,7 +23,7 @@ import type { ElevatedLevel, ReasoningLevel } from "./directives.js";
 export async function persistInlineDirectives(params: {
   directives: InlineDirectives;
   effectiveModelDirective?: string;
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   agentDir?: string;
   sessionEntry?: SessionEntry;
   sessionStore?: Record<string, SessionEntry>;
@@ -39,7 +39,7 @@ export async function persistInlineDirectives(params: {
   model: string;
   initialModelLabel: string;
   formatModelSwitchEvent: (label: string, alias?: string) => string;
-  agentCfg: NonNullable<OpenClawConfig["agents"]>["defaults"] | undefined;
+  agentCfg: NonNullable<XClawConfig["agents"]>["defaults"] | undefined;
   surface?: string;
   gatewayClientScopes?: string[];
 }): Promise<{ provider: string; model: string; contextTokens: number }> {

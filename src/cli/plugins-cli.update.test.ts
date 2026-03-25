@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import {
   loadConfig,
   resetPluginsCliTestState,
@@ -30,7 +30,7 @@ describe("plugins cli update", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     const nextConfig = {
       hooks: {
         internal: {
@@ -43,7 +43,7 @@ describe("plugins cli update", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
 
     loadConfig.mockReturnValue(cfg);
     updateNpmInstalledPlugins.mockResolvedValue({
@@ -82,7 +82,7 @@ describe("plugins cli update", () => {
       plugins: {
         installs: {},
       },
-    } as OpenClawConfig);
+    } as XClawConfig);
 
     await expect(runPluginsCommand(["plugins", "update"])).rejects.toThrow("__exit__:1");
 
@@ -95,7 +95,7 @@ describe("plugins cli update", () => {
       plugins: {
         installs: {},
       },
-    } as OpenClawConfig);
+    } as XClawConfig);
 
     await runPluginsCommand(["plugins", "update", "--all"]);
 
@@ -108,15 +108,15 @@ describe("plugins cli update", () => {
     const config = {
       plugins: {
         installs: {
-          "openclaw-codex-app-server": {
+          "xclaw-codex-app-server": {
             source: "npm",
-            spec: "openclaw-codex-app-server",
-            installPath: "/tmp/openclaw-codex-app-server",
-            resolvedName: "openclaw-codex-app-server",
+            spec: "xclaw-codex-app-server",
+            installPath: "/tmp/xclaw-codex-app-server",
+            resolvedName: "xclaw-codex-app-server",
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     loadConfig.mockReturnValue(config);
     updateNpmInstalledPlugins.mockResolvedValue({
       config,
@@ -124,14 +124,14 @@ describe("plugins cli update", () => {
       outcomes: [],
     });
 
-    await runPluginsCommand(["plugins", "update", "openclaw-codex-app-server@beta"]);
+    await runPluginsCommand(["plugins", "update", "xclaw-codex-app-server@beta"]);
 
     expect(updateNpmInstalledPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config,
-        pluginIds: ["openclaw-codex-app-server"],
+        pluginIds: ["xclaw-codex-app-server"],
         specOverrides: {
-          "openclaw-codex-app-server": "openclaw-codex-app-server@beta",
+          "xclaw-codex-app-server": "xclaw-codex-app-server@beta",
         },
       }),
     );
@@ -143,13 +143,13 @@ describe("plugins cli update", () => {
         installs: {
           "voice-call": {
             source: "npm",
-            spec: "@openclaw/voice-call",
+            spec: "@xclaw/voice-call",
             installPath: "/tmp/voice-call",
-            resolvedName: "@openclaw/voice-call",
+            resolvedName: "@xclaw/voice-call",
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     loadConfig.mockReturnValue(config);
     updateNpmInstalledPlugins.mockResolvedValue({
       config,
@@ -157,14 +157,14 @@ describe("plugins cli update", () => {
       outcomes: [],
     });
 
-    await runPluginsCommand(["plugins", "update", "@openclaw/voice-call@beta"]);
+    await runPluginsCommand(["plugins", "update", "@xclaw/voice-call@beta"]);
 
     expect(updateNpmInstalledPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config,
         pluginIds: ["voice-call"],
         specOverrides: {
-          "voice-call": "@openclaw/voice-call@beta",
+          "voice-call": "@xclaw/voice-call@beta",
         },
       }),
     );
@@ -174,15 +174,15 @@ describe("plugins cli update", () => {
     const config = {
       plugins: {
         installs: {
-          "openclaw-codex-app-server": {
+          "xclaw-codex-app-server": {
             source: "npm",
-            spec: "openclaw-codex-app-server",
-            installPath: "/tmp/openclaw-codex-app-server",
-            resolvedName: "openclaw-codex-app-server",
+            spec: "xclaw-codex-app-server",
+            installPath: "/tmp/xclaw-codex-app-server",
+            resolvedName: "xclaw-codex-app-server",
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     loadConfig.mockReturnValue(config);
     updateNpmInstalledPlugins.mockResolvedValue({
       config,
@@ -190,14 +190,14 @@ describe("plugins cli update", () => {
       outcomes: [],
     });
 
-    await runPluginsCommand(["plugins", "update", "openclaw-codex-app-server@0.2.0-beta.4"]);
+    await runPluginsCommand(["plugins", "update", "xclaw-codex-app-server@0.2.0-beta.4"]);
 
     expect(updateNpmInstalledPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config,
-        pluginIds: ["openclaw-codex-app-server"],
+        pluginIds: ["xclaw-codex-app-server"],
         specOverrides: {
-          "openclaw-codex-app-server": "openclaw-codex-app-server@0.2.0-beta.4",
+          "xclaw-codex-app-server": "xclaw-codex-app-server@0.2.0-beta.4",
         },
       }),
     );
@@ -207,15 +207,15 @@ describe("plugins cli update", () => {
     const config = {
       plugins: {
         installs: {
-          "openclaw-codex-app-server": {
+          "xclaw-codex-app-server": {
             source: "npm",
-            spec: "openclaw-codex-app-server@beta",
-            installPath: "/tmp/openclaw-codex-app-server",
-            resolvedName: "openclaw-codex-app-server",
+            spec: "xclaw-codex-app-server@beta",
+            installPath: "/tmp/xclaw-codex-app-server",
+            resolvedName: "xclaw-codex-app-server",
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     loadConfig.mockReturnValue(config);
     updateNpmInstalledPlugins.mockResolvedValue({
       config,
@@ -223,12 +223,12 @@ describe("plugins cli update", () => {
       outcomes: [],
     });
 
-    await runPluginsCommand(["plugins", "update", "openclaw-codex-app-server"]);
+    await runPluginsCommand(["plugins", "update", "xclaw-codex-app-server"]);
 
     expect(updateNpmInstalledPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         config,
-        pluginIds: ["openclaw-codex-app-server"],
+        pluginIds: ["xclaw-codex-app-server"],
       }),
     );
     expect(updateNpmInstalledPlugins).not.toHaveBeenCalledWith(
@@ -244,21 +244,21 @@ describe("plugins cli update", () => {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@openclaw/alpha@1.0.0",
+            spec: "@xclaw/alpha@1.0.0",
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     const nextConfig = {
       plugins: {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@openclaw/alpha@1.1.0",
+            spec: "@xclaw/alpha@1.1.0",
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     loadConfig.mockReturnValue(cfg);
     updateNpmInstalledPlugins.mockResolvedValue({
       outcomes: [{ status: "ok", message: "Updated alpha -> 1.1.0" }],

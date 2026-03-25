@@ -36,16 +36,16 @@ export function registerMemoryCli(program: Command) {
       "after",
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
-          ["openclaw memory status", "Show index and provider status."],
-          ["openclaw memory status --deep", "Probe embedding provider readiness."],
-          ["openclaw memory index --force", "Force a full reindex."],
-          ['openclaw memory search "meeting notes"', "Quick search using positional query."],
+          ["xclaw memory status", "Show index and provider status."],
+          ["xclaw memory status --deep", "Probe embedding provider readiness."],
+          ["xclaw memory index --force", "Force a full reindex."],
+          ['xclaw memory search "meeting notes"', "Quick search using positional query."],
           [
-            'openclaw memory search --query "deployment" --max-results 20',
+            'xclaw memory search --query "deployment" --max-results 20',
             "Limit results for focused troubleshooting.",
           ],
-          ["openclaw memory status --json", "Output machine-readable JSON (good for scripts)."],
-        ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/memory", "docs.openclaw.ai/cli/memory")}\n`,
+          ["xclaw memory status --json", "Output machine-readable JSON (good for scripts)."],
+        ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/memory", "docs.xclaw.ai/cli/memory")}\n`,
     );
 
   memory

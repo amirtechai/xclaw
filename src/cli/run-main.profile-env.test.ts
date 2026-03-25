@@ -8,8 +8,8 @@ const dotenvState = vi.hoisted(() => {
   return {
     state,
     loadDotEnv: vi.fn(() => {
-      state.profileAtDotenvLoad = process.env.OPENCLAW_PROFILE;
-      state.containerAtDotenvLoad = process.env.OPENCLAW_CONTAINER;
+      state.profileAtDotenvLoad = process.env.XCLAW_PROFILE;
+      state.containerAtDotenvLoad = process.env.XCLAW_CONTAINER;
     }),
   };
 });
@@ -31,7 +31,7 @@ vi.mock("../infra/runtime-guard.js", () => ({
 }));
 
 vi.mock("../infra/path-env.js", () => ({
-  ensureOpenClawCliOnPath: vi.fn(),
+  ensureXClawCliOnPath: vi.fn(),
 }));
 
 vi.mock("./route.js", () => ({
@@ -53,24 +53,24 @@ vi.mock("./container-target.js", async (importOriginal) => {
 import { runCli } from "./run-main.js";
 
 describe("runCli profile env bootstrap", () => {
-  const originalProfile = process.env.OPENCLAW_PROFILE;
-  const originalStateDir = process.env.OPENCLAW_STATE_DIR;
-  const originalConfigPath = process.env.OPENCLAW_CONFIG_PATH;
-  const originalContainer = process.env.OPENCLAW_CONTAINER;
-  const originalGatewayPort = process.env.OPENCLAW_GATEWAY_PORT;
-  const originalGatewayUrl = process.env.OPENCLAW_GATEWAY_URL;
-  const originalGatewayToken = process.env.OPENCLAW_GATEWAY_TOKEN;
-  const originalGatewayPassword = process.env.OPENCLAW_GATEWAY_PASSWORD;
+  const originalProfile = process.env.XCLAW_PROFILE;
+  const originalStateDir = process.env.XCLAW_STATE_DIR;
+  const originalConfigPath = process.env.XCLAW_CONFIG_PATH;
+  const originalContainer = process.env.XCLAW_CONTAINER;
+  const originalGatewayPort = process.env.XCLAW_GATEWAY_PORT;
+  const originalGatewayUrl = process.env.XCLAW_GATEWAY_URL;
+  const originalGatewayToken = process.env.XCLAW_GATEWAY_TOKEN;
+  const originalGatewayPassword = process.env.XCLAW_GATEWAY_PASSWORD;
 
   beforeEach(() => {
-    delete process.env.OPENCLAW_PROFILE;
-    delete process.env.OPENCLAW_STATE_DIR;
-    delete process.env.OPENCLAW_CONFIG_PATH;
-    delete process.env.OPENCLAW_CONTAINER;
-    delete process.env.OPENCLAW_GATEWAY_PORT;
-    delete process.env.OPENCLAW_GATEWAY_URL;
-    delete process.env.OPENCLAW_GATEWAY_TOKEN;
-    delete process.env.OPENCLAW_GATEWAY_PASSWORD;
+    delete process.env.XCLAW_PROFILE;
+    delete process.env.XCLAW_STATE_DIR;
+    delete process.env.XCLAW_CONFIG_PATH;
+    delete process.env.XCLAW_CONTAINER;
+    delete process.env.XCLAW_GATEWAY_PORT;
+    delete process.env.XCLAW_GATEWAY_URL;
+    delete process.env.XCLAW_GATEWAY_TOKEN;
+    delete process.env.XCLAW_GATEWAY_PASSWORD;
     dotenvState.state.profileAtDotenvLoad = undefined;
     dotenvState.state.containerAtDotenvLoad = undefined;
     dotenvState.loadDotEnv.mockClear();
@@ -79,69 +79,69 @@ describe("runCli profile env bootstrap", () => {
 
   afterEach(() => {
     if (originalProfile === undefined) {
-      delete process.env.OPENCLAW_PROFILE;
+      delete process.env.XCLAW_PROFILE;
     } else {
-      process.env.OPENCLAW_PROFILE = originalProfile;
+      process.env.XCLAW_PROFILE = originalProfile;
     }
     if (originalContainer === undefined) {
-      delete process.env.OPENCLAW_CONTAINER;
+      delete process.env.XCLAW_CONTAINER;
     } else {
-      process.env.OPENCLAW_CONTAINER = originalContainer;
+      process.env.XCLAW_CONTAINER = originalContainer;
     }
     if (originalStateDir === undefined) {
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.XCLAW_STATE_DIR;
     } else {
-      process.env.OPENCLAW_STATE_DIR = originalStateDir;
+      process.env.XCLAW_STATE_DIR = originalStateDir;
     }
     if (originalConfigPath === undefined) {
-      delete process.env.OPENCLAW_CONFIG_PATH;
+      delete process.env.XCLAW_CONFIG_PATH;
     } else {
-      process.env.OPENCLAW_CONFIG_PATH = originalConfigPath;
+      process.env.XCLAW_CONFIG_PATH = originalConfigPath;
     }
     if (originalGatewayPort === undefined) {
-      delete process.env.OPENCLAW_GATEWAY_PORT;
+      delete process.env.XCLAW_GATEWAY_PORT;
     } else {
-      process.env.OPENCLAW_GATEWAY_PORT = originalGatewayPort;
+      process.env.XCLAW_GATEWAY_PORT = originalGatewayPort;
     }
     if (originalGatewayUrl === undefined) {
-      delete process.env.OPENCLAW_GATEWAY_URL;
+      delete process.env.XCLAW_GATEWAY_URL;
     } else {
-      process.env.OPENCLAW_GATEWAY_URL = originalGatewayUrl;
+      process.env.XCLAW_GATEWAY_URL = originalGatewayUrl;
     }
     if (originalGatewayToken === undefined) {
-      delete process.env.OPENCLAW_GATEWAY_TOKEN;
+      delete process.env.XCLAW_GATEWAY_TOKEN;
     } else {
-      process.env.OPENCLAW_GATEWAY_TOKEN = originalGatewayToken;
+      process.env.XCLAW_GATEWAY_TOKEN = originalGatewayToken;
     }
     if (originalGatewayPassword === undefined) {
-      delete process.env.OPENCLAW_GATEWAY_PASSWORD;
+      delete process.env.XCLAW_GATEWAY_PASSWORD;
     } else {
-      process.env.OPENCLAW_GATEWAY_PASSWORD = originalGatewayPassword;
+      process.env.XCLAW_GATEWAY_PASSWORD = originalGatewayPassword;
     }
   });
 
   it("applies --profile before dotenv loading", async () => {
-    await runCli(["node", "openclaw", "--profile", "rawdog", "status"]);
+    await runCli(["node", "xclaw", "--profile", "rawdog", "status"]);
 
     expect(dotenvState.loadDotEnv).toHaveBeenCalledOnce();
     expect(dotenvState.state.profileAtDotenvLoad).toBe("rawdog");
-    expect(process.env.OPENCLAW_PROFILE).toBe("rawdog");
+    expect(process.env.XCLAW_PROFILE).toBe("rawdog");
   });
 
   it("rejects --container combined with --profile", async () => {
     await expect(
-      runCli(["node", "openclaw", "--container", "demo", "--profile", "rawdog", "status"]),
+      runCli(["node", "xclaw", "--container", "demo", "--profile", "rawdog", "status"]),
     ).rejects.toThrow(
       "--container cannot be combined with --profile/--dev or gateway override env vars",
     );
 
     expect(dotenvState.loadDotEnv).not.toHaveBeenCalled();
-    expect(process.env.OPENCLAW_PROFILE).toBe("rawdog");
+    expect(process.env.XCLAW_PROFILE).toBe("rawdog");
   });
 
   it("rejects --container combined with interleaved --profile", async () => {
     await expect(
-      runCli(["node", "openclaw", "status", "--container", "demo", "--profile", "rawdog"]),
+      runCli(["node", "xclaw", "status", "--container", "demo", "--profile", "rawdog"]),
     ).rejects.toThrow(
       "--container cannot be combined with --profile/--dev or gateway override env vars",
     );
@@ -149,7 +149,7 @@ describe("runCli profile env bootstrap", () => {
 
   it("rejects --container combined with interleaved --dev", async () => {
     await expect(
-      runCli(["node", "openclaw", "status", "--container", "demo", "--dev"]),
+      runCli(["node", "xclaw", "status", "--container", "demo", "--dev"]),
     ).rejects.toThrow(
       "--container cannot be combined with --profile/--dev or gateway override env vars",
     );
@@ -157,57 +157,57 @@ describe("runCli profile env bootstrap", () => {
 
   it("does not let dotenv change container target resolution", async () => {
     dotenvState.loadDotEnv.mockImplementationOnce(() => {
-      process.env.OPENCLAW_CONTAINER = "demo";
-      dotenvState.state.profileAtDotenvLoad = process.env.OPENCLAW_PROFILE;
-      dotenvState.state.containerAtDotenvLoad = process.env.OPENCLAW_CONTAINER;
+      process.env.XCLAW_CONTAINER = "demo";
+      dotenvState.state.profileAtDotenvLoad = process.env.XCLAW_PROFILE;
+      dotenvState.state.containerAtDotenvLoad = process.env.XCLAW_CONTAINER;
     });
 
-    await runCli(["node", "openclaw", "status"]);
+    await runCli(["node", "xclaw", "status"]);
 
     expect(dotenvState.loadDotEnv).toHaveBeenCalledOnce();
-    expect(process.env.OPENCLAW_CONTAINER).toBe("demo");
+    expect(process.env.XCLAW_CONTAINER).toBe("demo");
     expect(dotenvState.state.containerAtDotenvLoad).toBe("demo");
-    expect(maybeRunCliInContainerMock).toHaveBeenCalledWith(["node", "openclaw", "status"]);
+    expect(maybeRunCliInContainerMock).toHaveBeenCalledWith(["node", "xclaw", "status"]);
     expect(maybeRunCliInContainerMock).toHaveReturnedWith({
       handled: false,
-      argv: ["node", "openclaw", "status"],
+      argv: ["node", "xclaw", "status"],
     });
   });
 
-  it("rejects container mode when OPENCLAW_PROFILE is already set in env", async () => {
-    process.env.OPENCLAW_PROFILE = "work";
+  it("rejects container mode when XCLAW_PROFILE is already set in env", async () => {
+    process.env.XCLAW_PROFILE = "work";
 
-    await expect(runCli(["node", "openclaw", "--container", "demo", "status"])).rejects.toThrow(
+    await expect(runCli(["node", "xclaw", "--container", "demo", "status"])).rejects.toThrow(
       "--container cannot be combined with --profile/--dev or gateway override env vars",
     );
   });
 
   it.each([
-    ["OPENCLAW_GATEWAY_PORT", "19001"],
-    ["OPENCLAW_GATEWAY_URL", "ws://127.0.0.1:18789"],
-    ["OPENCLAW_GATEWAY_TOKEN", "demo-token"],
-    ["OPENCLAW_GATEWAY_PASSWORD", "demo-password"],
+    ["XCLAW_GATEWAY_PORT", "19001"],
+    ["XCLAW_GATEWAY_URL", "ws://127.0.0.1:18789"],
+    ["XCLAW_GATEWAY_TOKEN", "demo-token"],
+    ["XCLAW_GATEWAY_PASSWORD", "demo-password"],
   ])("rejects container mode when %s is set in env", async (key, value) => {
     process.env[key] = value;
 
-    await expect(runCli(["node", "openclaw", "--container", "demo", "status"])).rejects.toThrow(
+    await expect(runCli(["node", "xclaw", "--container", "demo", "status"])).rejects.toThrow(
       "--container cannot be combined with --profile/--dev or gateway override env vars",
     );
   });
 
-  it("allows container mode when only OPENCLAW_STATE_DIR is set in env", async () => {
-    process.env.OPENCLAW_STATE_DIR = "/tmp/openclaw-host-state";
+  it("allows container mode when only XCLAW_STATE_DIR is set in env", async () => {
+    process.env.XCLAW_STATE_DIR = "/tmp/xclaw-host-state";
 
     await expect(
-      runCli(["node", "openclaw", "--container", "demo", "status"]),
+      runCli(["node", "xclaw", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 
-  it("allows container mode when only OPENCLAW_CONFIG_PATH is set in env", async () => {
-    process.env.OPENCLAW_CONFIG_PATH = "/tmp/openclaw-host-state/openclaw.json";
+  it("allows container mode when only XCLAW_CONFIG_PATH is set in env", async () => {
+    process.env.XCLAW_CONFIG_PATH = "/tmp/xclaw-host-state/xclaw.json";
 
     await expect(
-      runCli(["node", "openclaw", "--container", "demo", "status"]),
+      runCli(["node", "xclaw", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 });

@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { OpenClawConfig } from "../config/config.js";
+import type { XClawConfig } from "../config/config.js";
 import { resolveBrewExecutable } from "../infra/brew.js";
 import { runCommandWithTimeout, type CommandOptions } from "../process/exec.js";
 import { scanDirectoryWithSummary } from "../security/skill-scanner.js";
@@ -21,7 +21,7 @@ export type SkillInstallRequest = {
   skillName: string;
   installId: string;
   timeoutMs?: number;
-  config?: OpenClawConfig;
+  config?: XClawConfig;
 };
 
 export type SkillInstallResult = {
@@ -72,12 +72,12 @@ async function collectSkillInstallScanWarnings(entry: SkillEntry): Promise<strin
       );
     } else if (summary.warn > 0) {
       warnings.push(
-        `Skill "${skillName}" has ${summary.warn} suspicious code pattern(s). Run "openclaw security audit --deep" for details.`,
+        `Skill "${skillName}" has ${summary.warn} suspicious code pattern(s). Run "xclaw security audit --deep" for details.`,
       );
     }
   } catch (err) {
     warnings.push(
-      `Skill "${skillName}" code safety scan failed (${String(err)}). Installation continues; run "openclaw security audit --deep" after install.`,
+      `Skill "${skillName}" code safety scan failed (${String(err)}). Installation continues; run "xclaw security audit --deep" after install.`,
     );
   }
 
@@ -443,7 +443,7 @@ export async function installSkill(params: SkillInstallRequest): Promise<SkillIn
 
   // Warn when install is triggered from a non-bundled source.
   // Workspace/project/personal agent skills can contain attacker-controlled metadata.
-  const trustedInstallSources = new Set(["openclaw-bundled", "openclaw-managed", "openclaw-extra"]);
+  const trustedInstallSources = new Set(["xclaw-bundled", "xclaw-managed", "xclaw-extra"]);
   if (!trustedInstallSources.has(entry.skill.source)) {
     warnings.push(
       `WARNING: Skill "${params.skillName}" install triggered from non-bundled source "${entry.skill.source}". Verify the install recipe is trusted.`,

@@ -1,5 +1,5 @@
-import { markdownToText, truncateText } from "openclaw/plugin-sdk/agent-runtime";
-import type { OpenClawConfig } from "openclaw/plugin-sdk/config-runtime";
+import { markdownToText, truncateText } from "xclaw/plugin-sdk/agent-runtime";
+import type { XClawConfig } from "xclaw/plugin-sdk/config-runtime";
 import {
   DEFAULT_CACHE_TTL_MINUTES,
   normalizeCacheKey,
@@ -7,8 +7,8 @@ import {
   readCache,
   resolveCacheTtlMs,
   writeCache,
-} from "openclaw/plugin-sdk/provider-web-search";
-import { wrapExternalContent, wrapWebContent } from "openclaw/plugin-sdk/security-runtime";
+} from "xclaw/plugin-sdk/provider-web-search";
+import { wrapExternalContent, wrapWebContent } from "xclaw/plugin-sdk/security-runtime";
 import {
   resolveFirecrawlApiKey,
   resolveFirecrawlBaseUrl,
@@ -39,7 +39,7 @@ type FirecrawlSearchItem = {
 };
 
 export type FirecrawlSearchParams = {
-  cfg?: OpenClawConfig;
+  cfg?: XClawConfig;
   query: string;
   count?: number;
   timeoutSeconds?: number;
@@ -49,7 +49,7 @@ export type FirecrawlSearchParams = {
 };
 
 export type FirecrawlScrapeParams = {
-  cfg?: OpenClawConfig;
+  cfg?: XClawConfig;
   url: string;
   extractMode: "markdown" | "text";
   maxChars?: number;

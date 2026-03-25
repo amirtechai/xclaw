@@ -1,5 +1,5 @@
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth";
+import { definePluginEntry } from "xclaw/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "xclaw/plugin-sdk/provider-auth";
 import { applyHuggingfaceConfig, HUGGINGFACE_DEFAULT_MODEL_REF } from "./onboard.js";
 import { buildHuggingfaceProvider } from "./provider-catalog.js";
 

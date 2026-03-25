@@ -105,7 +105,7 @@ describe("createTelegramBot channel_post media", () => {
           media_group_id: "channel-album-1",
           photo: [{ file_id: "p1" }],
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "xclaw_bot" },
         getFile: async () => ({ file_path: "photos/p1.jpg" }),
       });
 
@@ -117,7 +117,7 @@ describe("createTelegramBot channel_post media", () => {
           media_group_id: "channel-album-1",
           photo: [{ file_id: "p2" }],
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "xclaw_bot" },
         getFile: async () => ({ file_path: "photos/p2.jpg" }),
       });
 
@@ -154,7 +154,7 @@ describe("createTelegramBot channel_post media", () => {
           date: 1736380800,
           text: part1,
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "xclaw_bot" },
         getFile: async () => ({}),
       });
 
@@ -165,7 +165,7 @@ describe("createTelegramBot channel_post media", () => {
           date: 1736380801,
           text: part2,
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "xclaw_bot" },
         getFile: async () => ({}),
       });
 
@@ -202,7 +202,7 @@ describe("createTelegramBot channel_post media", () => {
         date: 1736380800,
         photo: [{ file_id: "oversized" }],
       },
-      me: { username: "openclaw_bot" },
+      me: { username: "xclaw_bot" },
       getFile: async () => ({ file_path: "photos/oversized.jpg" }),
     });
 
@@ -236,7 +236,7 @@ describe("createTelegramBot channel_post media", () => {
           photo: [{ file_id: "p1" }],
           from: { id: 55, is_bot: false, first_name: "u" },
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "xclaw_bot" },
         getFile: async () => ({ file_path: "photos/p1.jpg" }),
       });
 
@@ -285,7 +285,7 @@ describe("createTelegramBot channel_post media", () => {
           media_group_id: "partial-album-1",
           photo: [{ file_id: "p1" }],
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "xclaw_bot" },
         getFile: async () => ({ file_path: "photos/p1.jpg" }),
       });
 
@@ -297,7 +297,7 @@ describe("createTelegramBot channel_post media", () => {
           media_group_id: "partial-album-1",
           photo: [{ file_id: "p2" }],
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "xclaw_bot" },
         getFile: async () => ({ file_path: "photos/p2.jpg" }),
       });
 
@@ -342,7 +342,7 @@ describe("createTelegramBot channel_post media", () => {
           media_group_id: "fatal-album-1",
           photo: [{ file_id: "p1" }],
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "xclaw_bot" },
         getFile: async () => ({ file_path: "photos/p1.jpg" }),
       });
 
@@ -354,7 +354,7 @@ describe("createTelegramBot channel_post media", () => {
           media_group_id: "fatal-album-1",
           photo: [{ file_id: "p2" }],
         },
-        me: { username: "openclaw_bot" },
+        me: { username: "xclaw_bot" },
         getFile: async () => ({}),
       });
 

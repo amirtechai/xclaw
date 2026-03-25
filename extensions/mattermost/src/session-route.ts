@@ -4,8 +4,8 @@ import {
   stripChannelTargetPrefix,
   stripTargetKindPrefix,
   type ChannelOutboundSessionRouteParams,
-} from "openclaw/plugin-sdk/core";
-import { normalizeOutboundThreadId } from "openclaw/plugin-sdk/routing";
+} from "xclaw/plugin-sdk/core";
+import { normalizeOutboundThreadId } from "xclaw/plugin-sdk/routing";
 
 export function resolveMattermostOutboundSessionRoute(params: ChannelOutboundSessionRouteParams) {
   let trimmed = stripChannelTargetPrefix(params.target, "mattermost");

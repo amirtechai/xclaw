@@ -62,28 +62,28 @@ describe("runServiceRestart token drift", () => {
     resetLifecycleServiceMocks();
     service.readCommand.mockResolvedValue({
       programArguments: [],
-      environment: { OPENCLAW_GATEWAY_TOKEN: "service-token" },
+      environment: { XCLAW_GATEWAY_TOKEN: "service-token" },
     });
     stubEmptyGatewayEnv();
   });
 
   it("prints the container restart hint when restart is requested for a not-loaded service", async () => {
     service.isLoaded.mockResolvedValue(false);
-    vi.stubEnv("OPENCLAW_CONTAINER_HINT", "openclaw-demo-container");
+    vi.stubEnv("XCLAW_CONTAINER_HINT", "xclaw-demo-container");
 
     await runServiceRestart({
       serviceNoun: "Gateway",
       service,
       renderStartHints: () => [
-        "Restart the container or the service that manages it for openclaw-demo-container.",
-        "openclaw gateway install",
+        "Restart the container or the service that manages it for xclaw-demo-container.",
+        "xclaw gateway install",
       ],
       opts: { json: false },
     });
 
     expect(runtimeLogs).toContain("Gateway service not loaded.");
     expect(runtimeLogs).toContain(
-      "Start with: Restart the container or the service that manages it for openclaw-demo-container.",
+      "Start with: Restart the container or the service that manages it for xclaw-demo-container.",
     );
   });
 
@@ -107,9 +107,9 @@ describe("runServiceRestart token drift", () => {
     });
     service.readCommand.mockResolvedValue({
       programArguments: [],
-      environment: { OPENCLAW_GATEWAY_TOKEN: "env-token" },
+      environment: { XCLAW_GATEWAY_TOKEN: "env-token" },
     });
-    vi.stubEnv("OPENCLAW_GATEWAY_TOKEN", "env-token");
+    vi.stubEnv("XCLAW_GATEWAY_TOKEN", "env-token");
 
     await runServiceRestart(createServiceRunArgs(true));
 

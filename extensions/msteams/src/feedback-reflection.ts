@@ -12,7 +12,7 @@
 
 import {
   dispatchReplyFromConfigWithSettledDispatcher,
-  type OpenClawConfig,
+  type XClawConfig,
 } from "../runtime-api.js";
 import type { StoredConversationReference } from "./conversation-store.js";
 import { buildReflectionPrompt, parseReflectionResponse } from "./feedback-reflection-prompt.js";
@@ -64,7 +64,7 @@ export function buildFeedbackEvent(params: {
 }
 
 export type RunFeedbackReflectionParams = {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   adapter: MSTeamsAdapter;
   appId: string;
   conversationRef: StoredConversationReference;
@@ -78,7 +78,7 @@ export type RunFeedbackReflectionParams = {
 };
 
 function buildReflectionContext(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   conversationId: string;
   sessionKey: string;
   reflectionPrompt: string;
@@ -116,7 +116,7 @@ function buildReflectionContext(params: {
 }
 
 function createReflectionCaptureDispatcher(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   agentId: string;
   log: MSTeamsMonitorLogger;
 }) {

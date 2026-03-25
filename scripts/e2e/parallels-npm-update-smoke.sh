@@ -9,7 +9,7 @@ LINUX_VM="Ubuntu 24.04.3 ARM64"
 OPENAI_API_KEY_ENV="OPENAI_API_KEY"
 PACKAGE_SPEC=""
 JSON_OUTPUT=0
-RUN_DIR="$(mktemp -d /tmp/openclaw-parallels-npm-update.XXXXXX)"
+RUN_DIR="$(mktemp -d /tmp/xclaw-parallels-npm-update.XXXXXX)"
 MAIN_TGZ_DIR="$(mktemp -d)"
 MAIN_TGZ_PATH=""
 SERVER_PID=""
@@ -57,7 +57,7 @@ usage() {
 Usage: bash scripts/e2e/parallels-npm-update-smoke.sh [options]
 
 Options:
-  --package-spec <npm-spec>  Baseline npm package spec. Default: openclaw@latest
+  --package-spec <npm-spec>  Baseline npm package spec. Default: xclaw@latest
   --openai-api-key-env <var> Host env var name for OpenAI API key. Default: OPENAI_API_KEY
   --json                     Print machine-readable JSON summary.
   -h, --help                 Show help.
@@ -126,7 +126,7 @@ PY
 }
 
 resolve_latest_version() {
-  npm view openclaw version --userconfig "$(mktemp)"
+  npm view xclaw version --userconfig "$(mktemp)"
 }
 
 resolve_host_ip() {
@@ -161,7 +161,7 @@ pack_main_tgz() {
     npm pack --ignore-scripts --json --pack-destination "$MAIN_TGZ_DIR" \
       | python3 -c 'import json, sys; data = json.load(sys.stdin); print(data[-1]["filename"])'
   )"
-  MAIN_TGZ_PATH="$MAIN_TGZ_DIR/openclaw-main-$CURRENT_HEAD_SHORT.tgz"
+  MAIN_TGZ_PATH="$MAIN_TGZ_DIR/xclaw-main-$CURRENT_HEAD_SHORT.tgz"
   cp "$MAIN_TGZ_DIR/$pkg" "$MAIN_TGZ_PATH"
 }
 
@@ -172,7 +172,7 @@ start_server() {
   (
     cd "$MAIN_TGZ_DIR"
     exec python3 -m http.server "$HOST_PORT" --bind 0.0.0.0
-  ) >/tmp/openclaw-parallels-npm-update-http.log 2>&1 &
+  ) >/tmp/xclaw-parallels-npm-update-http.log 2>&1 &
   SERVER_PID=$!
   sleep 1
   kill -0 "$SERVER_PID" >/dev/null 2>&1 || die "failed to start host HTTP server"
@@ -196,7 +196,7 @@ import re
 import sys
 
 text = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace")
-matches = re.findall(r"OpenClaw [^\r\n]+", text)
+matches = re.findall(r"XClaw [^\r\n]+", text)
 print(matches[-1] if matches else "")
 PY
 }
@@ -220,9 +220,9 @@ PY
 run_windows_script_via_log() {
   local script_body="$1"
   local runner_name log_name done_name done_status
-  runner_name="openclaw-update-$RANDOM-$RANDOM.ps1"
-  log_name="openclaw-update-$RANDOM-$RANDOM.log"
-  done_name="openclaw-update-$RANDOM-$RANDOM.done"
+  runner_name="xclaw-update-$RANDOM-$RANDOM.ps1"
+  log_name="xclaw-update-$RANDOM-$RANDOM.log"
+  done_name="xclaw-update-$RANDOM-$RANDOM.done"
 
   guest_powershell "$(cat <<EOF
 \$runner = Join-Path \$env:TEMP '$runner_name'
@@ -267,14 +267,14 @@ EOF
 run_macos_update() {
   local tgz_url="$1"
   local head_short="$2"
-  cat <<EOF | prlctl exec "$MACOS_VM" --current-user /usr/bin/tee /tmp/openclaw-main-update.sh >/dev/null
+  cat <<EOF | prlctl exec "$MACOS_VM" --current-user /usr/bin/tee /tmp/xclaw-main-update.sh >/dev/null
 set -euo pipefail
 export PATH=/opt/homebrew/bin:/opt/homebrew/opt/node/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin
 if [ -z "\${HOME:-}" ]; then export HOME="/Users/\$(id -un)"; fi
 cd "\$HOME"
-curl -fsSL "$tgz_url" -o /tmp/openclaw-main-update.tgz
-/opt/homebrew/bin/npm install -g /tmp/openclaw-main-update.tgz
-version="\$(/opt/homebrew/bin/openclaw --version)"
+curl -fsSL "$tgz_url" -o /tmp/xclaw-main-update.tgz
+/opt/homebrew/bin/npm install -g /tmp/xclaw-main-update.tgz
+version="\$(/opt/homebrew/bin/xclaw --version)"
 printf '%s\n' "\$version"
 case "\$version" in
   *"$head_short"*) ;;
@@ -283,34 +283,34 @@ case "\$version" in
     exit 1
     ;;
 esac
-/opt/homebrew/bin/openclaw models set openai/gpt-5.4
-/opt/homebrew/bin/openclaw gateway status --deep --require-rpc
-/opt/homebrew/bin/openclaw agent --agent main --session-id parallels-npm-update-macos-$head_short --message "Reply with exact ASCII text OK only." --json
+/opt/homebrew/bin/xclaw models set openai/gpt-5.4
+/opt/homebrew/bin/xclaw gateway status --deep --require-rpc
+/opt/homebrew/bin/xclaw agent --agent main --session-id parallels-npm-update-macos-$head_short --message "Reply with exact ASCII text OK only." --json
 EOF
-  prlctl exec "$MACOS_VM" --current-user /bin/bash /tmp/openclaw-main-update.sh
+  prlctl exec "$MACOS_VM" --current-user /bin/bash /tmp/xclaw-main-update.sh
 }
 
 run_windows_update() {
   local tgz_url="$1"
   local head_short="$2"
   run_windows_script_via_log "$(cat <<EOF
-\$env:PATH = "\$env:LOCALAPPDATA\OpenClaw\deps\portable-git\cmd;\$env:LOCALAPPDATA\OpenClaw\deps\portable-git\mingw64\bin;\$env:LOCALAPPDATA\OpenClaw\deps\portable-git\usr\bin;\$env:PATH"
-\$tgz = Join-Path \$env:TEMP 'openclaw-main-update.tgz'
+\$env:PATH = "\$env:LOCALAPPDATA\XClaw\deps\portable-git\cmd;\$env:LOCALAPPDATA\XClaw\deps\portable-git\mingw64\bin;\$env:LOCALAPPDATA\XClaw\deps\portable-git\usr\bin;\$env:PATH"
+\$tgz = Join-Path \$env:TEMP 'xclaw-main-update.tgz'
 curl.exe -fsSL '$tgz_url' -o \$tgz >> \$log 2>&1
 npm.cmd install -g \$tgz --no-fund --no-audit >> \$log 2>&1
-\$openclaw = Join-Path \$env:APPDATA 'npm\openclaw.cmd'
-\$version = & \$openclaw --version
+\$xclaw = Join-Path \$env:APPDATA 'npm\xclaw.cmd'
+\$version = & \$xclaw --version
 \$version | Tee-Object -FilePath \$log -Append
 if (\$version -notmatch '$head_short') {
   throw 'version mismatch: expected substring $head_short'
 }
-& \$openclaw models set openai/gpt-5.4 >> \$log 2>&1
+& \$xclaw models set openai/gpt-5.4 >> \$log 2>&1
 # Windows can keep the old hashed dist modules alive across in-place global npm upgrades.
 # Restart the gateway/service before verifying status or the next agent turn.
-& \$openclaw gateway restart >> \$log 2>&1
+& \$xclaw gateway restart >> \$log 2>&1
 Start-Sleep -Seconds 5
-& \$openclaw gateway status --deep --require-rpc >> \$log 2>&1
-\$output = & \$openclaw agent --agent main --session-id parallels-npm-update-windows-$head_short --message 'Reply with exact ASCII text OK only.' --json 2>&1
+& \$xclaw gateway status --deep --require-rpc >> \$log 2>&1
+\$output = & \$xclaw agent --agent main --session-id parallels-npm-update-windows-$head_short --message 'Reply with exact ASCII text OK only.' --json 2>&1
 if (\$null -ne \$output) {
   \$output | ForEach-Object { \$_ } | Tee-Object -FilePath \$log -Append
 }
@@ -322,13 +322,13 @@ EOF
 run_linux_update() {
   local tgz_url="$1"
   local head_short="$2"
-  cat <<EOF | prlctl exec "$LINUX_VM" /usr/bin/tee /tmp/openclaw-main-update.sh >/dev/null
+  cat <<EOF | prlctl exec "$LINUX_VM" /usr/bin/tee /tmp/xclaw-main-update.sh >/dev/null
 set -euo pipefail
 export HOME=/root
 cd "\$HOME"
-curl -fsSL "$tgz_url" -o /tmp/openclaw-main-update.tgz
-npm install -g /tmp/openclaw-main-update.tgz --no-fund --no-audit
-version="\$(openclaw --version)"
+curl -fsSL "$tgz_url" -o /tmp/xclaw-main-update.tgz
+npm install -g /tmp/xclaw-main-update.tgz --no-fund --no-audit
+version="\$(xclaw --version)"
 printf '%s\n' "\$version"
 case "\$version" in
   *"$head_short"*) ;;
@@ -337,10 +337,10 @@ case "\$version" in
     exit 1
     ;;
 esac
-openclaw models set openai/gpt-5.4
-openclaw agent --local --agent main --session-id parallels-npm-update-linux-$head_short --message "Reply with exact ASCII text OK only." --json
+xclaw models set openai/gpt-5.4
+xclaw agent --local --agent main --session-id parallels-npm-update-linux-$head_short --message "Reply with exact ASCII text OK only." --json
 EOF
-  prlctl exec "$LINUX_VM" /usr/bin/env "OPENAI_API_KEY=$OPENAI_API_KEY_VALUE" /bin/bash /tmp/openclaw-main-update.sh
+  prlctl exec "$LINUX_VM" /usr/bin/env "OPENAI_API_KEY=$OPENAI_API_KEY_VALUE" /bin/bash /tmp/xclaw-main-update.sh
 }
 
 write_summary_json() {
@@ -384,7 +384,7 @@ PY
 
 LATEST_VERSION="$(resolve_latest_version)"
 if [[ -z "$PACKAGE_SPEC" ]]; then
-  PACKAGE_SPEC="openclaw@$LATEST_VERSION"
+  PACKAGE_SPEC="xclaw@$LATEST_VERSION"
 fi
 
 RESOLVED_LINUX_VM="$(resolve_linux_vm_name)"

@@ -13,10 +13,10 @@ export type CommandRunner = (
   options: { timeoutMs: number; cwd?: string; env?: NodeJS.ProcessEnv },
 ) => Promise<{ stdout: string; stderr: string; code: number | null }>;
 
-const PRIMARY_PACKAGE_NAME = "openclaw";
+const PRIMARY_PACKAGE_NAME = "xclaw";
 const ALL_PACKAGE_NAMES = [PRIMARY_PACKAGE_NAME] as const;
 const GLOBAL_RENAME_PREFIX = ".";
-export const OPENCLAW_MAIN_PACKAGE_SPEC = "github:openclaw/openclaw#main";
+export const XCLAW_MAIN_PACKAGE_SPEC = "github:xclaw/xclaw#main";
 const NPM_GLOBAL_INSTALL_QUIET_FLAGS = ["--no-fund", "--no-audit", "--loglevel=error"] as const;
 const NPM_GLOBAL_INSTALL_OMIT_OPTIONAL_FLAGS = [
   "--omit=optional",
@@ -102,7 +102,7 @@ async function resolvePortableGitPathPrepend(
   if (!localAppData) {
     return [];
   }
-  const portableGitRoot = path.join(localAppData, "OpenClaw", "deps", "portable-git");
+  const portableGitRoot = path.join(localAppData, "XClaw", "deps", "portable-git");
   const candidates = [
     path.join(portableGitRoot, "mingw64", "bin"),
     path.join(portableGitRoot, "usr", "bin"),
@@ -135,14 +135,14 @@ export function resolveGlobalInstallSpec(params: {
   env?: NodeJS.ProcessEnv;
 }): string {
   const override =
-    params.env?.OPENCLAW_UPDATE_PACKAGE_SPEC?.trim() ||
-    process.env.OPENCLAW_UPDATE_PACKAGE_SPEC?.trim();
+    params.env?.XCLAW_UPDATE_PACKAGE_SPEC?.trim() ||
+    process.env.XCLAW_UPDATE_PACKAGE_SPEC?.trim();
   if (override) {
     return override;
   }
   const target = normalizePackageTarget(params.tag);
   if (isMainPackageTarget(target)) {
-    return OPENCLAW_MAIN_PACKAGE_SPEC;
+    return XCLAW_MAIN_PACKAGE_SPEC;
   }
   if (isExplicitPackageInstallSpec(target)) {
     return target;

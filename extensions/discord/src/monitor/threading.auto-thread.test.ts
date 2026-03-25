@@ -1,6 +1,6 @@
 import { ChannelType } from "@buape/carbon";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { OpenClawConfig } from "../../../../src/config/config.js";
+import type { XClawConfig } from "../../../../src/config/config.js";
 type MaybeCreateDiscordAutoThreadFn = typeof import("./threading.js").maybeCreateDiscordAutoThread;
 
 const { generateThreadTitleMock } = vi.hoisted(() => ({
@@ -139,13 +139,13 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
     patchMock.mockResolvedValueOnce({});
     generateThreadTitleMock.mockResolvedValueOnce("Deploy rollout summary");
 
-    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as XClawConfig;
     const result = await maybeCreateDiscordAutoThread(
       createBaseParams({
         baseText: "Need help with deploy rollout",
         combinedBody: "Need help with deploy rollout",
-        channelName: "openclaw",
-        channelDescription: "OpenClaw development coordination and release planning",
+        channelName: "xclaw",
+        channelDescription: "XClaw development coordination and release planning",
         channelConfig: { allowed: true, autoThread: true, autoThreadName: "generated" },
         cfg,
         agentId: "main",
@@ -163,8 +163,8 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
       expect.objectContaining({
         agentId: "main",
         messageText: "Need help with deploy rollout",
-        channelName: "openclaw",
-        channelDescription: "OpenClaw development coordination and release planning",
+        channelName: "xclaw",
+        channelDescription: "XClaw development coordination and release planning",
       }),
     );
     expect(patchMock).toHaveBeenCalledWith(
@@ -185,7 +185,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
       }),
     );
 
-    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as XClawConfig;
     const result = await maybeCreateDiscordAutoThread(
       createBaseParams({
         channelConfig: { allowed: true, autoThread: true, autoThreadName: "generated" },
@@ -217,7 +217,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     await maybeCreateDiscordAutoThread(
       createBaseParams({
         channelConfig: { allowed: true, autoThread: true, autoThreadName: "generated" },
@@ -250,7 +250,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
           },
         },
       },
-    } as OpenClawConfig;
+    } as XClawConfig;
     await maybeCreateDiscordAutoThread(
       createBaseParams({
         channelConfig: { allowed: true, autoThread: true, autoThreadName: "generated" },
@@ -295,7 +295,7 @@ describe("maybeCreateDiscordAutoThread autoThreadName", () => {
     postMock.mockResolvedValueOnce({ id: "thread1" });
     generateThreadTitleMock.mockResolvedValueOnce("<@123456789012345678> <#987654321098765432>");
 
-    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as OpenClawConfig;
+    const cfg = { agents: { defaults: { model: "anthropic/claude-opus-4-6" } } } as XClawConfig;
     const result = await maybeCreateDiscordAutoThread(
       createBaseParams({
         baseText: "Need help with deploy rollout",

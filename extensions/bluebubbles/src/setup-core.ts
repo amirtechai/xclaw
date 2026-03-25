@@ -5,8 +5,8 @@ import {
   prepareScopedSetupConfig,
   type ChannelSetupAdapter,
   type DmPolicy,
-  type OpenClawConfig,
-} from "openclaw/plugin-sdk/setup";
+  type XClawConfig,
+} from "xclaw/plugin-sdk/setup";
 import { applyBlueBubblesConnectionConfig } from "./config-apply.js";
 
 const channel = "bluebubbles" as const;
@@ -14,15 +14,15 @@ const setBlueBubblesTopLevelDmPolicy = createTopLevelChannelDmPolicySetter({
   channel,
 });
 
-export function setBlueBubblesDmPolicy(cfg: OpenClawConfig, dmPolicy: DmPolicy): OpenClawConfig {
+export function setBlueBubblesDmPolicy(cfg: XClawConfig, dmPolicy: DmPolicy): XClawConfig {
   return setBlueBubblesTopLevelDmPolicy(cfg, dmPolicy);
 }
 
 export function setBlueBubblesAllowFrom(
-  cfg: OpenClawConfig,
+  cfg: XClawConfig,
   accountId: string,
   allowFrom: string[],
-): OpenClawConfig {
+): XClawConfig {
   return patchScopedAccountConfig({
     cfg,
     channelKey: channel,

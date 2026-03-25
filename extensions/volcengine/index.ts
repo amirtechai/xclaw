@@ -1,6 +1,6 @@
-import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-auth";
-import { ensureModelAllowlistEntry } from "openclaw/plugin-sdk/provider-onboard";
+import { definePluginEntry } from "xclaw/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "xclaw/plugin-sdk/provider-auth";
+import { ensureModelAllowlistEntry } from "xclaw/plugin-sdk/provider-onboard";
 import { buildDoubaoCodingProvider, buildDoubaoProvider } from "./provider-catalog.js";
 
 const PROVIDER_ID = "volcengine";

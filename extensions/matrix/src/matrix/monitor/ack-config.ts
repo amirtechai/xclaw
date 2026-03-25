@@ -1,11 +1,11 @@
-import { resolveAckReaction, type OpenClawConfig } from "../../runtime-api.js";
+import { resolveAckReaction, type XClawConfig } from "../../runtime-api.js";
 import type { CoreConfig } from "../../types.js";
 import { resolveMatrixAccountConfig } from "../accounts.js";
 
 type MatrixAckReactionScope = "group-mentions" | "group-all" | "direct" | "all" | "none" | "off";
 
 export function resolveMatrixAckReactionConfig(params: {
-  cfg: OpenClawConfig;
+  cfg: XClawConfig;
   agentId: string;
   accountId?: string | null;
 }): { ackReaction: string; ackReactionScope: MatrixAckReactionScope } {
